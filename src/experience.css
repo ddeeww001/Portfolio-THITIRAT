@@ -1,143 +1,191 @@
 /* =================================================================== */
-/* ตกแต่งหน้าผลงาน (ใช้โค้ด HTML/TSX เดิม 100%) - Responsive & UX/UI */
+/* VERCEL MARKETPLACE STYLE - EXPERIENCE PAGE */
 /* =================================================================== */
 
-/* 1. การ์ดผลงานรวม */
-.snap-section.project-slide {
-  width: 90%;
-  max-width: 1000px;
-  margin: 0 auto 60px auto;
-  background: var(--bg-card, #ffffff);
-  border-radius: 24px;
-  padding: 40px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
-  position: relative;
-  top: auto; /* ยกเลิกค่าเก่าทิ้งให้หมด */
+.experience-presentation-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 120px;
+  padding-bottom: 80px;
+  font-family: 'Inter', sans-serif; /* Vercel เน้นฟอนต์เรียบๆ ไม่มีหัว */
 }
 
+/* หัวข้อหลัก */
+.experience-presentation-wrapper h1 {
+  color: #ffffff;
+  font-size: 2.5rem;
+  font-weight: 700;
+  letter-spacing: -0.05em; /* บีบตัวอักษรนิดๆ สไตล์ Vercel */
+  margin-bottom: 60px;
+  text-align: center;
+}
 
+/* =================================================================== */
+/* THE CARD (ตัวกล่องผลงาน - สไตล์แบนราบ ขอบบาง ไม่มีเงา) */
+/* =================================================================== */
+.snap-section.project-slide {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto 40px auto;
+  background: #000000; /* พื้นหลังดำสนิท */
+  border: 1px solid #333333; /* ขอบสีเทาเข้มบางๆ */
+  border-radius: 8px; /* มุมโค้งเล็กน้อย ไม่โค้งมนจนเกินไป */
+  padding: 40px;
+  transition: border-color 0.2s ease; /* เอฟเฟกต์เปลี่ยนสีขอบตอนชี้ */
+  box-shadow: none; /* เอาเงาออกทั้งหมด ให้ดูแบนราบและคลีน */
+  position: relative;
+  top: auto;
+}
+
+.snap-section.project-slide:hover {
+  border-color: #666666; /* ขอบสว่างขึ้นนิดนึงตอนเอาเมาส์ชี้ */
+}
+
+/* =================================================================== */
+/* LAYOUT GRID (จัดระเบียบซ้าย-ขวา) */
+/* =================================================================== */
 .title {
   display: grid;
-  grid-template-columns: 1fr 1fr; /* แบ่งครึ่งจอ ซ้าย-ขวา เท่าๆ กัน */
-  column-gap: 50px;
-  row-gap: 10px;
+  grid-template-columns: 1fr 1fr; /* แบ่งครึ่งเป๊ะๆ */
+  gap: 40px;
+  width: 100%;
   align-items: start;
-  width: 100%; /* ⭐️ ถ้าไม่ใส่ 100% ตรงนี้ เนื้อหาจะหดและเบี้ยวไปข้างซ้าย */
 }
 
-/* บังคับข้อความทั้งหมด (H2, H3, รายละเอียด) ให้อยู่คอลัมน์ซ้าย (1) */
+/* =================================================================== */
+/* TYPOGRAPHY (ตัวหนังสือฝั่งซ้าย) */
+/* =================================================================== */
 .title h2 {
   grid-column: 1;
-  grid-row: 1; /* บรรทัดที่ 1 */
-  font-size: 1.8rem;
-  color: #0f172a;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #ededed; /* ขาวหม่นนิดๆ ไม่แสบตา */
+  margin: 0 0 8px 0;
+  letter-spacing: -0.02em;
   text-align: left;
-  margin: 0;
 }
 
 .title h3:nth-of-type(1) { /* วันที่ */
   grid-column: 1;
-  grid-row: 2; /* บรรทัดที่ 2 */
-  color: #7129ed;
-  font-size: 0.95rem;
+  font-size: 0.875rem;
+  color: #a1a1aa; /* สีเทาโทน Zinc (Vercel Style) */
+  margin: 0 0 4px 0;
+  font-weight: 400;
   text-align: left;
-  margin: 0;
 }
 
-.title h3:nth-of-type(2) { /* ตำแหน่ง (Role) */
+.title h3:nth-of-type(2) { /* ตำแหน่ง Role */
   grid-column: 1;
-  grid-row: 3; /* บรรทัดที่ 3 */
-  color: #64748b;
-  font-size: 0.95rem;
+  font-size: 0.875rem;
+  color: #a1a1aa;
+  margin: 0 0 24px 0;
+  font-weight: 400;
   text-align: left;
-  margin: 0 0 10px 0;
-  font-weight: 500;
 }
 
+/* รายละเอียดโปรเจกต์ */
 .title .details {
   grid-column: 1;
-  grid-row: 4; /* บรรทัดที่ 4 */
-  text-align: left;
+  width: 100%;
 }
 
-/* 3. บังคับรูปลิงก์ให้อยู่คอลัมน์ขวา (2) และให้ความสูงคลุมข้อความฝั่งซ้ายทั้งหมด */
-.title .link-preview {
-  grid-column: 2;
-  grid-row: 1 / span 4; /* ลากยาวตั้งแต่บรรทัด 1 ถึง 4 */
+.details ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 20px;
-}
-
-/* 4. ตกแต่งรายละเอียดเนื้อหาย่อย (เอาจุดดำออก) */
-.details ul {
-  list-style-type: none; /* ลบจุดดำ */
-  padding-left: 0;
-  margin: 0;
+  gap: 12px; /* ระยะห่างระหว่างบรรทัดที่พอดี */
 }
 
 .details li.project-grid {
   position: relative;
-  padding-left: 15px; /* เว้นที่ให้ขีด */
-  margin-bottom: 12px;
-  color: #64748b;
+  padding-left: 18px;
+  color: #a1a1aa;
+  font-size: 0.95rem;
   line-height: 1.6;
+  text-align: left;
 }
 
-/* ใส่ขีดเก๋ๆ สีม่วงแทนจุดดำ */
+/* เปลี่ยนจุดกลมใหญ่ๆ เป็นจุดสีเทาเล็กๆ มินิมอล */
 .details li.project-grid::before {
-  content: '-';
+  content: '';
   position: absolute;
   left: 0;
-  color: #7129ed;
-  font-weight: bold;
+  top: 9px;
+  width: 5px;
+  height: 5px;
+  background-color: #52525b;
+  border-radius: 50%;
 }
 
-/* 5. ตกแต่งรูปภาพ (ใช้ 16:9 ให้สมมาตรตลอดกาล) */
+/* =================================================================== */
+/* IMAGE & LINK CARD (ฝั่งขวา) */
+/* =================================================================== */
+.title .link-preview {
+  grid-column: 2;
+  grid-row: 1 / span 4;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+.link-preview a {
+  text-decoration: none;
+  display: block;
+}
+
 .preview-card {
-  border-radius: 16px;
+  border: 1px solid #333333;
+  border-radius: 8px;
   overflow: hidden;
-  border: 1px solid #e2e8f0;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-  transition: transform 0.3s ease;
-  background: #f8fafc;
+  background: #0a0a0a;
+  transition: all 0.2s ease;
 }
 
-.preview-card:hover {
-  transform: translateY(-5px);
+/* เอฟเฟกต์ตอนชี้เมาส์ที่รูปลิงก์ */
+.link-preview a:hover .preview-card {
+  border-color: #888888;
 }
 
 .preview-card img {
   width: 100% !important;
-  aspect-ratio: 16 / 9; /* บังคับสัดส่วนให้ย่อ/ขยายก็ไม่เพี้ยน */
+  aspect-ratio: 16 / 9; /* ล็อกสัดส่วนให้ย่อขยายยังไงรูปก็ไม่เพี้ยน */
   height: auto !important;
   object-fit: cover;
   object-position: top;
   display: block;
+  border-bottom: 1px solid #222222;
 }
 
+/* แถบชื่อเว็บด้านล่างรูป */
 .url-name {
-  padding: 12px;
-  text-align: center;
-  font-weight: 600;
-  color: #0f172a;
-  border-top: 1px solid #e2e8f0;
-  background: white;
+  padding: 12px 16px;
+  font-size: 0.875rem;
+  color: #ededed;
+  background: #0a0a0a; /* พื้นหลังดำ */
+  font-weight: 500;
+  text-align: left;
 }
-
-
-
 
 /* =================================================================== */
-/* 6. Responsive (ย่อจอแล้วไม่พัง บนมือถือพับเป็นแนวดิ่ง) */
+/* RESPONSIVE DESIGN (การหดหน้าจอแล้วไม่พัง) */
 /* =================================================================== */
 @media (max-width: 900px) {
-  .title {
-    grid-template-columns: 1fr; /* พับเหลือ 1 คอลัมน์ (บน-ล่าง) */
-    row-gap: 15px;
+  .snap-section.project-slide {
+    padding: 24px; /* ลดระยะขอบในมือถือ */
+    width: 90%;
   }
-  
-  /* ยกเลิกการบังคับซ้าย-ขวา ให้มันเรียงปกติตาม HTML บนมือถือ */
+
+  .title {
+    grid-template-columns: 1fr; /* บังคับให้พับเป็น 1 คอลัมน์ (บน-ล่าง) */
+    gap: 24px;
+  }
+
+  /* ล้างค่า Grid ฝั่งซ้าย-ขวา ให้มันไหลลงมาปกติ */
   .title h2, 
   .title h3:nth-of-type(1), 
   .title h3:nth-of-type(2), 
@@ -147,11 +195,29 @@
     grid-row: auto;
   }
 
-  .title h2 { text-align: center; }
-  .title h3:nth-of-type(1), .title h3:nth-of-type(2) { text-align: center; }
-  
+  /* ในสไตล์ Vercel แม้จะอยู่ในมือถือ ตัวหนังสือก็ยังชิดซ้ายเพื่อให้อ่านง่าย */
+  .title h2, 
+  .title h3:nth-of-type(1), 
+  .title h3:nth-of-type(2) {
+    text-align: left;
+  }
+
   .title .link-preview {
-    margin-top: 20px;
+    margin-top: 10px;
   }
 }
 
+
+
+
+.title h2 {
+  word-break: break-word; /* 👈 เพิ่มบรรทัดนี้ (บังคับตัดคำเมื่อล้นขอบ) */
+  grid-column: 1;
+  font-size: 1.5rem;
+  font-weight: 600;
+  /* ... โค้ดอื่นๆ เหมือนเดิม ... */
+}
+/* ใส่ไว้บนสุดของ index.css */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
