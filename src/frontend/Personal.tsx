@@ -41,7 +41,7 @@ export const myDetailsData: MyDetails = {
   technicalSkills: ["Java", "HTML", "CSS", "React", "TypeScript"],
   
   // Tools
-  tools: ["Figma", "Canva", "Visual Studio Code", "IntelliJ"],
+  tools: ["Figma", "Canva", "Visual Studio Code", "IntelliJ","Affinity"],
   
   // Languages
   languages: [
