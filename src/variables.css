@@ -1,0 +1,32 @@
+/* src/variables.css */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Poppins:wght@500;600;700&display=swap');
+
+:root {
+  /* ชุดสีหลัก (Color Palette) - โทนสว่าง มินิมอล */
+  --bg-main: #f8fafc;        /* สีพื้นหลังเว็บ (เทาอมฟ้าอ่อนๆ) */
+  --bg-card: #ffffff;        /* สีพื้นหลังการ์ด (ขาว) */
+  --text-primary: #0f172a;   /* สีตัวอักษรหลัก (ดำเข้ม) */
+  --text-secondary: #64748b; /* สีตัวอักษรรอง (เทา) */
+  --accent-color: #7129ed;   /* สีปุ่ม/เน้นข้อความ (ม่วง) */
+  --accent-hover: #5b21b6;   /* สีปุ่มตอนเอาเมาส์ชี้ (ม่วงเข้ม) */
+
+  /* ชุดฟอนต์ (Typography) */
+  --font-heading: 'Poppins', sans-serif;
+  --font-body: 'Inter', sans-serif;
+}
+
+/* ตั้งค่าพื้นฐานให้ทั้งเว็บ */
+body {
+  background-color: var(--bg-main);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-heading);
+  color: var(--text-primary);
+  margin-top: 0;
+}

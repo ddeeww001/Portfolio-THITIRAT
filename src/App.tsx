@@ -5,6 +5,10 @@ import Experience from './frontend/showExperience'
 import { Profile,myDetailsData} from './frontend/Personal'
 import Home from './frontend/Home.tsx'
 import profileImg from './picture/profile.jpg'
+import './variables.css'
+import './navbar.css'
+import './profile.css'
+import './experience.css'
 const Navbar=()=>{
   return(
     <div className="navbar">

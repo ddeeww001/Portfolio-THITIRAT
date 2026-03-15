@@ -1,0 +1,231 @@
+/* src/profile.css */
+
+.profile-page-wrapper {
+  padding-top: 120px; /* เว้นที่ให้ Navbar ด้านบน */
+  padding-bottom: 60px;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.profile-card-container {
+  display: grid;
+  grid-template-columns: 350px 1fr; /* ซ้าย 350px, ขวาใช้พื้นที่ที่เหลือ */
+  gap: 40px;
+  max-width: 1100px;
+  width: 90%;
+  background: var(--bg-card);
+  border-radius: 24px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+/* --- ฝั่งซ้าย (Sidebar) --- */
+.profile-sidebar {
+  background: #f1f5f9; /* สีเทาอ่อนๆ แยกสัดส่วนชัดเจน */
+  padding: 40px 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.profile-pic-wrapper img {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid var(--bg-card);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+/* 1. จัดการกล่องคลุม (Container) ให้เว้นระยะปุ่มอย่างเป็นระเบียบ */
+.profile-roles {
+  display: flex;
+  flex-wrap: wrap;         /* ถ้าหน้าจอแคบ ให้ปุ่มตกลงมาบรรทัดใหม่อย่างสวยงาม */
+  justify-content: center; /* จัดให้ปุ่มอยู่กึ่งกลาง */
+  gap: 10px;               /* ระยะห่างระหว่างปุ่ม ทั้งแนวนอนและแนวตั้ง (หมดปัญหาปุ่มติดกัน) */
+  margin-bottom: 30px;     /* ดันเนื้อหาส่วนอื่นด้านล่างให้ห่างออกไป */
+  width: 100%;
+}
+
+/* 2. ปรับแต่งตัวปุ่ม */
+.role-badge {
+  background: var(--accent-color, #7129ed);
+  color: white;
+  padding: 6px 18px;
+  border-radius: 100px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  white-space: nowrap;     /* ⭐️ สำคัญมาก! บังคับไม่ให้ข้อความในปุ่มถูกตัดขึ้นบรรทัดใหม่ */
+  margin: 0;               /* ลบ margin เก่าทิ้ง เพราะเราใช้ gap จัดการระยะห่างแทนแล้ว */
+}
+
+/* --- ฝั่งขวา (Content) --- */
+.profile-content {
+  padding: 40px 40px 40px 0;
+}
+
+.section-header {
+  font-size: 1.2rem;
+  color: var(--accent-color);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 15px;
+  border-bottom: 2px solid #e2e8f0;
+  padding-bottom: 8px;
+}
+
+.introduce-text {
+  color: var(--text-secondary);
+  line-height: 1.8;
+  margin-bottom: 40px;
+}
+
+/* ป้าย Skills */
+.skills-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 40px;
+}
+
+.skill-tag {
+  background: var(--bg-main);
+  color: var(--text-primary);
+  border: 1px solid #cbd5e1;
+  padding: 8px 18px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-family: var(--font-body);
+}
+
+
+/* นำไปวางทับคลาส .profile-card-container และ @media ด้านล่างของไฟล์ profile.css */
+
+.profile-card-container {
+  display: grid;
+  /* แก้ตรงนี้: ใช้ minmax เพื่อให้คอลัมน์ซ้ายยืดหยุ่น */
+  grid-template-columns: minmax(280px, 350px) 1fr; 
+  gap: 0; /* ลบ gap เดิมออกเพื่อไม่ให้มีช่องว่างแปลกๆ */
+  
+  width: 90%;
+  max-width: 1000px; /* คุมขนาดสูงสุดให้อยู่ตรงกลางเสมอ */
+  margin: 0 auto;    /* บังคับให้อยู่กึ่งกลางหน้าจอ */
+  
+  background: var(--bg-card);
+  border-radius: 24px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+.profile-content {
+  padding: 40px; /* จัดระยะขอบให้เท่ากันทุกด้าน */
+}
+
+/* เพิ่ม/แก้โค้ดนี้เพื่อจัดการหน้าจอไอแพดและมือถือ (จอเล็กกว่า 900px) */
+@media (max-width: 900px) {
+  .profile-card-container {
+    grid-template-columns: 1fr; /* บังคับให้พับลงมาเหลือ 1 คอลัมน์ (บน-ล่าง) */
+  }
+  .profile-sidebar {
+    padding: 30px 20px; /* ลดขอบให้พอดีมือถือ */
+  }
+  .profile-content {
+    padding: 30px 20px;
+  }
+  .introduce-text {
+    text-align: center; /* จัดกลางให้อ่านง่ายขึ้นบนมือถือ */
+  }
+  .skills-grid {
+    justify-content: center;
+  }
+}
+
+/* ========================================= */
+/* TYPOGRAPHY: จัดการตัวอักษรหน้า Profile */
+/* ========================================= */
+
+/* 1. ชื่อ (เน้นตัวใหญ่ หนา และดูเด่น) */
+.profile-name {
+  font-family: var(--font-heading, 'Poppins', sans-serif);
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--text-primary, #0f172a);
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+/* 2. หัวข้อแต่ละส่วน (เช่น ABOUT ME, SKILLS - ทำให้ดูเป็นสัดส่วน) */
+.section-header {
+  font-family: var(--font-heading, 'Poppins', sans-serif);
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--accent-color, #7129ed);
+  text-transform: uppercase; /* บังคับตัวพิมพ์ใหญ่ทั้งหมด */
+  letter-spacing: 1.5px; /* ถ่างช่องไฟหัวข้อให้ดูพรีเมียม */
+  margin-bottom: 20px;
+  border-bottom: 2px solid #e2e8f0;
+  padding-bottom: 10px;
+}
+
+/* 3. ข้อความแนะนำตัว (อ่านสบายตา) */
+.introduce-text {
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 1.05rem;
+  color: var(--text-secondary, #64748b);
+  line-height: 1.8; /* เว้นระยะบรรทัดให้อ่านง่าย ไม่เบียดกัน */
+  text-align: left; /* จัดชิดซ้ายเสมอตามหลัก UX */
+}
+
+/* 4. ข้อมูลติดต่อ และ โซเชียล (ลบจุดออก จัดชิดซ้าย) */
+.contact-list, .social-list {
+  list-style: none; /* เอาจุดกลมๆ ออก */
+  padding: 0;
+  margin: 0;
+  text-align: left;
+  width: 100%;
+}
+
+.contact-list li, .social-list li {
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.95rem;
+  margin-bottom: 15px; /* เว้นระยะแต่ละบรรทัด */
+  color: var(--text-secondary, #64748b);
+  display: flex;
+  align-items: center; /* ให้ไอคอนกับตัวหนังสือตรงกัน */
+}
+
+.contact-list a, .social-link {
+  color: var(--text-primary, #0f172a);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.contact-list a:hover, .social-link:hover {
+  color: var(--accent-color, #7129ed); /* เปลี่ยนสีตอนเอาเมาส์ชี้ */
+}
+
+/* 5. ลิสต์ใบประกาศ และ ภาษา (ลบจุดออก จัดให้อ่านง่าย) */
+.cert-list, .language-list {
+  list-style: none;
+  padding: 0;
+  text-align: left;
+}
+
+.cert-item, .lang-item {
+  font-family: var(--font-body, 'Inter', sans-serif);
+  line-height: 1.6;
+  margin-bottom: 15px;
+  color: var(--text-secondary, #64748b);
+  font-size: 0.95rem;
+}
+
+.lang-name {
+  font-weight: 600;
+  color: var(--text-primary, #0f172a);
+}
+
+

@@ -1,0 +1,157 @@
+/* =================================================================== */
+/* ตกแต่งหน้าผลงาน (ใช้โค้ด HTML/TSX เดิม 100%) - Responsive & UX/UI */
+/* =================================================================== */
+
+/* 1. การ์ดผลงานรวม */
+.snap-section.project-slide {
+  width: 90%;
+  max-width: 1000px;
+  margin: 0 auto 60px auto;
+  background: var(--bg-card, #ffffff);
+  border-radius: 24px;
+  padding: 40px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+  position: relative;
+  top: auto; /* ยกเลิกค่าเก่าทิ้งให้หมด */
+}
+
+
+.title {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* แบ่งครึ่งจอ ซ้าย-ขวา เท่าๆ กัน */
+  column-gap: 50px;
+  row-gap: 10px;
+  align-items: start;
+  width: 100%; /* ⭐️ ถ้าไม่ใส่ 100% ตรงนี้ เนื้อหาจะหดและเบี้ยวไปข้างซ้าย */
+}
+
+/* บังคับข้อความทั้งหมด (H2, H3, รายละเอียด) ให้อยู่คอลัมน์ซ้าย (1) */
+.title h2 {
+  grid-column: 1;
+  grid-row: 1; /* บรรทัดที่ 1 */
+  font-size: 1.8rem;
+  color: #0f172a;
+  text-align: left;
+  margin: 0;
+}
+
+.title h3:nth-of-type(1) { /* วันที่ */
+  grid-column: 1;
+  grid-row: 2; /* บรรทัดที่ 2 */
+  color: #7129ed;
+  font-size: 0.95rem;
+  text-align: left;
+  margin: 0;
+}
+
+.title h3:nth-of-type(2) { /* ตำแหน่ง (Role) */
+  grid-column: 1;
+  grid-row: 3; /* บรรทัดที่ 3 */
+  color: #64748b;
+  font-size: 0.95rem;
+  text-align: left;
+  margin: 0 0 10px 0;
+  font-weight: 500;
+}
+
+.title .details {
+  grid-column: 1;
+  grid-row: 4; /* บรรทัดที่ 4 */
+  text-align: left;
+}
+
+/* 3. บังคับรูปลิงก์ให้อยู่คอลัมน์ขวา (2) และให้ความสูงคลุมข้อความฝั่งซ้ายทั้งหมด */
+.title .link-preview {
+  grid-column: 2;
+  grid-row: 1 / span 4; /* ลากยาวตั้งแต่บรรทัด 1 ถึง 4 */
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* 4. ตกแต่งรายละเอียดเนื้อหาย่อย (เอาจุดดำออก) */
+.details ul {
+  list-style-type: none; /* ลบจุดดำ */
+  padding-left: 0;
+  margin: 0;
+}
+
+.details li.project-grid {
+  position: relative;
+  padding-left: 15px; /* เว้นที่ให้ขีด */
+  margin-bottom: 12px;
+  color: #64748b;
+  line-height: 1.6;
+}
+
+/* ใส่ขีดเก๋ๆ สีม่วงแทนจุดดำ */
+.details li.project-grid::before {
+  content: '-';
+  position: absolute;
+  left: 0;
+  color: #7129ed;
+  font-weight: bold;
+}
+
+/* 5. ตกแต่งรูปภาพ (ใช้ 16:9 ให้สมมาตรตลอดกาล) */
+.preview-card {
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease;
+  background: #f8fafc;
+}
+
+.preview-card:hover {
+  transform: translateY(-5px);
+}
+
+.preview-card img {
+  width: 100% !important;
+  aspect-ratio: 16 / 9; /* บังคับสัดส่วนให้ย่อ/ขยายก็ไม่เพี้ยน */
+  height: auto !important;
+  object-fit: cover;
+  object-position: top;
+  display: block;
+}
+
+.url-name {
+  padding: 12px;
+  text-align: center;
+  font-weight: 600;
+  color: #0f172a;
+  border-top: 1px solid #e2e8f0;
+  background: white;
+}
+
+
+
+
+/* =================================================================== */
+/* 6. Responsive (ย่อจอแล้วไม่พัง บนมือถือพับเป็นแนวดิ่ง) */
+/* =================================================================== */
+@media (max-width: 900px) {
+  .title {
+    grid-template-columns: 1fr; /* พับเหลือ 1 คอลัมน์ (บน-ล่าง) */
+    row-gap: 15px;
+  }
+  
+  /* ยกเลิกการบังคับซ้าย-ขวา ให้มันเรียงปกติตาม HTML บนมือถือ */
+  .title h2, 
+  .title h3:nth-of-type(1), 
+  .title h3:nth-of-type(2), 
+  .title .details, 
+  .title .link-preview {
+    grid-column: 1;
+    grid-row: auto;
+  }
+
+  .title h2 { text-align: center; }
+  .title h3:nth-of-type(1), .title h3:nth-of-type(2) { text-align: center; }
+  
+  .title .link-preview {
+    margin-top: 20px;
+  }
+}
+
