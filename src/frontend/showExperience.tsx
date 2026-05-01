@@ -1,31 +1,23 @@
+// showExperience.tsx
+import projectsData from './projects.json'; // 1. ดึงข้อมูล Data มา
+import { ProjectCart,type ProjectData } from './Experience.tsx'; // 2. ดึงแม่พิมพ์ Component มา
+import '../experience.css'; // สมมติว่าคุณมีไฟล์ CSS สำหรับตกแต่ง
 
-import { MyProject, ProjectCart } from './Experience.tsx';//ดึงข้อมูลมาใช้
-import './Experience.tsx'//ใช้ตกแต่ง
-
-//export my Experiance
-function Experience() {
- 
-
+function ShowExperience() {
   return (
-    <>
-   
     <div className="experience-presentation-wrapper">
       <section>
         <h1>MY EXPERIENCE</h1>
       </section>
-    
 
-        {MyProject.map(
-            (project)=>(
-                /*ส่วนที่ดึงข้อมูล project Data มาแสดงทีละ id */
-                 <section className="snap-section project-slide">
-                  <ProjectCart key={project.id}  data={project}/>
-                </section> ))}
-
-    
+      {/* 3. วนลูปข้อมูลจาก JSON แล้วส่งผ่าน Props (data) ไปให้ ProjectCart */}
+      {projectsData.map((project: ProjectData) => (
+        <section className="snap-section project-slide" key={project.id}>
+          <ProjectCart data={project} />
+        </section>
+      ))}
     </div>
-    </>
-  )
+  );
 }
 
-export default Experience 
+export default ShowExperience;
