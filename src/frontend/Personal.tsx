@@ -1,63 +1,13 @@
 
-// อย่าลืม import รูปของคุณเข้ามา (ตรวจสอบ path ให้ถูกต้อง)
-// ถ้าชื่อไฟล์คือ 1769004959717.jpg ให้เปลี่ยนชื่อเป็น profile.jpg หรือแก้ path ตรงนี้
-import profileImg from '../picture/profile.jpg'; 
+// Import data from centralized database
+import { profileDatabase, type ProfileData } from '../data/profileData';
+import profileImg from '../picture/profile.jpg';
 
-// 1. กำหนดโครงสร้างข้อมูล (Interface)
-interface MyDetails {
-  id: number;
-  name: string;
-  role: string[];
-  birthday: string;
-  email: string;
-  phone: string;
-  socials: { label: string; value: string; link?: string }[];
-  introduce: string;
-  
-  // ข้อมูลใหม่ที่เพิ่มเข้ามา
-  technicalSkills: string[];
-  tools: string[];
-  languages: { lang: string; level: string }[];
-  certifications: string[];
-}
+// Export for backward compatibility
+export const myDetailsData = profileDatabase;
 
-// 2. ใส่ข้อมูลจริงของคุณ
-export const myDetailsData: MyDetails = {
-  id: 1,
-  name: "THITIRAT SIRISAWAD",
-  role: ["UX/UI Designer", "Frontend Developer"],
-  birthday: "14 June 2006",
-  email: "dewthitirat@gmail.com",
-  phone: "099-430-0222",
-  socials: [
-    { label: "GitHub", value: "ddeeww001", link: "https://github.com/ddeeww001" },
-    { label: "Line ID", value: "t.s" },
-    { label: "Instagram", value: "ddeeww_o_o" },
-    { label: "Facebook", value: "Dew Chobkinkaitod" }
-  ],
-  introduce: "I am a passionate UX/UI Designer and Frontend Developer dedicated to creating intuitive, user-centric digital experiences with modern design.",
-  
-  // Technical Skills
-  technicalSkills: ["Java", "HTML", "CSS", "React", "TypeScript"],
-  
-  // Tools
-  tools: ["Figma", "Canva", "Visual Studio Code", "IntelliJ","Affinity"],
-  
-  // Languages
-  languages: [
-    { lang: "Thai", level: "Native" },
-    { lang: "English", level: "Pre-intermediate" }
-  ],
-  
-  // Certifications
-  certifications: [
-    "UXUI Foundation Program (LIFELONG) - Organized by T.C.C. Technology Co., Ltd",
-    "Creativity and Imagination (LIFELONG)"
-  ]
-};
-
-// 3. สร้าง Component แสดงผล
-export const Profile = ({ data }: { data: MyDetails }) => {
+// Main Profile Component
+export const Profile = ({ data }: { data: ProfileData }) => {
   return (
     <div className="profile-page-wrapper">
       <div className="profile-card-container">

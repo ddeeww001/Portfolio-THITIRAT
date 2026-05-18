@@ -1,7 +1,7 @@
 // showExperience.tsx
-import projectsData from './projects.json'; // 1. ดึงข้อมูล Data มา
-import { ProjectCart,type ProjectData } from './Experience.tsx'; // 2. ดึงแม่พิมพ์ Component มา
-import '../experience.css'; // สมมติว่าคุณมีไฟล์ CSS สำหรับตกแต่ง
+import { projectsDatabase, type ProjectData } from '../data/projectsData'; // Import from centralized database
+import { ProjectCart } from './Experience'; // Import component
+import '../experience.css';
 
 function ShowExperience() {
   return (
@@ -11,7 +11,7 @@ function ShowExperience() {
       </section>
 
       {/* 3. วนลูปข้อมูลจาก JSON แล้วส่งผ่าน Props (data) ไปให้ ProjectCart */}
-      {projectsData.map((project: ProjectData) => (
+      {projectsDatabase.map((project: ProjectData) => (
         <section className="snap-section project-slide" key={project.id}>
           <ProjectCart data={project} />
         </section>
