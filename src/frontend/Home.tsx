@@ -1,85 +1,64 @@
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 
 const Home = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    // Trigger animation on mount
+    setIsVisible(true);
+  }, []);
 
   return (
-    <div className="home-container">
-      <div 
-        className={`envelope-wrapper ${isOpen ? 'open' : ''}`} 
-        onClick={() => setIsOpen(!isOpen)}
-      >
-        {/* พื้นหลังซอง */}
-        <div className="envelope-base"></div>
-
-        {/* ปีกซองทั้ง 4 ด้าน */}
-        <div className="flap envelope-lid"></div>
-        <div className="flap envelope-left"></div>
-        <div className="flap envelope-right"></div>
-        <div className="flap envelope-pocket"></div>
-        
-        {/* --- กระดาษเนื้อหา (แก้ไขใหม่) --- */}
-        <div className="letter" onClick={(e) => e.stopPropagation()}>
+    <div className="home-hero-container">
+      <div className={`hero-glass-card ${isVisible ? 'fade-in' : ''}`}>
+        <div className="hero-content">
+          {/* Animated greeting */}
+          <p className="greeting animate-slide-down">
+            👋 Welcome to my portfolio
+          </p>
           
-          {/* Header เล็กๆ */}
-          <h2 style={{fontSize: '1.5rem', marginBottom: '5px'}}>THITIRAT SIRISAWAD</h2>
-          <p className="role" style={{fontSize: '0.9rem', marginBottom: '25px'}}>UX/UI Designer & Frontend</p>
+          {/* Name with gradient animation */}
+          <h1 className="hero-name animate-slide-up">
+            THITIRAT SIRISAWAD
+          </h1>
+          
+          {/* Role with typing effect styling */}
+          <h2 className="hero-role animate-fade-in">
+            UX/UI Designer & Frontend Developer
+          </h2>
+          
+          {/* Description */}
+          <p className="hero-description animate-fade-in-delay">
+            เว็บไซต์นี้รวบรวมความตั้งใจของฉันในการออกแบบและพัฒนาเว็บไซต์ 
+            ฉันหลงใหลในการสร้างสรรค์ประสบการณ์ดิจิทัลที่ใช้งานง่ายและมีดีไซน์ที่ทันสมัย 
+            หวังว่าคุณจะสนุกกับการเยี่ยมชมผลงานของฉันนะคะ
+          </p>
 
-          {/* กล่องข้อความต้อนรับ */}
-          <div style={{
-            textAlign: 'left', 
-            width: '100%', 
-            padding: '0 10px',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '20px'
-          }}>
-            
-            {/* English Section */}
-            <div className="msg-en">
-              <h3 style={{fontSize: '1.1rem', color: '#7328ff', marginBottom: '8px'}}>
-                ✉️ Thanks for stopping by!
-              </h3>
-              <p style={{fontSize: '0.95rem', lineHeight: '1.6', color: '#334155'}}>
-               Thank you so much for clicking on this email! 
-               This website showcases my aspirations as a UX/UI 
-               Designer and Frontend Developer. I hope you enjoy 
-               my creations.
-                </p>
-            </div>
-
-            {/* เส้นคั่นบางๆ */}
-            <div style={{width: '100%', height: '1px', background: '#e2e8f0'}}></div>
-
-            {/* Thai Section */}
-            <div className="msg-th">
-              <h3 style={{fontSize: '1.1rem', color: '#7328ff', marginBottom: '8px', fontFamily: "'Poppins', sans-serif"}}>
-                ยินดีต้อนรับนะคะ!
-              </h3>
-              <p style={{fontSize: '0.95rem', lineHeight: '1.6', color: '#334155'}}>
-                ขอบคุณมากๆ ที่กดเข้ามาดูจดหมายฉบับนี้นะคะ 
-                เว็บไซต์นี้รวบรวมความตั้งใจของฉันในการเป็น <b>UX/UI Designer</b> และ <b>Frontend Developer</b> 
-                หวังว่าคุณจะมีความสุขและสนุกกับการเยี่ยมชมผลงานที่ฉันสร้างสรรค์ค่ะ
-              </p>
-            </div>
-
+          {/* Action buttons with hover effects */}
+          <div className="hero-actions animate-fade-in-delay-2">
+            <Link to="/Profile" className="btn-secondary">
+              <span>About Me</span>
+            </Link>
           </div>
 
-          {/* ปุ่ม CTA */}
-          <Link to="/Experience" className="letter-btn" style={{marginTop: 'auto'}}>
-            Explore My Work ➜
-          </Link>
+          {/* Scroll indicator */}
+          <div className="scroll-indicator animate-bounce">
+            <span>↓</span>
+          </div>
         </div>
+      </div>
 
-        {/* ข้อความบอกให้คลิก */}
-        {!isOpen && (
-           <p className="click-hint">Tap to open message 📩</p>
-        )}
-
+      {/* Background decorative elements */}
+      <div className="hero-bg-decoration">
+        <div className="decoration-circle circle-1"></div>
+        <div className="decoration-circle circle-2"></div>
+        <div className="decoration-circle circle-3"></div>
       </div>
     </div>
   );
 };
 
 export default Home;
+
+// Made with Bob

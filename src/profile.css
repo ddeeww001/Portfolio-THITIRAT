@@ -1,0 +1,340 @@
+/* ========================================= */
+/* PROFILE SECTION - UNIFIED THEME */
+/* ========================================= */
+
+.profile-page-wrapper {
+  padding: var(--spacing-xl) 0;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.profile-card-container {
+  display: grid;
+  grid-template-columns: minmax(280px, 350px) 1fr;
+  gap: 0;
+  width: 90%;
+  max-width: 1000px;
+  margin: 0 auto;
+  background: var(--bg-card);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+  border: 1px solid var(--border-subtle);
+  animation: fadeInUp 0.6s ease-out;
+}
+
+/* ========================================= */
+/* SIDEBAR (LEFT) */
+/* ========================================= */
+
+.profile-sidebar {
+  background: var(--bg-secondary);
+  padding: 40px 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  border-right: 1px solid var(--border-subtle);
+}
+
+.profile-pic-wrapper img {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid var(--border-medium);
+  box-shadow: var(--shadow-md);
+  margin-bottom: 20px;
+  transition: transform var(--transition-base);
+}
+
+.profile-pic-wrapper img:hover {
+  transform: scale(1.05);
+  border-color: var(--accent-purple-light);
+}
+
+.profile-name {
+  font-family: var(--font-heading);
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+/* Role Badges */
+.profile-roles {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 30px;
+  width: 100%;
+}
+
+.role-badge {
+  background: var(--primary-gradient);
+  color: var(--text-primary);
+  padding: 6px 18px;
+  border-radius: var(--radius-full);
+  font-size: 0.85rem;
+  font-weight: 500;
+  white-space: nowrap;
+  margin: 0;
+  box-shadow: var(--shadow-glow);
+}
+
+/* Sidebar Sections */
+.sidebar-section {
+  width: 100%;
+  margin-bottom: 30px;
+  text-align: left;
+}
+
+.sidebar-section h3 {
+  font-size: 0.9rem;
+  color: var(--accent-purple-light);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 15px;
+  font-weight: 600;
+  border-bottom: 2px solid var(--border-subtle);
+  padding-bottom: 8px;
+}
+
+/* Contact List */
+.contact-list,
+.social-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  text-align: left;
+  width: 100%;
+}
+
+.contact-list li,
+.social-list li {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  margin-bottom: 15px;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.icon {
+  font-size: 1.2rem;
+}
+
+.contact-list a,
+.social-link {
+  color: var(--text-primary);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color var(--transition-base);
+}
+
+.contact-list a:hover,
+.social-link:hover {
+  color: var(--accent-purple-light);
+}
+
+.social-label {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.social-value {
+  color: var(--text-secondary);
+}
+
+/* ========================================= */
+/* MAIN CONTENT (RIGHT) */
+/* ========================================= */
+
+.profile-content {
+  padding: 40px;
+  background: var(--bg-card);
+}
+
+.content-section {
+  margin-bottom: 40px;
+}
+
+.section-header {
+  font-family: var(--font-heading);
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--accent-purple-light);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 20px;
+  border-bottom: 2px solid var(--border-subtle);
+  padding-bottom: 10px;
+  position: relative;
+}
+
+.section-header::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 60px;
+  height: 2px;
+  background: var(--primary-gradient);
+}
+
+.introduce-text {
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  text-align: left;
+}
+
+/* Skills Grid */
+.skills-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.skill-tag {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-medium);
+  padding: 8px 18px;
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  font-family: var(--font-body);
+  transition: all var(--transition-base);
+}
+
+.skill-tag:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--accent-purple-light);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Language List */
+.language-list {
+  list-style: none;
+  padding: 0;
+  text-align: left;
+}
+
+.lang-item {
+  font-family: var(--font-body);
+  line-height: 1.6;
+  margin-bottom: 15px;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.lang-name {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.lang-dot {
+  color: var(--accent-purple-light);
+}
+
+.lang-level {
+  color: var(--text-muted);
+}
+
+/* Certification List */
+.cert-list {
+  list-style: none;
+  padding: 0;
+  text-align: left;
+}
+
+.cert-item {
+  font-family: var(--font-body);
+  line-height: 1.6;
+  margin-bottom: 15px;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.cert-icon {
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+/* ========================================= */
+/* ANIMATIONS */
+/* ========================================= */
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ========================================= */
+/* RESPONSIVE DESIGN */
+/* ========================================= */
+
+@media (max-width: 900px) {
+  .profile-card-container {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-sidebar {
+    padding: 30px 20px;
+    border-right: none;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  .profile-content {
+    padding: 30px 20px;
+  }
+
+  .introduce-text {
+    text-align: center;
+  }
+
+  .skills-grid {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 600px) {
+  .profile-card-container {
+    width: 95%;
+  }
+
+  .profile-name {
+    font-size: 1.5rem;
+  }
+
+  .section-header {
+    font-size: 1.1rem;
+  }
+
+  .profile-pic-wrapper img {
+    width: 140px;
+    height: 140px;
+  }
+}
+
+/* Made with Bob */
