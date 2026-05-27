@@ -17,7 +17,7 @@ export interface ProjectData {
 }
 
 export const projectsDatabase: ProjectData[] = [
-  {
+ /* {
     id: 8,
     title: "MY PROJECT DESIGN WEBSITE",
     date: "NOW",
@@ -30,7 +30,7 @@ export const projectsDatabase: ProjectData[] = [
       }
     ],
     tags: ["Design", "Frontend", "UX/UI"]
-  },
+  },*/
   {
     id: 7,
     title: "HACKATHON : ETHChaingmai",
