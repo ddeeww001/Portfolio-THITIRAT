@@ -97,7 +97,6 @@ export const projectsDatabase: ProjectData[] = [
       "Developed a Point of Sale (POS) and Accounting system for Ban Mae Hoi Ngoen School."
     ],
     link: [
-      { label: "Medium Article", url: "https://medium.com/@dewthitirat/journey-of-my-project-โปรเจคแรกกับ-smart-accountingand-management-9cb386688094" },
       { label: "Project Link", url: "https://www.canva.com/design/DAG-RdyzwBM/DpWwYhyVe11hhewbgSG1Aw/view" }
     ],
     tags: ["Frontend", "UX/UI"],
