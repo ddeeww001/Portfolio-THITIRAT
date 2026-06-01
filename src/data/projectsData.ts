@@ -1,4 +1,5 @@
-﻿// src/data/projectsData.ts
+﻿
+// src/data/projectsData.ts
 // Centralized database for all project information
 
 export interface LinkItem {
@@ -25,6 +26,27 @@ export interface ProjectData {
 }
 
 export const projectsDatabase: ProjectData[] = [
+  {
+    id: 8,
+    title: "AI HACKATHON : BobInsight (IBM Bob Hackathon)",
+    date: "2024",
+    role: ["Frontend Developer", "UX/UI Designer"],
+    details: [
+      "Developed an AI-driven insight platform to simplify complex data visualization.",
+      "Collaborated in a team to integrate IBM AI technologies into a seamless user experience."
+    ],
+    link: [
+      { label: "Project Link", url: "https://lablab.ai/ai-hackathons/ibm-bob-hackathon/uia/bobinsight" },
+      { label: "GitHub Repository", url: "https://github.com/Pinont/UIA-LABLAB" }
+    ],
+    tags: ["Frontend", "UX/UI"],
+    caseStudy: {
+      problem: "การทำความเข้าใจข้อมูล (Data Insights) จำนวนมากเป็นเรื่องยากและใช้เวลานานสำหรับผู้ใช้งานทั่วไป",
+      solution: "สร้าง Platform ที่ใช้ AI ช่วยวิเคราะห์และสรุปข้อมูลออกมาเป็น Visual ที่เข้าใจง่ายและโต้ตอบได้",
+      toolsUsed: "React สำหรับ Frontend และ IBM AI Services สำหรับการประมวลผลข้อมูล",
+      learning: "ได้เรียนรู้การทำงานร่วมกับเทคโนโลยี AI ของ IBM และการออกแบบ Dashboard ที่ต้องรองรับการแสดงผลข้อมูลแบบ Dynamic"
+    }
+  },
   {
     id: 7,
     title: "HACKATHON : ETHChaingmai",
@@ -67,24 +89,23 @@ export const projectsDatabase: ProjectData[] = [
   },
   {
     id: 3,
-    title: "SMART ACCOUNTING AND MANAGEMENT",
+    title: "GROUP PROJECT : SMART ACCOUNTING AND MANAGEMENT",
     date: "27 / 8 / 2025",
     role: "Frontend developer, UX/UI Designer",
     details: [
-      "Designed the user interface for product selection and customized dashboards."
+      "Designed the user interface for product selection and customized dashboards.",
+      "Developed a Point of Sale (POS) and Accounting system for Ban Mae Hoi Ngoen School."
     ],
     link: [
-      {
-        label: "Project Link",
-        url: "https://www.canva.com/design/DAG-RdyzwBM/DpWwYhyVe11hhewbgSG1Aw/view"
-      }
+      { label: "Medium Article", url: "https://medium.com/@dewthitirat/journey-of-my-project-โปรเจคแรกกับ-smart-accountingand-management-9cb386688094" },
+      { label: "Project Link", url: "https://www.canva.com/design/DAG-RdyzwBM/DpWwYhyVe11hhewbgSG1Aw/view" }
     ],
     tags: ["Frontend", "UX/UI"],
     caseStudy: {
-      problem: "เจ้าของธุรกิจขนาดเล็กจัดการสต็อกสินค้าและบัญชีได้ยากเนื่องจาก UI ซับซ้อนเกินไป",
-      solution: "สร้าง Dashboard ที่เน้นความเรียบง่าย แสดงสถานะสินค้าด้วยสีที่ชัดเจน (Red/Green) เพื่อการตัดสินใจที่รวดเร็ว",
-      toolsUsed: "React สำหรับระบบที่ตอบสนองไว และ CSS Variables สำหรับการทำธีมที่สะอาดตา",
-      learning: "ได้ฝึกทักษะการออกแบบ Dashboard ที่เน้นการใช้งานจริง (Usability) มากกว่าความสวยงามเพียงอย่างเดียว"
+      problem: "โรงเรียนบ้านแม่ฮ้อยเงินประสบปัญหาการจัดการบัญชีและสต็อกสินค้าที่ล่าช้าเนื่องจากใช้ระบบกระดาษ (Manual)",
+      solution: "พัฒนาเว็บแอปพลิเคชัน POS และระบบจัดการบัญชีที่มี UI เรียบง่าย เน้นการตัดสต็อกอัตโนมัติและการออกรายงานที่แม่นยำ",
+      toolsUsed: "HTML, CSS, JavaScript และการออกแบบ User Flow ผ่าน Figma เพื่อความง่ายในการใช้งาน",
+      learning: "เรียนรู้กระบวนการพัฒนาซอฟต์แวร์เพื่อแก้ปัญหาในชีวิตจริง (Real-world system development) และการทำงานร่วมกับลูกค้ากลุ่มโรงเรียน"
     }
   },
   {
@@ -110,3 +131,4 @@ export const projectsDatabase: ProjectData[] = [
 
 export const getAllProjects = (): ProjectData[] => projectsDatabase;
 export const getProjectById = (id: number): ProjectData | undefined => projectsDatabase.find(p => p.id === id);
+

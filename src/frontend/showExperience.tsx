@@ -6,8 +6,8 @@ import '../experience.css';
 function ShowExperience() {
   const [filter, setFilter] = useState('All');
   
-  // Extract unique tags
-  const allTags = ['All', ...new Set(projectsDatabase.flatMap(p => p.tags))];
+  // Hardcoded tags as per user request
+  const allTags = ['All', 'Frontend', 'UX/UI', 'Design'];
 
   const filteredProjects = filter === 'All' 
     ? projectsDatabase 
