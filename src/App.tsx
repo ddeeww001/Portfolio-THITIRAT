@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+﻿import { useEffect, useState } from 'react';
 import './App.css';
 import './variables.css';
 import './navbar.css';
@@ -10,11 +10,20 @@ import Experience from './frontend/showExperience';
 import { Profile, myDetailsData } from './frontend/Personal';
 import profileImg from './picture/profile.jpg';
 
-// Smooth scroll navigation
+// Smooth scroll navigation with offset
 const scrollToSection = (sectionId: string) => {
   const element = document.getElementById(sectionId);
   if (element) {
-    element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    const offset = 80; 
+    const bodyRect = document.body.getBoundingClientRect().top;
+    const elementRect = element.getBoundingClientRect().top;
+    const elementPosition = elementRect - bodyRect;
+    const offsetPosition = elementPosition - offset;
+
+    window.scrollTo({
+      top: offsetPosition,
+      behavior: 'smooth'
+    });
   }
 };
 
@@ -24,7 +33,7 @@ const Navbar = () => {
   useEffect(() => {
     const handleScroll = () => {
       const sections = ['home', 'experience', 'profile'];
-      const scrollPosition = window.scrollY + 100;
+      const scrollPosition = window.scrollY + 120;
 
       for (const section of sections) {
         const element = document.getElementById(section);
@@ -32,13 +41,12 @@ const Navbar = () => {
           const { offsetTop, offsetHeight } = element;
           if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
             setActiveSection(section);
-            break;
           }
         }
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -49,22 +57,22 @@ const Navbar = () => {
           onClick={() => scrollToSection('home')}
           className={activeSection === 'home' ? 'active' : ''}
         >
-          Home
+          <i className="bi bi-house-door"></i> Home
         </button>
         <button
           onClick={() => scrollToSection('experience')}
           className={activeSection === 'experience' ? 'active' : ''}
         >
-          Experience
+          <i className="bi bi-briefcase"></i> Experience
         </button>
         <button
           onClick={() => scrollToSection('profile')}
           className={activeSection === 'profile' ? 'active' : ''}
         >
-          Profile
+          <i className="bi bi-person"></i> Profile
         </button>
         <button onClick={() => scrollToSection('home')} className="profile-btn">
-          <img alt="ddeeww_o_o" src={profileImg} className="navbar-profile-pic" />
+          <img alt="profile" src={profileImg} className="navbar-profile-pic" />
         </button>
       </nav>
     </div>
@@ -83,21 +91,17 @@ const HeroSection = () => {
     <section id="home" className="section hero-section">
       <div className={`hero-glass-card ${isVisible ? 'fade-in' : ''}`}>
         <div className="hero-content">
-          <p className="greeting animate-slide-down">👋 Welcome to my portfolio</p>
-          <h1 className="hero-name animate-slide-up">THITIRAT SIRISAWAD</h1>
-          <h2 className="hero-role animate-fade-in">UX/UI Designer & Frontend Developer</h2>
-          <p className="hero-description animate-fade-in-delay">
-            เว็บไซต์นี้รวบรวมความตั้งใจของฉันในการออกแบบและพัฒนาเว็บไซต์
-            ฉันหลงใหลในการสร้างสรรค์ประสบการณ์ดิจิทัลที่ใช้งานง่ายและมีดีไซน์ที่ทันสมัย
-            หวังว่าคุณจะสนุกกับการเยี่ยมชมผลงานของฉันนะคะ
+          <p className="greeting animate-slide-down">
+             WELCOME TO MY PORTFOLIO
           </p>
-          <div className="hero-actions animate-fade-in-delay-2">
-            <button onClick={() => scrollToSection('profile')} className="btn-primary">
-              <span>About Me</span>
-            </button>
-          </div>
-          <div className="scroll-indicator animate-bounce" onClick={() => scrollToSection('experience')}>
-            <span>↓</span>
+          <h1 className="hero-title animate-slide-up">
+            THITIRAT SIRISAWAD
+          </h1>
+          <p className="hero-subtitle animate-fade-in">
+            UX/UI Designer & Frontend Developer
+          </p>
+          <div className="hero-scroll-indicator">
+            <i className="bi bi-chevron-double-down"></i>
           </div>
         </div>
       </div>
@@ -114,29 +118,29 @@ function App() {
   return (
     <div className="app-container">
       <Navbar />
-      
-      {/* Single scrollable page with all sections */}
+
       <main className="main-content">
         <HeroSection />
-        
+
         <section id="experience" className="section experience-section">
           <Experience />
         </section>
-        
+
         <section id="profile" className="section profile-section">
           <Profile data={myDetailsData} />
         </section>
       </main>
 
-      {/* Footer */}
       <footer className="footer">
         <div className="footer-content">
           <p>© 2026 THITIRAT SIRISAWAD. All rights reserved.</p>
           <div className="footer-links">
             <a href="https://github.com/ddeeww001" target="_blank" rel="noreferrer">
-              GitHub
+              <i className="bi bi-github"></i> GitHub
             </a>
-            <a href="mailto:dewthitirat@gmail.com">Email</a>
+            <a href="mailto:dewthitirat@gmail.com">
+              <i className="bi bi-envelope"></i> Email
+            </a>
           </div>
         </div>
       </footer>
@@ -145,5 +149,3 @@ function App() {
 }
 
 export default App;
-
-// Made with Bob

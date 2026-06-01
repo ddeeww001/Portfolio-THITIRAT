@@ -1,14 +1,13 @@
-// Experience.tsx
-// Import types from centralized database
+﻿// Experience.tsx
 import { type ProjectData, type LinkItem } from '../data/projectsData';
 import { useState } from 'react';
 
-// Re-export for backward compatibility
 export type { ProjectData, LinkItem };
 
 export const ProjectCart = ({ data }: { data: ProjectData }) => {
   const [imageLoaded, setImageLoaded] = useState<{ [key: string]: boolean }>({});
   const [imageError, setImageError] = useState<{ [key: string]: boolean }>({});
+  const [showCaseStudy, setShowCaseStudy] = useState(false);
 
   const handleImageLoad = (url: string) => {
     setImageLoaded(prev => ({ ...prev, [url]: true }));
@@ -17,10 +16,10 @@ export const ProjectCart = ({ data }: { data: ProjectData }) => {
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>, url: string) => {
     const target = e.currentTarget;
     setImageError(prev => ({ ...prev, [url]: true }));
-    
     target.style.objectFit = "contain";
     target.style.padding = "20px";
-    
+    target.style.backgroundColor = "var(--bg-secondary)";
+
     if (url.includes('drive.google')) {
       target.src = "https://upload.wikimedia.org/wikipedia/commons/d/da/Google_Drive_logo.png";
     } else if (url.includes('notion')) {
@@ -35,83 +34,88 @@ export const ProjectCart = ({ data }: { data: ProjectData }) => {
   };
 
   return (
-    <div className="title">
-      {/* Project Header */}
+    <div className="project-card-container">
       <div className="project-header">
-        <h2>{data.title}</h2>
-        <h3 className="project-date">{data.date}</h3>
-        <h3 className="project-role">
-          {Array.isArray(data.role) ? data.role.join(' • ') : data.role}
-        </h3>
+        <div className="header-main">
+          <h2>{data.title}</h2>
+          <span className="project-date"><i className="bi bi-calendar3"></i> {data.date}</span>
+        </div>
+        <div className="project-tags">
+          {data.tags.map((tag, i) => (
+            <span key={i} className="tag-pill"><i className="bi bi-hash"></i>{tag}</span>
+          ))}
+        </div>
+        <div className="project-role">
+          <i className="bi bi-person-badge"></i> {Array.isArray(data.role) ? data.role.join(' | ') : data.role}
+        </div>
       </div>
 
-      {/* Project Details */}
-      {data.details && data.details.length > 0 && (
-        <div className="details">
-          <ul>
-            {data.details.map((detail, index) => (
-              <li className="project-grid" key={index}>
-                {detail}
-              </li>
-            ))}
-          </ul>
+      <div className="project-details">
+        <ul>
+          {data.details.map((detail, index) => (
+            <li key={index}>{detail}</li>
+          ))}
+        </ul>
+      </div>
+
+      {data.caseStudy && (
+        <div className="case-study-section">
+          <button 
+            className="toggle-case-study"
+            onClick={() => setShowCaseStudy(!showCaseStudy)}
+          >
+            <i className={`bi ${showCaseStudy ? 'bi-dash-circle' : 'bi-plus-circle'}`}></i>
+            {showCaseStudy ? " Close Case Study" : " View Case Study & Storytelling"}
+          </button>
+          
+          {showCaseStudy && (
+            <div className="case-study-content animate-fade-in">
+              <div className="case-grid">
+                <div className="case-item">
+                  <h4><i className="bi bi-exclamation-octagon text-danger"></i> Problem</h4>
+                  <p>{data.caseStudy.problem}</p>
+                </div>
+                <div className="case-item">
+                  <h4><i className="bi bi-check2-circle text-success"></i> Solution</h4>
+                  <p>{data.caseStudy.solution}</p>
+                </div>
+                <div className="case-item">
+                  <h4><i className="bi bi-tools"></i> Tools Used</h4>
+                  <p>{data.caseStudy.toolsUsed}</p>
+                </div>
+                <div className="case-item">
+                  <h4><i className="bi bi-lightbulb"></i> What I Learned</h4>
+                  <p>{data.caseStudy.learning}</p>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       )}
 
-      {/* Project Links with Preview */}
-      <div className="link-preview">
+      <div className="project-links-grid">
         {data.link.map((item, index) => (
-          <a 
-            key={index} 
-            href={item.url} 
-            target="_blank" 
-            rel="noreferrer"
-            className="preview-link"
-          >
+          <a key={index} href={item.url} target="_blank" rel="noreferrer" className="project-link-item">
             <div className="preview-card">
-              {/* Loading skeleton */}
               {!imageLoaded[item.url] && !imageError[item.url] && (
-                <div className="image-skeleton">
-                  <div className="skeleton-shimmer"></div>
-                </div>
+                <div className="image-skeleton"><div className="skeleton-shimmer"></div></div>
               )}
-              
-              {/* Actual image */}
               <img
                 src={`https://api.microlink.io/?url=${encodeURIComponent(item.url)}&screenshot=true&embed=screenshot.url`}
                 alt={item.label}
-                style={{ 
-                  width: "100%", 
-                  height: "180px", 
-                  objectFit: "cover", 
-                  display: imageLoaded[item.url] || imageError[item.url] ? "block" : "none"
-                }}
+                className={`preview-image ${imageLoaded[item.url] ? 'loaded' : ''}`}
                 onLoad={() => handleImageLoad(item.url)}
                 onError={(e) => handleImageError(e, item.url)}
+                loading="lazy"
               />
-              
-              {/* Link label with icon */}
-              <div className="url-name">
-                <span>{item.label}</span>
-                <span className="link-icon">🔗</span>
+              <div className="link-info">
+                <span className="link-label">{item.label}</span>
+                <i className="bi bi-box-arrow-up-right"></i>
               </div>
             </div>
           </a>
         ))}
       </div>
-
-      {/* Tags if available */}
-      {data.tags && data.tags.length > 0 && (
-        <div className="project-tags">
-          {data.tags.map((tag, index) => (
-            <span key={index} className="tag">
-              {tag}
-            </span>
-          ))}
-        </div>
-      )}
     </div>
   );
 };
-
-// Made with Bob
