@@ -1,7 +1,14 @@
+<<<<<<< HEAD
 ﻿import { useState } from 'react';
 import { projectsDatabase, type ProjectData } from '../data/projectsData'; 
 import { ProjectCart } from './Experience'; 
 import '../experience.css';
+=======
+// showExperience.tsx
+import projectsData from './projects.json'; // 1. ดึงข้อมูล Data มา
+import { ProjectCart,type ProjectData } from './Experience.tsx'; // 2. ดึงแม่พิมพ์ Component มา
+import '../experience.css'; // สมมติว่าคุณมีไฟล์ CSS สำหรับตกแต่ง
+>>>>>>> parent of e356d4d (docs(Portfolio_01): restructure project with centralized data management and unified dark theme)
 
 function ShowExperience() {
   const [filter, setFilter] = useState('All');
@@ -30,6 +37,7 @@ function ShowExperience() {
         </div>
       </section>
 
+<<<<<<< HEAD
       <div className="projects-list">
         {filteredProjects.map((project: ProjectData) => (
           <section className="snap-section project-slide" key={project.id}>
@@ -37,6 +45,14 @@ function ShowExperience() {
           </section>
         ))}
       </div>
+=======
+      {/* 3. วนลูปข้อมูลจาก JSON แล้วส่งผ่าน Props (data) ไปให้ ProjectCart */}
+      {projectsData.map((project: ProjectData) => (
+        <section className="snap-section project-slide" key={project.id}>
+          <ProjectCart data={project} />
+        </section>
+      ))}
+>>>>>>> parent of e356d4d (docs(Portfolio_01): restructure project with centralized data management and unified dark theme)
     </div>
   );
 }

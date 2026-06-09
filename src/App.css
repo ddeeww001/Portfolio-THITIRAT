@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿/* ========================================= */
 /* UNIFIED SINGLE-PAGE LAYOUT */
 /* ========================================= */
@@ -61,19 +62,29 @@
 
 .footer-content {
   max-width: 1200px;
+=======
+#root {
+  max-width: 1280px;
+>>>>>>> parent of e356d4d (docs(Portfolio_01): restructure project with centralized data management and unified dark theme)
   margin: 0 auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: var(--spacing-md);
+  padding: 2rem;
+  text-align: center;
 }
 
-.footer-content p {
-  color: var(--text-secondary);
-  font-size: 0.9rem;
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
 }
 
+<<<<<<< HEAD
 .footer-links {
   display: flex;
   gap: var(--spacing-md);
@@ -100,22 +111,33 @@
   .section {
     padding: var(--spacing-xl) var(--spacing-sm);
     min-height: auto;
+=======
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+>>>>>>> parent of e356d4d (docs(Portfolio_01): restructure project with centralized data management and unified dark theme)
   }
-
-  .hero-section {
-    min-height: 100vh;
-  }
-
-  .footer-content {
-    flex-direction: column;
-    text-align: center;
-  }
-
-  .footer-links {
-    justify-content: center;
+  to {
+    transform: rotate(360deg);
   }
 }
 
+<<<<<<< HEAD
 html {
   scroll-padding-top: 80px;
 }
+=======
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
+>>>>>>> parent of e356d4d (docs(Portfolio_01): restructure project with centralized data management and unified dark theme)
