@@ -15,7 +15,7 @@ const Home = () => {
         <div className="hero-content">
           {/* Animated greeting */}
           <p className="greeting animate-slide-down">
-            👋 Welcome to my portfolio
+            <i className="bi bi-hand-wave"></i> Welcome to my portfolio
           </p>
           
           {/* Name with gradient animation */}
@@ -44,7 +44,7 @@ const Home = () => {
 
           {/* Scroll indicator */}
           <div className="scroll-indicator animate-bounce">
-            <span>↓</span>
+            <i className="bi bi-arrow-down"></i>
           </div>
         </div>
       </div>

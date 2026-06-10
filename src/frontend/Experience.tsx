@@ -93,7 +93,7 @@ export const ProjectCart = ({ data }: { data: ProjectData }) => {
               {/* Link label with icon */}
               <div className="url-name">
                 <span>{item.label}</span>
-                <span className="link-icon">🔗</span>
+                <i className="bi bi-link-45deg link-icon"></i>
               </div>
             </div>
           </a>

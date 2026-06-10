@@ -124,8 +124,13 @@
   gap: 10px;
 }
 
-.icon {
-  font-size: 1.2rem;
+.icon, .cert-icon {
+  font-size: 1.1rem;
+  color: var(--accent-purple-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
 }
 
 .contact-list a,
@@ -267,11 +272,6 @@
   display: flex;
   align-items: flex-start;
   gap: 10px;
-}
-
-.cert-icon {
-  font-size: 1.2rem;
-  flex-shrink: 0;
 }
 
 /* ========================================= */

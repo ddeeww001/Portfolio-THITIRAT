@@ -91,7 +91,9 @@ const HeroSection = () => {
     <section id="home" className="section hero-section">
       <div className={`hero-glass-card ${isVisible ? 'fade-in' : ''}`}>
         <div className="hero-content">
-          <p className="greeting animate-slide-down">👋 Welcome to my portfolio</p>
+          <p className="greeting animate-slide-down">
+            <i className="bi bi-hand-wave"></i> Welcome to my portfolio
+          </p>
           <h1 className="hero-name animate-slide-up">THITIRAT SIRISAWAD</h1>
           <h2 className="hero-role animate-fade-in">UX/UI Designer & Frontend Developer</h2>
           <p className="hero-description animate-fade-in-delay">
@@ -105,7 +107,7 @@ const HeroSection = () => {
             </button>
           </div>
           <div className="scroll-indicator animate-bounce" onClick={() => scrollToSection('experience')}>
-            <span>↓</span>
+            <i className="bi bi-arrow-down"></i>
           </div>
         </div>
       </div>

@@ -30,15 +30,15 @@ export const Profile = ({ data }: { data: ProfileData }) => {
             <h3>CONTACT INFO</h3>
             <ul className="contact-list">
               <li>
-                <span className="icon">📧</span>
+                <i className="bi bi-envelope-fill icon"></i>
                 <a href={`mailto:${data.email}`}>{data.email}</a>
               </li>
               <li>
-                <span className="icon">📞</span>
+                <i className="bi bi-telephone-fill icon"></i>
                 <span>{data.phone}</span>
               </li>
               <li>
-                <span className="icon">🎂</span>
+                <i className="bi bi-cake2-fill icon"></i>
                 <span>{data.birthday}</span>
               </li>
             </ul>
@@ -52,7 +52,7 @@ export const Profile = ({ data }: { data: ProfileData }) => {
                   <span className="social-label">{item.label}:</span> 
                   {item.link ? (
                     <a href={item.link} target="_blank" rel="noreferrer" className="social-link">
-                      {item.value} ↗
+                      {item.value} <i className="bi bi-box-arrow-up-right"></i>
                     </a>
                   ) : (
                     <span className="social-value">{item.value}</span>
@@ -116,7 +116,7 @@ export const Profile = ({ data }: { data: ProfileData }) => {
             <ul className="cert-list">
               {data.certifications.map((cert, index) => (
                 <li key={index} className="cert-item">
-                  <span className="cert-icon">📜</span>
+                  <i className="bi bi-patch-check-fill cert-icon"></i>
                   <span>{cert}</span>
                 </li>
               ))}
