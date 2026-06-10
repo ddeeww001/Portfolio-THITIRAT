@@ -1,5 +1,4 @@
-<<<<<<< HEAD
-﻿/* ========================================= */
+/* ========================================= */
 /* UNIFIED SINGLE-PAGE LAYOUT */
 /* ========================================= */
 
@@ -7,10 +6,6 @@
   width: 100%;
   min-height: 100vh;
   background: var(--bg-main);
-  background-image: 
-    radial-gradient(circle at 0% 0%, rgba(113, 41, 237, 0.05) 0%, transparent 50%),
-    radial-gradient(circle at 100% 100%, rgba(23, 71, 192, 0.05) 0%, transparent 50%);
-  background-attachment: fixed;
   position: relative;
 }
 
@@ -32,19 +27,27 @@
   justify-content: center;
   padding: var(--spacing-2xl) var(--spacing-md);
   position: relative;
-  /* Remove section-specific backgrounds to show unified background */
-  background: transparent !important;
 }
 
-/* Hero Section specific tweaks */
+/* Hero Section */
 .hero-section {
+  background: var(--bg-main);
   position: relative;
   overflow: hidden;
 }
 
-/* Experience & Profile Section adjustments */
-.experience-section, .profile-section {
+/* Experience Section */
+.experience-section {
+  background: var(--bg-secondary);
   padding-top: 100px;
+  min-height: auto;
+}
+
+/* Profile Section */
+.profile-section {
+  background: var(--bg-main);
+  padding-top: 100px;
+  padding-bottom: 100px;
   min-height: auto;
 }
 
@@ -53,8 +56,7 @@
 /* ========================================= */
 
 .footer {
-  background: rgba(10, 10, 15, 0.8);
-  backdrop-filter: blur(10px);
+  background: var(--bg-secondary);
   border-top: 1px solid var(--border-subtle);
   padding: var(--spacing-lg) var(--spacing-md);
   width: 100%;
@@ -62,29 +64,19 @@
 
 .footer-content {
   max-width: 1200px;
-=======
-#root {
-  max-width: 1280px;
->>>>>>> parent of e356d4d (docs(Portfolio_01): restructure project with centralized data management and unified dark theme)
   margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--spacing-md);
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.footer-content p {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
 }
 
-<<<<<<< HEAD
 .footer-links {
   display: flex;
   gap: var(--spacing-md);
@@ -94,9 +86,6 @@
   color: var(--text-secondary);
   font-size: 0.9rem;
   transition: color var(--transition-base);
-  display: flex;
-  align-items: center;
-  gap: 6px;
 }
 
 .footer-links a:hover {
@@ -111,33 +100,28 @@
   .section {
     padding: var(--spacing-xl) var(--spacing-sm);
     min-height: auto;
-=======
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
->>>>>>> parent of e356d4d (docs(Portfolio_01): restructure project with centralized data management and unified dark theme)
   }
-  to {
-    transform: rotate(360deg);
+
+  .hero-section {
+    min-height: 100vh;
+  }
+
+  .footer-content {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .footer-links {
+    justify-content: center;
   }
 }
 
-<<<<<<< HEAD
+/* ========================================= */
+/* SMOOTH SCROLL PADDING */
+/* ========================================= */
+
 html {
   scroll-padding-top: 80px;
 }
-=======
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
 
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
-}
->>>>>>> parent of e356d4d (docs(Portfolio_01): restructure project with centralized data management and unified dark theme)
+/* Made with Bob */

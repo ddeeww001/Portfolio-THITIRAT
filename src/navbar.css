@@ -1,104 +1,122 @@
-/* src/navbar.css */
+/* ========================================= */
+/* UNIFIED THEME NAVBAR */
+/* ========================================= */
 
 .navbar {
   position: fixed;
   top: 20px;
   left: 50%;
   transform: translateX(-50%);
-  
-  /* Layout & Spacing */
+
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 8px 30px;
-  border-radius: 100px;
-  
-  /* Glass Effect */
-  background: rgba(255, 255, 255, 0.6);
+  padding: 10px 20px;
+  border-radius: var(--radius-full);
+
+  /* Glass Effect with Theme Colors */
+  background: var(--glass-bg);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.8);
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-md);
+
   z-index: 1000;
+  width: 90%;
+  max-width: 600px;
 }
 
 .navbar nav {
   display: flex;
   align-items: center;
-  gap: 35px; /* ระยะห่างช่องไฟที่พอดี */
+  gap: 8px;
+  width: 100%;
+  justify-content: center;
 }
 
-.navbar a {
-  text-decoration: none;
+.navbar button {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
   font-family: var(--font-heading);
   font-size: 0.95rem;
   font-weight: 500;
-  color: var(--text-primary); /* สีดำตามที่คุณต้องการ */
-  transition: all 0.3s ease;
-}
-
-.navbar a:hover {
-  color: var(--accent-color);
-}
-
-/* === รูปโปรไฟล์วงกลมเล็กๆ === */
-.navbar-profile-pic {
-  width: 38px;  /* ขนาดเล็กกระทัดรัด พอดีกับ Navbar */
-  height: 38px;
-  border-radius: 50%; /* ทำให้เป็นวงกลมสมบูรณ์ */
-  object-fit: cover; /* กันรูปเบี้ยว */
-  border: 2px solid var(--bg-card);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  margin-left: 15px;
+  padding: 8px 20px;
+  border-radius: var(--radius-full);
   cursor: pointer;
-  transition: transform 0.3s ease;
+  transition: all var(--transition-base);
+  white-space: nowrap;
 }
 
-.navbar-profile-pic:hover {
-  transform: scale(1.1);
+.navbar button:hover {
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.05);
 }
 
-/* นำไปวางทับคลาส .navbar และเพิ่ม @media ลงไปด้านล่างสุดของไฟล์ navbar.css */
-
-.navbar {
-  position: fixed;
-  top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  
-  /* แก้ตรงนี้: ใช้ความกว้างยืดหยุ่น */
-  width: 90%; 
-  max-width: 600px; /* ไม่ให้ยาวเกินไปบนจอใหญ่ */
-  
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 10px 25px;
-  border-radius: 100px;
-  
-  background: rgba(255, 255, 255, 0.6);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.8);
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
-  z-index: 1000;
+.navbar button.active {
+  color: var(--text-primary);
+  background: var(--primary-gradient);
+  box-shadow: var(--shadow-glow);
 }
 
-/* เพิ่มโค้ดนี้เพื่อจัดการหน้าจอมือถือ (จอเล็กกว่า 600px) */
+/* Profile Button */
+.navbar button.profile-btn {
+  padding: 4px;
+  margin-left: 8px;
+  background: transparent;
+  border: 2px solid var(--border-subtle);
+  border-radius: 50%;
+  transition: all var(--transition-base);
+}
+
+.navbar button.profile-btn:hover {
+  border-color: var(--accent-purple-light);
+  transform: scale(1.05);
+  box-shadow: var(--shadow-glow);
+}
+
+.navbar-profile-pic {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ========================================= */
+/* RESPONSIVE */
+/* ========================================= */
+
 @media (max-width: 600px) {
   .navbar {
     width: 95%;
-    padding: 8px 15px;
+    padding: 8px 12px;
   }
+
   .navbar nav {
-    gap: 15px; /* ลดระยะห่างเมนูไม่ให้เบียดกัน */
+    gap: 4px;
   }
-  .navbar a {
-    font-size: 0.85rem; /* เล็กลงนิดนึงให้อ่านพอดี */
+
+  .navbar button {
+    font-size: 0.85rem;
+    padding: 6px 14px;
   }
+
   .navbar-profile-pic {
     width: 32px;
     height: 32px;
-    margin-left: 5px;
+  }
+
+  .navbar button.profile-btn {
+    margin-left: 4px;
   }
 }
+
+@media (max-width: 400px) {
+  .navbar button {
+    font-size: 0.8rem;
+    padding: 6px 10px;
+  }
+}
+
+/* Made with Bob */

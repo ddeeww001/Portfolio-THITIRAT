@@ -1,38 +1,29 @@
-<<<<<<< HEAD
-﻿/* ========================================= */
+/* ========================================= */
 /* EXPERIENCE SECTION - UNIFIED THEME */
 /* ========================================= */
-=======
-/* =================================================================== */
-/* VERCEL MARKETPLACE STYLE - EXPERIENCE PAGE */
-/* =================================================================== */
->>>>>>> parent of e356d4d (docs(Portfolio_01): restructure project with centralized data management and unified dark theme)
 
 .experience-presentation-wrapper {
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 120px;
-  padding-bottom: 80px;
-  font-family: 'Inter', sans-serif; /* Vercel เน้นฟอนต์เรียบๆ ไม่มีหัว */
+  padding: var(--spacing-xl) var(--spacing-md);
+  font-family: var(--font-body);
 }
 
-<<<<<<< HEAD
-.experience-header-section {
-  text-align: center;
-  margin-bottom: 50px;
-}
-
-.experience-header-section h1 {
+/* Main heading */
+.experience-presentation-wrapper h1 {
   color: var(--text-primary);
   font-size: 2.5rem;
   font-weight: 700;
-  margin-bottom: 30px;
+  letter-spacing: -0.05em;
+  margin-bottom: 60px;
+  text-align: center;
+  animation: fadeInDown 0.6s ease-out;
   position: relative;
 }
 
-.experience-header-section h1::after {
+.experience-presentation-wrapper h1::after {
   content: '';
   position: absolute;
   bottom: -10px;
@@ -45,178 +36,97 @@
 }
 
 /* ========================================= */
-/* FILTER BUTTONS */
-/* ========================================= */
-
-.filter-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 12px;
-  margin-top: 20px;
-}
-
-.filter-btn {
-  background: var(--bg-card);
-  border: 1px solid var(--border-subtle);
-  color: var(--text-secondary);
-  padding: 8px 20px;
-  border-radius: var(--radius-full);
-  cursor: pointer;
-  transition: all var(--transition-base);
-  font-weight: 500;
-}
-
-.filter-btn:hover {
-  border-color: var(--accent-purple-light);
-  color: var(--text-primary);
-}
-
-.filter-btn.active {
-  background: var(--primary-gradient);
-  color: var(--text-primary);
-  border-color: transparent;
-  box-shadow: var(--shadow-glow);
-}
-
-/* ========================================= */
 /* PROJECT CARD */
 /* ========================================= */
 
-.projects-list {
-  width: 100%;
-  max-width: 1100px;
-  display: flex;
-  flex-direction: column;
-  gap: 60px;
-}
-
 .snap-section.project-slide {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto 40px auto;
   background: var(--bg-card);
   border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-md);
   padding: 40px;
   transition: all var(--transition-base);
   box-shadow: var(--shadow-sm);
+  position: relative;
+  animation: fadeInUp 0.6s ease-out backwards;
+}
+
+.snap-section.project-slide:nth-child(2) {
+  animation-delay: 0.1s;
+}
+
+.snap-section.project-slide:nth-child(3) {
+  animation-delay: 0.2s;
+}
+
+.snap-section.project-slide:nth-child(4) {
+  animation-delay: 0.3s;
+}
+
+.snap-section.project-slide:nth-child(5) {
+  animation-delay: 0.4s;
 }
 
 .snap-section.project-slide:hover {
   border-color: var(--border-medium);
   transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
   background: var(--bg-card-hover);
-  box-shadow: var(--shadow-lg);
 }
 
-/* Updated Grid: 60% Text, 40% Image */
-.project-card-container {
-  display: grid;
-  grid-template-columns: 1.2fr 0.8fr;
-=======
-/* หัวข้อหลัก */
-.experience-presentation-wrapper h1 {
-  color: #ffffff;
-  font-size: 2.5rem;
-  font-weight: 700;
-  letter-spacing: -0.05em; /* บีบตัวอักษรนิดๆ สไตล์ Vercel */
-  margin-bottom: 60px;
-  text-align: center;
-}
+/* ========================================= */
+/* LAYOUT GRID */
+/* ========================================= */
 
-/* =================================================================== */
-/* THE CARD (ตัวกล่องผลงาน - สไตล์แบนราบ ขอบบาง ไม่มีเงา) */
-/* =================================================================== */
-.snap-section.project-slide {
-  width: 100%;
-  max-width: 1000px;
-  margin: 0 auto 40px auto;
-  background: #000000; /* พื้นหลังดำสนิท */
-  border: 1px solid #333333; /* ขอบสีเทาเข้มบางๆ */
-  border-radius: 8px; /* มุมโค้งเล็กน้อย ไม่โค้งมนจนเกินไป */
-  padding: 40px;
-  transition: border-color 0.2s ease; /* เอฟเฟกต์เปลี่ยนสีขอบตอนชี้ */
-  box-shadow: none; /* เอาเงาออกทั้งหมด ให้ดูแบนราบและคลีน */
-  position: relative;
-  top: auto;
-}
-
-.snap-section.project-slide:hover {
-  border-color: #666666; /* ขอบสว่างขึ้นนิดนึงตอนเอาเมาส์ชี้ */
-}
-
-/* =================================================================== */
-/* LAYOUT GRID (จัดระเบียบซ้าย-ขวา) */
-/* =================================================================== */
 .title {
   display: grid;
-  grid-template-columns: 1fr 1fr; /* แบ่งครึ่งเป๊ะๆ */
->>>>>>> parent of e356d4d (docs(Portfolio_01): restructure project with centralized data management and unified dark theme)
+  grid-template-columns: 1fr 1fr;
   gap: 40px;
+  width: 100%;
   align-items: start;
 }
 
-<<<<<<< HEAD
 /* ========================================= */
-/* PROJECT CONTENT (LEFT) */
+/* PROJECT HEADER */
 /* ========================================= */
 
-.project-header h2 {
-  font-size: 1.8rem;
-  margin-bottom: 12px;
-  background: var(--primary-gradient);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.project-date {
-  display: block;
-  font-size: 0.9rem;
-  color: var(--text-muted);
-  margin-bottom: 8px;
-}
-
-.project-role {
-  font-size: 1rem;
-  color: var(--accent-purple-light);
-  font-weight: 600;
-  margin-bottom: 20px;
-}
-
-.project-details ul {
-  list-style: none;
-  padding: 0;
-=======
-/* =================================================================== */
-/* TYPOGRAPHY (ตัวหนังสือฝั่งซ้าย) */
-/* =================================================================== */
-.title h2 {
+.project-header {
   grid-column: 1;
+}
+
+.title h2 {
   font-size: 1.5rem;
   font-weight: 600;
-  color: #ededed; /* ขาวหม่นนิดๆ ไม่แสบตา */
+  color: var(--text-primary);
   margin: 0 0 8px 0;
   letter-spacing: -0.02em;
   text-align: left;
+  word-break: break-word;
+  line-height: 1.3;
 }
 
-.title h3:nth-of-type(1) { /* วันที่ */
-  grid-column: 1;
+.project-date {
   font-size: 0.875rem;
-  color: #a1a1aa; /* สีเทาโทน Zinc (Vercel Style) */
+  color: var(--text-muted);
   margin: 0 0 4px 0;
   font-weight: 400;
   text-align: left;
 }
 
-.title h3:nth-of-type(2) { /* ตำแหน่ง Role */
-  grid-column: 1;
+.project-role {
   font-size: 0.875rem;
-  color: #a1a1aa;
+  color: var(--accent-purple-light);
   margin: 0 0 24px 0;
-  font-weight: 400;
+  font-weight: 500;
   text-align: left;
 }
 
-/* รายละเอียดโปรเจกต์ */
+/* ========================================= */
+/* PROJECT DETAILS */
+/* ========================================= */
+
 .title .details {
   grid-column: 1;
   width: 100%;
@@ -228,62 +138,18 @@
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 12px; /* ระยะห่างระหว่างบรรทัดที่พอดี */
->>>>>>> parent of e356d4d (docs(Portfolio_01): restructure project with centralized data management and unified dark theme)
+  gap: 12px;
 }
 
-.project-details li {
+.details li.project-grid {
   position: relative;
-<<<<<<< HEAD
-  padding-left: 20px;
-  margin-bottom: 10px;
-  color: var(--text-secondary);
-=======
   padding-left: 18px;
-  color: #a1a1aa;
+  color: var(--text-secondary);
   font-size: 0.95rem;
->>>>>>> parent of e356d4d (docs(Portfolio_01): restructure project with centralized data management and unified dark theme)
   line-height: 1.6;
+  text-align: left;
 }
 
-<<<<<<< HEAD
-.project-details li::before {
-  content: "→";
-  position: absolute;
-  left: 0;
-  color: var(--primary-purple);
-}
-
-/* ========================================= */
-/* PROJECT PREVIEW (RIGHT - THE "FRAME") */
-/* ========================================= */
-
-.project-links-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.preview-card {
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md);
-  overflow: hidden;
-  transition: all var(--transition-base);
-  /* Added padding to create the "Frame" look */
-  padding: 12px; 
-}
-
-.preview-card:hover {
-  border-color: var(--accent-purple-light);
-  transform: scale(1.02);
-}
-
-.preview-image {
-  width: 100%;
-  height: 180px; /* Controlled height */
-=======
-/* เปลี่ยนจุดกลมใหญ่ๆ เป็นจุดสีเทาเล็กๆ มินิมอล */
 .details li.project-grid::before {
   content: '';
   position: absolute;
@@ -291,185 +157,256 @@
   top: 9px;
   width: 5px;
   height: 5px;
-  background-color: #52525b;
+  background-color: var(--accent-purple-light);
   border-radius: 50%;
 }
 
-/* =================================================================== */
-/* IMAGE & LINK CARD (ฝั่งขวา) */
-/* =================================================================== */
+/* ========================================= */
+/* LINK PREVIEW CARDS */
+/* ========================================= */
+
 .title .link-preview {
   grid-column: 2;
-  grid-row: 1 / span 4;
+  grid-row: 1 / span 5;
   display: flex;
   flex-direction: column;
   gap: 16px;
   width: 100%;
 }
 
-.link-preview a {
+.preview-link {
   text-decoration: none;
   display: block;
+  transition: transform var(--transition-base);
+}
+
+.preview-link:hover {
+  transform: translateX(-4px);
 }
 
 .preview-card {
-  border: 1px solid #333333;
-  border-radius: 8px;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
   overflow: hidden;
-  background: #0a0a0a;
-  transition: all 0.2s ease;
+  background: var(--bg-secondary);
+  transition: all var(--transition-base);
+  position: relative;
 }
 
-/* เอฟเฟกต์ตอนชี้เมาส์ที่รูปลิงก์ */
-.link-preview a:hover .preview-card {
-  border-color: #888888;
+.preview-link:hover .preview-card {
+  border-color: var(--border-medium);
+  box-shadow: var(--shadow-md);
 }
 
+/* Image container */
 .preview-card img {
   width: 100% !important;
-  aspect-ratio: 16 / 9; /* ล็อกสัดส่วนให้ย่อขยายยังไงรูปก็ไม่เพี้ยน */
+  aspect-ratio: 16 / 9;
   height: auto !important;
->>>>>>> parent of e356d4d (docs(Portfolio_01): restructure project with centralized data management and unified dark theme)
   object-fit: cover;
-  border-radius: var(--radius-sm);
+  object-position: top;
   display: block;
-<<<<<<< HEAD
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  background: var(--bg-card);
-}
-
-.preview-image.loaded {
-  opacity: 1;
-}
-
-.link-info {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 4px 4px 4px;
-  color: var(--text-primary);
-  font-weight: 500;
-  font-size: 0.9rem;
+  border-bottom: 1px solid var(--border-subtle);
+  transition: opacity var(--transition-base);
 }
 
 /* ========================================= */
-/* CASE STUDY SECTION */
+/* LOADING SKELETON */
 /* ========================================= */
 
-.case-study-section {
-  grid-column: 1 / -1;
-  margin-top: 30px;
-  padding-top: 30px;
-  border-top: 1px solid var(--border-subtle);
-}
-
-.toggle-case-study {
-  background: transparent;
-  border: 1px solid var(--border-medium);
-  color: var(--text-secondary);
-  padding: 12px;
-  border-radius: var(--radius-md);
-  cursor: pointer;
+.image-skeleton {
   width: 100%;
-  transition: all var(--transition-base);
+  aspect-ratio: 16 / 9;
+  background: linear-gradient(90deg, var(--bg-secondary) 25%, var(--bg-card) 50%, var(--bg-secondary) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  position: relative;
+  overflow: hidden;
 }
 
-.toggle-case-study:hover {
-  border-color: var(--accent-purple-light);
-  color: var(--text-primary);
-  background: rgba(113, 41, 237, 0.05);
+.skeleton-shimmer {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg,
+      transparent,
+      rgba(255, 255, 255, 0.05),
+      transparent);
+  animation: shimmerSlide 1.5s infinite;
 }
 
-.case-study-content {
-  margin-top: 20px;
-  padding: 30px;
-  background: rgba(255, 255, 255, 0.02);
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--border-subtle);
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
+  }
 }
 
-.case-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 30px;
+@keyframes shimmerSlide {
+  0% {
+    left: -100%;
+  }
+
+  100% {
+    left: 100%;
+  }
 }
 
 /* ========================================= */
-/* RESPONSIVE */
+/* URL NAME LABEL */
 /* ========================================= */
 
-@media (max-width: 900px) {
-  .project-card-container {
-    grid-template-columns: 1fr;
-  }
-  
-  .preview-image {
-    height: 220px;
-  }
-}
-=======
-  border-bottom: 1px solid #222222;
-}
-
-/* แถบชื่อเว็บด้านล่างรูป */
 .url-name {
   padding: 12px 16px;
   font-size: 0.875rem;
-  color: #ededed;
-  background: #0a0a0a; /* พื้นหลังดำ */
+  color: var(--text-primary);
+  background: var(--bg-secondary);
   font-weight: 500;
   text-align: left;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background var(--transition-base);
 }
 
-/* =================================================================== */
-/* RESPONSIVE DESIGN (การหดหน้าจอแล้วไม่พัง) */
-/* =================================================================== */
+.preview-link:hover .url-name {
+  background: var(--bg-card);
+}
+
+.link-icon {
+  opacity: 0.5;
+  transition: all var(--transition-base);
+}
+
+.preview-link:hover .link-icon {
+  opacity: 1;
+  transform: translateX(2px);
+}
+
+/* ========================================= */
+/* PROJECT TAGS */
+/* ========================================= */
+
+.project-tags {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.tag {
+  background: rgba(113, 41, 237, 0.1);
+  color: var(--accent-purple-light);
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  font-size: 0.8rem;
+  font-weight: 500;
+  border: 1px solid rgba(113, 41, 237, 0.2);
+  transition: all var(--transition-base);
+}
+
+.tag:hover {
+  background: rgba(113, 41, 237, 0.2);
+  border-color: rgba(113, 41, 237, 0.4);
+  transform: translateY(-2px);
+}
+
+/* ========================================= */
+/* ANIMATIONS */
+/* ========================================= */
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ========================================= */
+/* RESPONSIVE DESIGN */
+/* ========================================= */
+
 @media (max-width: 900px) {
   .snap-section.project-slide {
-    padding: 24px; /* ลดระยะขอบในมือถือ */
-    width: 90%;
+    padding: 24px;
+    width: 95%;
   }
 
   .title {
-    grid-template-columns: 1fr; /* บังคับให้พับเป็น 1 คอลัมน์ (บน-ล่าง) */
+    grid-template-columns: 1fr;
     gap: 24px;
   }
 
-  /* ล้างค่า Grid ฝั่งซ้าย-ขวา ให้มันไหลลงมาปกติ */
-  .title h2, 
-  .title h3:nth-of-type(1), 
-  .title h3:nth-of-type(2), 
-  .title .details, 
-  .title .link-preview {
+  .project-header,
+  .title .details,
+  .title .link-preview,
+  .project-tags {
     grid-column: 1;
     grid-row: auto;
   }
 
-  /* ในสไตล์ Vercel แม้จะอยู่ในมือถือ ตัวหนังสือก็ยังชิดซ้ายเพื่อให้อ่านง่าย */
-  .title h2, 
-  .title h3:nth-of-type(1), 
-  .title h3:nth-of-type(2) {
+  .title h2,
+  .project-date,
+  .project-role {
     text-align: left;
   }
 
   .title .link-preview {
     margin-top: 10px;
   }
+
+  .project-tags {
+    justify-content: center;
+  }
 }
 
+@media (max-width: 600px) {
+  .experience-presentation-wrapper {
+    padding-top: var(--spacing-lg);
+  }
 
+  .experience-presentation-wrapper h1 {
+    font-size: 2rem;
+    margin-bottom: 40px;
+  }
 
+  .snap-section.project-slide {
+    padding: 20px;
+    margin-bottom: 30px;
+  }
 
-.title h2 {
-  word-break: break-word; /* 👈 เพิ่มบรรทัดนี้ (บังคับตัดคำเมื่อล้นขอบ) */
-  grid-column: 1;
-  font-size: 1.5rem;
-  font-weight: 600;
-  /* ... โค้ดอื่นๆ เหมือนเดิม ... */
+  .title h2 {
+    font-size: 1.3rem;
+  }
+
+  .preview-card img {
+    aspect-ratio: 4 / 3;
+  }
 }
-/* ใส่ไว้บนสุดของ index.css */
-*, *::before, *::after {
-  box-sizing: border-box;
-}
->>>>>>> parent of e356d4d (docs(Portfolio_01): restructure project with centralized data management and unified dark theme)
+
+/* Made with Bob */

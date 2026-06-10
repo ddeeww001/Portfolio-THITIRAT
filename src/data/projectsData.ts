@@ -1,17 +1,9 @@
-﻿
 // src/data/projectsData.ts
 // Centralized database for all project information
 
 export interface LinkItem {
   label: string;
   url: string;
-}
-
-export interface CaseStudy {
-  problem: string;
-  solution: string;
-  toolsUsed: string;
-  learning: string;
 }
 
 export interface ProjectData {
@@ -21,75 +13,87 @@ export interface ProjectData {
   role: string | string[];
   details: string[];
   link: LinkItem[];
-  tags: string[]; 
-  caseStudy?: CaseStudy;
+  tags?: string[]; // Optional: for filtering/categorization
 }
 
 export const projectsDatabase: ProjectData[] = [
-  {
+ /* {
     id: 8,
-    title: "AI HACKATHON : BobInsight (IBM Bob Hackathon)",
-    date: "2024",
-    role: ["Frontend Developer", "UX/UI Designer"],
-    details: [
-      "Developed an AI-driven insight platform to simplify complex data visualization.",
-      "Collaborated in a team to integrate IBM AI technologies into a seamless user experience."
-    ],
-<<<<<<< HEAD
+    title: "MY PROJECT DESIGN WEBSITE",
+    date: "NOW",
+    role: "Frontend & UX/UI Designer",
+    details: [],
     link: [
-      { label: "Project Link", url: "https://lablab.ai/ai-hackathons/ibm-bob-hackathon/uia/bobinsight" },
-      { label: "GitHub Repository", url: "https://github.com/Pinont/UIA-LABLAB" }
+      { 
+        label: "Project", 
+        url: "https://www.figma.com/design/f91hiWcRtLAB5SnPPrtv6U/Untitled?node-id=0-1&t=wfEWnCKOQ9U5G10H-1" 
+      }
     ],
-    tags: ["Frontend", "UX/UI"],
-    caseStudy: {
-      problem: "การทำความเข้าใจข้อมูล (Data Insights) จำนวนมากเป็นเรื่องยากและใช้เวลานานสำหรับผู้ใช้งานทั่วไป",
-      solution: "สร้าง Platform ที่ใช้ AI ช่วยวิเคราะห์และสรุปข้อมูลออกมาเป็น Visual ที่เข้าใจง่ายและโต้ตอบได้",
-      toolsUsed: "React สำหรับ Frontend และ IBM AI Services สำหรับการประมวลผลข้อมูล",
-      learning: "ได้เรียนรู้การทำงานร่วมกับเทคโนโลยี AI ของ IBM และการออกแบบ Dashboard ที่ต้องรองรับการแสดงผลข้อมูลแบบ Dynamic"
-    }
-=======
     tags: ["Design", "Frontend", "UX/UI"]
->>>>>>> parent of 2085c0a (refactor: comment out a project entry in projectsDatabase for future reference)
-  },
+  },*/
   {
     id: 7,
     title: "HACKATHON : ETHChaingmai",
     date: "28 / 01 /2026 - 3 / 02 / 2026",
     role: "Frontend",
     details: [
-      "Customized specific parts of the homepage design and implemented a map feature."
+      "My role involved customizing specific parts of the homepage design. Additionally, I implemented the map feature by connecting to an API to fetch and render location"
     ],
     link: [
       { label: "Project", url: "https://devfolio.co/projects/relief-mesh-7406" },
-      { label: "Presentation", url: "https://www.canva.com/design/DAHAEBR-F5o/kU3WI2J8YAblFhI51HkCuA/view" }
+      { 
+        label: "Presentation", 
+        url: "https://www.canva.com/design/DAHAEBR-F5o/kU3WI2J8YAblFhI51HkCuA/view?utm_content=DAHAEBR-F5o&utm_campaign=designshare&utm_medium=link&utm_source=viewer" 
+      }
     ],
-    tags: ["Frontend"],
-    caseStudy: {
-      problem: "ความยากในการเข้าถึงข้อมูลพิกัดความช่วยเหลือในพื้นที่ห่างไกลระหว่างเกิดภัยพิบัติ",
-      solution: "สร้างระบบแผนที่แบบ Real-time ที่ดึงข้อมูลผ่าน API เพื่อแสดงจุดที่ต้องการความช่วยเหลืออย่างแม่นยำ",
-      toolsUsed: "React ร่วมกับ Leaflet API เพื่อการจัดการแผนที่ที่เบาและรวดเร็ว",
-      learning: "ได้เรียนรู้การจัดการ Asynchronous data จาก API และการทำ UI สำหรับแผนที่ให้ใช้งานง่ายในสภาวะคับขัน"
-    }
+    tags: ["Hackathon", "Frontend", "API Integration"]
+  },
+  {
+    id: 6,
+    title: "YOUNG DEV HACKATHON",
+    date: "11 / 01 / 2026",
+    role: "STAFF",
+    details: [
+      "Instructed participants on the web design process, specifically covering user flows, wireframes, and essential design basics."
+    ],
+    link: [
+      { label: "Facebook", url: "https://www.facebook.com/share/p/1BgvpSZCgo/" }
+    ],
+    tags: ["Teaching", "Workshop", "UX/UI"]
   },
   {
     id: 5,
-    title: "CAMT open house : WEB3 Club",
+    title: "CAMT open house : WEB3 Club, Design, Blockchain, Chiang Mai",
     date: "27 / 8 / 2025",
     role: "Designer",
     details: [
-      "End-to-end booklet design, logo creation, and design poster customization."     
+      "I was responsible for the end-to-end booklet design, logo creation, and design poster customization"
     ],
     link: [
-      { label: "Booklet", url: "https://heyzine.com/flip-book/6c7e35871a.html?ref=web3.camt.cmu.ac.th" },       
+      { label: "Booklet", url: "https://heyzine.com/flip-book/6c7e35871a.html?ref=web3.camt.cmu.ac.th" },
       { label: "Website Web3", url: "https://web3.camt.cmu.ac.th/" }
     ],
-    tags: ["Design"],
-    caseStudy: {
-      problem: "ความเข้าใจเรื่อง Web3 เป็นเรื่องยากสำหรับบุคคลทั่วไป ทำให้สื่อประชาสัมพันธ์เดิมไม่ดึงดูด",
-      solution: "ออกแบบ Booklet และ Logo ใหม่โดยใช้ Visual Language ที่ทันสมัยแต่ดูเป็นมิตร เพื่อลดกำแพงความเข้าใจ",
-      toolsUsed: "Affinity และ Figma สำหรับงาน Vector ที่มีความแม่นยำสูง",
-      learning: "เข้าใจการทำ Branding ให้เข้ากับกลุ่มเป้าหมายเฉพาะทาง และการสื่อสารข้อมูลซับซ้อนผ่านงานดีไซน์"
-    }
+    tags: ["Design", "Branding", "Web3"]
+  },
+  {
+    id: 4,
+    title: "Design templates",
+    date: "4 / 11 / 2025 - 8 / 11 / 2025",
+    role: "Designer",
+    details: [
+      "Design templates light team and dark team for COLLEGE OF ARTS, MEDIA AND TECHNOLOGY"
+    ],
+    link: [
+      { 
+        label: "— LIGHT TEAM", 
+        url: "https://www.canva.com/design/DAG-MThjO7s/QHk_AUP7K2tppS4AOaaVSw/view?utm_content=DAG-MThjO7s&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=hb480482753" 
+      },
+      { 
+        label: "— DARK TEAM", 
+        url: "https://www.canva.com/design/DAG-MfTGOD0/8Ecgfe9gtOXGT0X4QVi89Q/view?utm_content=DAG-MfTGOD0&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h0db13d2742" 
+      }
+    ],
+    tags: ["Design", "Templates", "Branding"]
   },
   {
     id: 3,
@@ -97,19 +101,35 @@ export const projectsDatabase: ProjectData[] = [
     date: "27 / 8 / 2025",
     role: "Frontend developer, UX/UI Designer",
     details: [
-      "Designed the user interface for product selection and customized dashboards.",
-      "Developed a Point of Sale (POS) and Accounting system for Ban Mae Hoi Ngoen School."
+      "Designed the user interface for product selection and customized dashboards to track sales and restock activities."
     ],
     link: [
-      { label: "Project Link", url: "https://www.canva.com/design/DAG-RdyzwBM/DpWwYhyVe11hhewbgSG1Aw/view" }
+      { 
+        label: "SMART ACCOUNTING AND MANAGEMENT", 
+        url: "https://www.canva.com/design/DAG-RdyzwBM/DpWwYhyVe11hhewbgSG1Aw/view?utm_content=DAG-RdyzwBM&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h5d0f09fba1" 
+      }
     ],
-    tags: ["Frontend", "UX/UI"],
-    caseStudy: {
-      problem: "โรงเรียนบ้านแม่ฮ้อยเงินประสบปัญหาการจัดการบัญชีและสต็อกสินค้าที่ล่าช้าเนื่องจากใช้ระบบกระดาษ (Manual)",
-      solution: "พัฒนาเว็บแอปพลิเคชัน POS และระบบจัดการบัญชีที่มี UI เรียบง่าย เน้นการตัดสต็อกอัตโนมัติและการออกรายงานที่แม่นยำ",
-      toolsUsed: "HTML, CSS, JavaScript และการออกแบบ User Flow ผ่าน Figma เพื่อความง่ายในการใช้งาน",
-      learning: "เรียนรู้กระบวนการพัฒนาซอฟต์แวร์เพื่อแก้ปัญหาในชีวิตจริง (Real-world system development) และการทำงานร่วมกับลูกค้ากลุ่มโรงเรียน"
-    }
+    tags: ["Frontend", "UX/UI", "Dashboard"]
+  },
+  {
+    id: 2,
+    title: "HACKATHON : Design mascot CENTRAL THAM",
+    date: "30 / 10 /2025 - 31 / 10 /2025",
+    role: "Design mascot",
+    details: [
+      "Collaborated with a teammate to put our heads together to brainstorm and create a mascot."
+    ],
+    link: [
+      { 
+        label: "Google drive", 
+        url: "https://drive.google.com/drive/folders/1yHbN5bEUX7J-nh5HPlfEDBv5ML67_Qqt?usp=sharing" 
+      },
+      { 
+        label: "CENTRAL THAM hackathon", 
+        url: "https://www.centraltham.com/th/newsroom/news-and-updates/150/central-tham-mascot-contest-illustration-impact-with-central-tham?fbclid=IwVERDUANwNt5leHRuA2FlbQIxMQABHvyW9tTacB4Tazik376LqPpoJUTVxjyg2cep4NC0u2eoOM1lKEtpr4APLc_q_aem_jeqlMmr6v_LT0I8hTT1W7g" 
+      }
+    ],
+    tags: ["Hackathon", "Design", "Illustration"]
   },
   {
     id: 1,
@@ -117,21 +137,42 @@ export const projectsDatabase: ProjectData[] = [
     date: "5 / 11 / 2024",
     role: "Fullstack Developer",
     details: [
-      "Created website, Quotation, and LINE api for Family Business."
+      "Created website, Quotation, and LINE api for Family Business",
+      "Platform: Built and designed on Wix.",
+      "Seamlessly linked Quotation Forms with LINE Messaging API/Notify.",
+      "Efficiency: Automated the data flow to ensure consistent and timely responses to customer leads."
     ],
     link: [
-      { label: "Website", url: "https://www.grandsuwanproperty.com/" }
+      { 
+        label: "Google drive", 
+        url: "https://drive.google.com/drive/folders/1NVeNw2uRRK6cXBaPld896XcZjgbEl7Pg?usp=sharing" 
+      },
+      { label: "GRAND SUWAN website", url: "https://www.grandsuwanproperty.com/" }
     ],
-    tags: ["Frontend"],
-    caseStudy: {
-      problem: "ธุรกิจครอบครัวขาดระบบรับเรื่องลูกค้าที่รวดเร็ว ทำให้เสียโอกาสในการขาย",
-      solution: "สร้างระบบส่งข้อมูลจากแบบฟอร์มใบเสนอราคาตรงเข้า LINE Notify เพื่อให้ทีมงานรู้ตัวทันที",
-      toolsUsed: "Wix สำหรับโครงสร้างเว็บ และ LINE Messaging API สำหรับระบบแจ้งเตือน",
-      learning: "เรียนรู้ความสำคัญของการทำ Automation ในธุรกิจ เพื่อลดขั้นตอนการทำงานด้วยมือ"
-    }
+    tags: ["Fullstack", "API Integration", "Business"]
   }
 ];
 
-export const getAllProjects = (): ProjectData[] => projectsDatabase;
-export const getProjectById = (id: number): ProjectData | undefined => projectsDatabase.find(p => p.id === id);
+// Helper function to get all projects
+export const getAllProjects = (): ProjectData[] => {
+  return projectsDatabase;
+};
 
+// Helper function to get project by ID
+export const getProjectById = (id: number): ProjectData | undefined => {
+  return projectsDatabase.find(project => project.id === id);
+};
+
+// Helper function to filter projects by tag
+export const getProjectsByTag = (tag: string): ProjectData[] => {
+  return projectsDatabase.filter(project => 
+    project.tags?.includes(tag)
+  );
+};
+
+// Helper function to get recent projects
+export const getRecentProjects = (count: number = 3): ProjectData[] => {
+  return projectsDatabase.slice(0, count);
+};
+
+// Made with Bob

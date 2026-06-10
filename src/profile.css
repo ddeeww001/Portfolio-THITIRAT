@@ -1,8 +1,9 @@
-/* src/profile.css */
+/* ========================================= */
+/* PROFILE SECTION - UNIFIED THEME */
+/* ========================================= */
 
 .profile-page-wrapper {
-  padding-top: 120px; /* เว้นที่ให้ Navbar ด้านบน */
-  padding-bottom: 60px;
+  padding: var(--spacing-xl) 0;
   display: flex;
   justify-content: center;
   width: 100%;
@@ -10,24 +11,31 @@
 
 .profile-card-container {
   display: grid;
-  grid-template-columns: 350px 1fr; /* ซ้าย 350px, ขวาใช้พื้นที่ที่เหลือ */
-  gap: 40px;
-  max-width: 1100px;
+  grid-template-columns: minmax(280px, 350px) 1fr;
+  gap: 0;
   width: 90%;
+  max-width: 1000px;
+  margin: 0 auto;
   background: var(--bg-card);
-  border-radius: 24px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md);
   overflow: hidden;
+  border: 1px solid var(--border-subtle);
+  animation: fadeInUp 0.6s ease-out;
 }
 
-/* --- ฝั่งซ้าย (Sidebar) --- */
+/* ========================================= */
+/* SIDEBAR (LEFT) */
+/* ========================================= */
+
 .profile-sidebar {
-  background: #0a0b0b; /* สีเทาอ่อนๆ แยกสัดส่วนชัดเจน */
+  background: var(--bg-secondary);
   padding: 40px 30px;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
+  border-right: 1px solid var(--border-subtle);
 }
 
 .profile-pic-wrapper img {
@@ -35,197 +43,298 @@
   height: 160px;
   border-radius: 50%;
   object-fit: cover;
-  border: 4px solid var(--bg-card);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  border: 4px solid var(--border-medium);
+  box-shadow: var(--shadow-md);
   margin-bottom: 20px;
+  transition: transform var(--transition-base);
 }
 
-/* 1. จัดการกล่องคลุม (Container) ให้เว้นระยะปุ่มอย่างเป็นระเบียบ */
-.profile-roles {
-  display: flex;
-  flex-wrap: wrap;         /* ถ้าหน้าจอแคบ ให้ปุ่มตกลงมาบรรทัดใหม่อย่างสวยงาม */
-  justify-content: center; /* จัดให้ปุ่มอยู่กึ่งกลาง */
-  gap: 10px;               /* ระยะห่างระหว่างปุ่ม ทั้งแนวนอนและแนวตั้ง (หมดปัญหาปุ่มติดกัน) */
-  margin-bottom: 30px;     /* ดันเนื้อหาส่วนอื่นด้านล่างให้ห่างออกไป */
-  width: 100%;
+.profile-pic-wrapper img:hover {
+  transform: scale(1.05);
+  border-color: var(--accent-purple-light);
 }
 
-/* 2. ปรับแต่งตัวปุ่ม */
-.role-badge {
-  background: var(--accent-color, #7129ed);
-  color: white;
-  padding: 6px 18px;
-  border-radius: 100px;
-  font-size: 0.85rem;
-  font-weight: 500;
-  white-space: nowrap;     /* ⭐️ สำคัญมาก! บังคับไม่ให้ข้อความในปุ่มถูกตัดขึ้นบรรทัดใหม่ */
-  margin: 0;               /* ลบ margin เก่าทิ้ง เพราะเราใช้ gap จัดการระยะห่างแทนแล้ว */
-}
-
-/* --- ฝั่งขวา (Content) --- */
-.profile-content {
-  padding: 40px 40px 40px 0;
-}
-
-.section-header {
-  font-size: 1.2rem;
-  color: var(--accent-color);
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-bottom: 15px;
-  border-bottom: 2px solid #e2e8f0;
-  padding-bottom: 8px;
-}
-
-.introduce-text {
-  color: var(--text-secondary);
-  line-height: 1.8;
-  margin-bottom: 40px;
-}
-
-/* ป้าย Skills */
-.skills-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 40px;
-}
-
-.skill-tag {
-  background: var(--bg-main);
-  color: var(--text-primary);
-  border: 1px solid #cbd5e1;
-  padding: 8px 18px;
-  border-radius: 8px;
-  font-size: 0.9rem;
-  font-family: var(--font-body);
-}
-
-
-
-
-.profile-card-container {
-  display: grid;
-  /* แก้ตรงนี้: ใช้ minmax เพื่อให้คอลัมน์ซ้ายยืดหยุ่น */
-  grid-template-columns: minmax(280px, 350px) 1fr; 
-  gap: 0; /* ลบ gap เดิมออกเพื่อไม่ให้มีช่องว่างแปลกๆ */
-  
-  width: 90%;
-  max-width: 1000px; /* คุมขนาดสูงสุดให้อยู่ตรงกลางเสมอ */
-  margin: 0 auto;    /* บังคับให้อยู่กึ่งกลางหน้าจอ */
-  
-  background: var(--bg-card);
-  border-radius: 24px;
-  box-shadow: 0 10px 40px rgba(212, 212, 212, 0.063);
-  overflow: hidden;
-}
-
-.profile-content {
-  padding: 40px; /* จัดระยะขอบให้เท่ากันทุกด้าน */
-}
-
-/* เพิ่ม/แก้โค้ดนี้เพื่อจัดการหน้าจอไอแพดและมือถือ (จอเล็กกว่า 900px) */
-@media (max-width: 900px) {
-  .profile-card-container {
-    grid-template-columns: 1fr; /* บังคับให้พับลงมาเหลือ 1 คอลัมน์ (บน-ล่าง) */
-  }
-  .profile-sidebar {
-    padding: 30px 20px; /* ลดขอบให้พอดีมือถือ */
-  }
-  .profile-content {
-    padding: 30px 20px;
-  }
-  .introduce-text {
-    text-align: center; /* จัดกลางให้อ่านง่ายขึ้นบนมือถือ */
-  }
-  .skills-grid {
-    justify-content: center;
-  }
-}
-
-/* ========================================= */
-/* TYPOGRAPHY: จัดการตัวอักษรหน้า Profile */
-/* ========================================= */
-
-/* 1. ชื่อ (เน้นตัวใหญ่ หนา และดูเด่น) */
 .profile-name {
-  font-family: var(--font-heading, 'Poppins', sans-serif);
+  font-family: var(--font-heading);
   font-size: 1.8rem;
   font-weight: 700;
-  color: var(--text-primary, #0f172a);
+  color: var(--text-primary);
   margin-bottom: 10px;
   text-align: center;
 }
 
-/* 2. หัวข้อแต่ละส่วน (เช่น ABOUT ME, SKILLS - ทำให้ดูเป็นสัดส่วน) */
-.section-header {
-  font-family: var(--font-heading, 'Poppins', sans-serif);
-  font-size: 1.3rem;
+/* Role Badges */
+.profile-roles {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 30px;
+  width: 100%;
+}
+
+.role-badge {
+  background: var(--primary-gradient);
+  color: var(--text-primary);
+  padding: 6px 18px;
+  border-radius: var(--radius-full);
+  font-size: 0.85rem;
+  font-weight: 500;
+  white-space: nowrap;
+  margin: 0;
+  box-shadow: var(--shadow-glow);
+}
+
+/* Sidebar Sections */
+.sidebar-section {
+  width: 100%;
+  margin-bottom: 30px;
+  text-align: left;
+}
+
+.sidebar-section h3 {
+  font-size: 0.9rem;
+  color: var(--accent-purple-light);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 15px;
   font-weight: 600;
-  color: var(--accent-color, #7129ed);
-  text-transform: uppercase; /* บังคับตัวพิมพ์ใหญ่ทั้งหมด */
-  letter-spacing: 1.5px; /* ถ่างช่องไฟหัวข้อให้ดูพรีเมียม */
-  margin-bottom: 20px;
-  border-bottom: 2px solid #e2e8f0;
-  padding-bottom: 10px;
+  border-bottom: 2px solid var(--border-subtle);
+  padding-bottom: 8px;
 }
 
-/* 3. ข้อความแนะนำตัว (อ่านสบายตา) */
-.introduce-text {
-  font-family: var(--font-body, 'Inter', sans-serif);
-  font-size: 1.05rem;
-  color: var(--text-secondary, #64748b);
-  line-height: 1.8; /* เว้นระยะบรรทัดให้อ่านง่าย ไม่เบียดกัน */
-  text-align: left; /* จัดชิดซ้ายเสมอตามหลัก UX */
-}
-
-/* 4. ข้อมูลติดต่อ และ โซเชียล (ลบจุดออก จัดชิดซ้าย) */
-.contact-list, .social-list {
-  list-style: none; /* เอาจุดกลมๆ ออก */
+/* Contact List */
+.contact-list,
+.social-list {
+  list-style: none;
   padding: 0;
   margin: 0;
   text-align: left;
   width: 100%;
 }
 
-.contact-list li, .social-list li {
-  font-family: var(--font-body, 'Inter', sans-serif);
+.contact-list li,
+.social-list li {
+  font-family: var(--font-body);
   font-size: 0.95rem;
-  margin-bottom: 15px; /* เว้นระยะแต่ละบรรทัด */
-  color: var(--text-secondary, #64748b);
+  margin-bottom: 15px;
+  color: var(--text-secondary);
   display: flex;
-  align-items: center; /* ให้ไอคอนกับตัวหนังสือตรงกัน */
+  align-items: center;
+  gap: 10px;
 }
 
-.contact-list a, .social-link {
-  color: var(--text-primary, #0f172a);
+.icon {
+  font-size: 1.2rem;
+}
+
+.contact-list a,
+.social-link {
+  color: var(--text-primary);
   text-decoration: none;
   font-weight: 500;
-  transition: color 0.3s ease;
+  transition: color var(--transition-base);
 }
 
-.contact-list a:hover, .social-link:hover {
-  color: var(--accent-color, #7129ed); /* เปลี่ยนสีตอนเอาเมาส์ชี้ */
+.contact-list a:hover,
+.social-link:hover {
+  color: var(--accent-purple-light);
 }
 
-/* 5. ลิสต์ใบประกาศ และ ภาษา (ลบจุดออก จัดให้อ่านง่าย) */
-.cert-list, .language-list {
+.social-label {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.social-value {
+  color: var(--text-secondary);
+}
+
+/* ========================================= */
+/* MAIN CONTENT (RIGHT) */
+/* ========================================= */
+
+.profile-content {
+  padding: 40px;
+  background: var(--bg-card);
+}
+
+.content-section {
+  margin-bottom: 40px;
+}
+
+.section-header {
+  font-family: var(--font-heading);
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--accent-purple-light);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 20px;
+  border-bottom: 2px solid var(--border-subtle);
+  padding-bottom: 10px;
+  position: relative;
+}
+
+.section-header::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 60px;
+  height: 2px;
+  background: var(--primary-gradient);
+}
+
+.introduce-text {
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  text-align: left;
+}
+
+/* Skills Grid */
+.skills-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.skill-tag {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-medium);
+  padding: 8px 18px;
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  font-family: var(--font-body);
+  transition: all var(--transition-base);
+}
+
+.skill-tag:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--accent-purple-light);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Language List */
+.language-list {
   list-style: none;
   padding: 0;
   text-align: left;
 }
 
-.cert-item, .lang-item {
-  font-family: var(--font-body, 'Inter', sans-serif);
+.lang-item {
+  font-family: var(--font-body);
   line-height: 1.6;
   margin-bottom: 15px;
-  color: var(--text-secondary, #64748b);
+  color: var(--text-secondary);
   font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .lang-name {
   font-weight: 600;
-  color: var(--text-primary, #0f172a);
+  color: var(--text-primary);
 }
 
+.lang-dot {
+  color: var(--accent-purple-light);
+}
 
+.lang-level {
+  color: var(--text-muted);
+}
+
+/* Certification List */
+.cert-list {
+  list-style: none;
+  padding: 0;
+  text-align: left;
+}
+
+.cert-item {
+  font-family: var(--font-body);
+  line-height: 1.6;
+  margin-bottom: 15px;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.cert-icon {
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+/* ========================================= */
+/* ANIMATIONS */
+/* ========================================= */
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ========================================= */
+/* RESPONSIVE DESIGN */
+/* ========================================= */
+
+@media (max-width: 900px) {
+  .profile-card-container {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-sidebar {
+    padding: 30px 20px;
+    border-right: none;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  .profile-content {
+    padding: 30px 20px;
+  }
+
+  .introduce-text {
+    text-align: center;
+  }
+
+  .skills-grid {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 600px) {
+  .profile-card-container {
+    width: 95%;
+  }
+
+  .profile-name {
+    font-size: 1.5rem;
+  }
+
+  .section-header {
+    font-size: 1.1rem;
+  }
+
+  .profile-pic-wrapper img {
+    width: 140px;
+    height: 140px;
+  }
+}
+
+/* Made with Bob */
