@@ -4,20 +4,39 @@ import '../CSS/login.css';
 import '../CSS/variables.css';
 
 const Login: React.FC = () => {
-  const [username, setUsername] = useState('');
+  const [username, setUsername] = useState('dew');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
+    setError('');
     
-    // Simple logic for "Only me" (One user)
-    // In a real app, this would be an API call
-    if (username === 'admin' && password === 'password123') {
-      alert('Login Successful! Welcome back.');
+    try {
+      const response = await fetch('http://localhost:5000/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Login failed');
+      }
+
+      alert('Login Successful! Welcome back, Admin.');
+      // Store user info in localStorage for session management
+      localStorage.setItem('adminUser', JSON.stringify(data.user));
       window.location.href = '/'; // Redirect to home
-    } else {
-      setError('Invalid username or password');
+    } catch (err: any) {
+      setError(err.message || 'An error occurred during login');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -25,8 +44,8 @@ const Login: React.FC = () => {
     <div className="login-container">
       <div className="login-glass-card">
         <div className="login-header">
-          <h2>Welcome Back</h2>
-          <p>Please enter your details to login</p>
+          <h2>Admin Login</h2>
+          <p>เข้าสู่ระบบด้วยฐานข้อมูล SQLite</p>
         </div>
         
         <form className="login-form" onSubmit={handleLogin}>
@@ -35,10 +54,9 @@ const Login: React.FC = () => {
             <input 
               type="text" 
               id="username" 
-              placeholder="Enter your username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              required 
+              required
             />
           </div>
           
@@ -54,10 +72,10 @@ const Login: React.FC = () => {
             />
           </div>
 
-          {error && <p style={{ color: '#ff4d4d', fontSize: '0.85rem', textAlign: 'center', marginTop: '5px' }}>{error}</p>}
+          {error && <p className="error-message">{error}</p>}
           
-          <button type="submit" className="login-btn">
-            Login
+          <button type="submit" className="login-btn" disabled={loading}>
+            {loading ? 'กำลังเข้าสู่ระบบ...' : 'Login'}
           </button>
         </form>
 

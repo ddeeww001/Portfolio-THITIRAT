@@ -20,7 +20,7 @@ const scrollToSection = (sectionId: string) => {
   }
 };
 
-const Navbar = () => {
+const Navbar = ({ isAdmin }: { isAdmin: boolean }) => {
   const [activeSection, setActiveSection] = useState('home');
   const location = useLocation();
   const isLoginPage = location.pathname === '/login';
@@ -71,9 +71,12 @@ const Navbar = () => {
         >
           Profile
         </button>
-        <Link to="/login" className="profile-btn">
-          <img alt="ddeeww_o_o" src={profileImg} className="navbar-profile-pic" />
-        </Link>
+        <div className="navbar-right">
+          {isAdmin && <span className="admin-badge">Admin Mode</span>}
+          <Link to="/login" className="profile-btn">
+            <img alt="ddeeww_o_o" src={profileImg} className="navbar-profile-pic" />
+          </Link>
+        </div>
       </nav>
     </div>
   );
@@ -115,10 +118,10 @@ const HeroSection = () => {
   );
 };
 
-const PortfolioPage = () => {
+const PortfolioPage = ({ isAdmin, onLogout }: { isAdmin: boolean, onLogout: () => void }) => {
   return (
     <>
-      <Navbar />
+      <Navbar isAdmin={isAdmin} />
       <main className="main-content">
         <HeroSection />
         
@@ -135,6 +138,20 @@ const PortfolioPage = () => {
         <div className="footer-content">
           <p>© 2026 THITIRAT SIRISAWAD. All rights reserved.</p>
           <div className="footer-links">
+            {isAdmin && (
+              <button onClick={onLogout} className="logout-link" style={{ 
+                background: 'none', 
+                border: '1px solid var(--border-subtle)', 
+                color: 'var(--text-muted)',
+                padding: '4px 12px',
+                borderRadius: 'var(--radius-sm)',
+                cursor: 'pointer',
+                fontSize: '0.8rem',
+                marginRight: '15px'
+              }}>
+                Logout Admin
+              </button>
+            )}
             <a href="https://github.com/ddeeww001" target="_blank" rel="noreferrer">
               GitHub
             </a>
@@ -147,6 +164,22 @@ const PortfolioPage = () => {
 };
 
 function App() {
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    // Check local storage for admin session
+    const user = localStorage.getItem('adminUser');
+    if (user) {
+      setIsAdmin(true);
+    }
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem('adminUser');
+    setIsAdmin(false);
+    window.location.reload();
+  };
+
   return (
     <Router>
       <div className="app-container">
@@ -158,12 +191,11 @@ function App() {
         </div>
 
         <Routes>
-          <Route path="/" element={<PortfolioPage />} />
+          <Route path="/" element={<PortfolioPage isAdmin={isAdmin} onLogout={handleLogout} />} />
           <Route path="/login" element={<Login />} />
         </Routes>
       </div>
     </Router>
   );
 }
-
 export default App;
