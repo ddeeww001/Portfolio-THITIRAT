@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import './App.css';
 import './variables.css';
 import './navbar.css';
@@ -8,6 +9,7 @@ import './experience.css';
 
 import Experience from './frontend/showExperience';
 import { Profile, myDetailsData } from './frontend/Personal';
+import Login from './frontend/Login';
 import profileImg from './picture/profile.jpg';
 
 // Smooth scroll navigation
@@ -20,8 +22,12 @@ const scrollToSection = (sectionId: string) => {
 
 const Navbar = () => {
   const [activeSection, setActiveSection] = useState('home');
+  const location = useLocation();
+  const isLoginPage = location.pathname === '/login';
 
   useEffect(() => {
+    if (isLoginPage) return;
+
     const handleScroll = () => {
       const sections = ['home', 'experience', 'profile'];
       const scrollPosition = window.scrollY + 100;
@@ -40,7 +46,9 @@ const Navbar = () => {
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [isLoginPage]);
+
+  if (isLoginPage) return null;
 
   return (
     <div className="navbar">
@@ -63,9 +71,9 @@ const Navbar = () => {
         >
           Profile
         </button>
-        <button onClick={() => scrollToSection('home')} className="profile-btn">
+        <Link to="/login" className="profile-btn">
           <img alt="ddeeww_o_o" src={profileImg} className="navbar-profile-pic" />
-        </button>
+        </Link>
       </nav>
     </div>
   );
@@ -110,25 +118,19 @@ const HeroSection = () => {
   );
 };
 
-function App() {
+const PortfolioPage = () => {
   return (
-    <div className="app-container">
+    <>
       <Navbar />
-      
-      {/* Single scrollable page with all sections */}
       <main className="main-content">
         <HeroSection />
-        
         <section id="experience" className="section experience-section">
           <Experience />
         </section>
-        
         <section id="profile" className="section profile-section">
           <Profile data={myDetailsData} />
         </section>
       </main>
-
-      {/* Footer */}
       <footer className="footer">
         <div className="footer-content">
           <p>© 2026 THITIRAT SIRISAWAD. All rights reserved.</p>
@@ -140,10 +142,24 @@ function App() {
           </div>
         </div>
       </footer>
-    </div>
+    </>
+  );
+};
+
+function App() {
+  return (
+    <Router>
+      <div className="app-container">
+        <Routes>
+          <Route path="/" element={<PortfolioPage />} />
+          <Route path="/login" element={<Login />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
 export default App;
+
 
 // Made with Bob
