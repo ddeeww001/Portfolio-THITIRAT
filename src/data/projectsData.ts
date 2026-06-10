@@ -35,6 +35,7 @@ export const projectsDatabase: ProjectData[] = [
       "Developed an AI-driven insight platform to simplify complex data visualization.",
       "Collaborated in a team to integrate IBM AI technologies into a seamless user experience."
     ],
+<<<<<<< HEAD
     link: [
       { label: "Project Link", url: "https://lablab.ai/ai-hackathons/ibm-bob-hackathon/uia/bobinsight" },
       { label: "GitHub Repository", url: "https://github.com/Pinont/UIA-LABLAB" }
@@ -46,6 +47,9 @@ export const projectsDatabase: ProjectData[] = [
       toolsUsed: "React สำหรับ Frontend และ IBM AI Services สำหรับการประมวลผลข้อมูล",
       learning: "ได้เรียนรู้การทำงานร่วมกับเทคโนโลยี AI ของ IBM และการออกแบบ Dashboard ที่ต้องรองรับการแสดงผลข้อมูลแบบ Dynamic"
     }
+=======
+    tags: ["Design", "Frontend", "UX/UI"]
+>>>>>>> parent of 2085c0a (refactor: comment out a project entry in projectsDatabase for future reference)
   },
   {
     id: 7,
