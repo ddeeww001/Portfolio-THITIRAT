@@ -19,12 +19,13 @@ async function migrate() {
   // 2. Migrate Profile Data
   const profileData = JSON.parse(fs.readFileSync(path.join(dataDir, 'profile.json'), 'utf8'));
   db.run(
-    `INSERT OR REPLACE INTO profile_content (id, name, email, phone, birthday, introduce, roles, technical_skills, tools, languages, certifications) 
-     VALUES (1, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    `INSERT OR REPLACE INTO profile_content (id, name, email, phone, birthday, introduce, roles, socials, technical_skills, tools, languages, certifications) 
+     VALUES (1, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     [
       profileData.name, profileData.email, profileData.phone, profileData.birthday, profileData.introduce,
-      JSON.stringify(profileData.role), JSON.stringify(profileData.technicalSkills),
-      JSON.stringify(profileData.tools), JSON.stringify(profileData.languages), JSON.stringify(profileData.certifications)
+      JSON.stringify(profileData.role || []), JSON.stringify(profileData.socials || []), 
+      JSON.stringify(profileData.technicalSkills || []), JSON.stringify(profileData.tools || []), 
+      JSON.stringify(profileData.languages || []), JSON.stringify(profileData.certifications || [])
     ]
   );
 

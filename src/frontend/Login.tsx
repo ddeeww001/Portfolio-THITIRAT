@@ -1,20 +1,39 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../CSS/login.css';
 import '../CSS/variables.css';
+import { handleApiError } from '../utils/apiErrorHandler';
+import type { ApiError } from '../utils/apiErrorHandler';
+import ErrorMessage from '../components/ErrorMessage';
 
 const Login: React.FC = () => {
   const [username, setUsername] = useState('dew');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [apiError, setApiError] = useState<ApiError | null>(null);
+  const [backendStatus, setBackendStatus] = useState<'checking' | 'online' | 'offline'>('checking');
+
+  useEffect(() => {
+    checkBackend();
+  }, []);
+
+  const checkBackend = async () => {
+    try {
+      const res = await fetch('http://localhost:5000/api/health');
+      if (res.ok) setBackendStatus('online');
+      else setBackendStatus('offline');
+    } catch (e) {
+      setBackendStatus('offline');
+    }
+  };
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setError('');
+    setApiError(null);
     
     try {
+      // Direct call to port 5000
       const response = await fetch('http://localhost:5000/api/login', {
         method: 'POST',
         headers: {
@@ -23,6 +42,13 @@ const Login: React.FC = () => {
         body: JSON.stringify({ username, password }),
       });
 
+      const contentType = response.headers.get("content-type");
+      if (!contentType || !contentType.includes("application/json")) {
+        setApiError(handleApiError(response));
+        setLoading(false);
+        return;
+      }
+
       const data = await response.json();
 
       if (!response.ok) {
@@ -30,11 +56,11 @@ const Login: React.FC = () => {
       }
 
       alert('Login Successful! Welcome back, Admin.');
-      // Store user info in localStorage for session management
       localStorage.setItem('adminUser', JSON.stringify(data.user));
-      window.location.href = '/'; // Redirect to home
+      localStorage.setItem('adminToken', data.token);
+      window.location.href = '/admin-dashboard';
     } catch (err: any) {
-      setError(err.message || 'An error occurred during login');
+      setApiError(handleApiError(null, err));
     } finally {
       setLoading(false);
     }
@@ -45,6 +71,15 @@ const Login: React.FC = () => {
       <div className="login-glass-card">
         <div className="login-header">
           <h2>Admin Login</h2>
+          <div style={{ marginBottom: '15px' }}>
+            {backendStatus === 'online' ? (
+              <span style={{ color: '#4BB543', fontSize: '0.8rem' }}>🟢 หลังบ้านพร้อมทำงาน (พอร์ต 5000)</span>
+            ) : backendStatus === 'checking' ? (
+              <span style={{ color: 'var(--text-muted)', fontSize: '0.8rem' }}>⏳ กำลังตรวจสอบการเชื่อมต่อ...</span>
+            ) : (
+              <span style={{ color: '#ff4d4d', fontSize: '0.8rem' }}>🔴 หลังบ้านยังไม่เชื่อมต่อ (กรุณารัน npm run server)</span>
+            )}
+          </div>
           <p>เข้าสู่ระบบด้วยฐานข้อมูล SQLite</p>
         </div>
         
@@ -72,7 +107,7 @@ const Login: React.FC = () => {
             />
           </div>
 
-          {error && <p className="error-message">{error}</p>}
+          <ErrorMessage error={apiError} onClose={() => setApiError(null)} />
           
           <button type="submit" className="login-btn" disabled={loading}>
             {loading ? 'กำลังเข้าสู่ระบบ...' : 'Login'}

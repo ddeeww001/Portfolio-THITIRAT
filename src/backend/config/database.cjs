@@ -33,6 +33,7 @@ function initializeDatabase() {
       birthday TEXT,
       introduce TEXT,
       roles TEXT,
+      socials TEXT,
       technical_skills TEXT,
       tools TEXT,
       languages TEXT,
