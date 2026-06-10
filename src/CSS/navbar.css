@@ -59,17 +59,20 @@
   box-shadow: var(--shadow-glow);
 }
 
-/* Profile Button */
-.navbar button.profile-btn {
+/* Profile Link/Button */
+.profile-btn {
   padding: 4px;
   margin-left: 8px;
   background: transparent;
   border: 2px solid var(--border-subtle);
   border-radius: 50%;
   transition: all var(--transition-base);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.navbar button.profile-btn:hover {
+.profile-btn:hover {
   border-color: var(--accent-purple-light);
   transform: scale(1.05);
   box-shadow: var(--shadow-glow);

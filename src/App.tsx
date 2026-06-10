@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
-import './App.css';
-import './variables.css';
-import './navbar.css';
-import './home.css';
-import './profile.css';
-import './experience.css';
+import './CSS/App.css';
+import './CSS/variables.css';
+import './CSS/navbar.css';
+import './CSS/home.css';
+import './CSS/profile.css';
+import './CSS/experience.css';
 
 import Experience from './frontend/showExperience';
 import { Profile, myDetailsData } from './frontend/Personal';
@@ -109,11 +109,6 @@ const HeroSection = () => {
           </div>
         </div>
       </div>
-      <div className="hero-bg-decoration">
-        <div className="decoration-circle circle-1"></div>
-        <div className="decoration-circle circle-2"></div>
-        <div className="decoration-circle circle-3"></div>
-      </div>
     </section>
   );
 };
@@ -124,13 +119,16 @@ const PortfolioPage = () => {
       <Navbar />
       <main className="main-content">
         <HeroSection />
+        
         <section id="experience" className="section experience-section">
           <Experience />
         </section>
+        
         <section id="profile" className="section profile-section">
           <Profile data={myDetailsData} />
         </section>
       </main>
+
       <footer className="footer">
         <div className="footer-content">
           <p>© 2026 THITIRAT SIRISAWAD. All rights reserved.</p>
@@ -150,6 +148,13 @@ function App() {
   return (
     <Router>
       <div className="app-container">
+        {/* Persistent background decoration for all pages */}
+        <div className="bg-decoration">
+          <div className="decoration-circle circle-1"></div>
+          <div className="decoration-circle circle-2"></div>
+          <div className="decoration-circle circle-3"></div>
+        </div>
+
         <Routes>
           <Route path="/" element={<PortfolioPage />} />
           <Route path="/login" element={<Login />} />
@@ -160,6 +165,3 @@ function App() {
 }
 
 export default App;
-
-
-// Made with Bob

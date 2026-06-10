@@ -1,7 +1,7 @@
 // showExperience.tsx
 import { projectsDatabase, type ProjectData } from '../data/projectsData'; // Import from centralized database
 import { ProjectCart } from './Experience'; // Import component
-import '../experience.css';
+import '../CSS/experience.css';
 
 function ShowExperience() {
   return (

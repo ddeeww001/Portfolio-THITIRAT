@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
-import '../login.css';
-import '../variables.css';
+import '../CSS/login.css';
+import '../CSS/variables.css';
 
 const Login: React.FC = () => {
   const [username, setUsername] = useState('');
