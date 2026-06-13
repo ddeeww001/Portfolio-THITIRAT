@@ -1,13 +1,9 @@
-
-// Import data from centralized database
-import { profileDatabase, type ProfileData } from '../data/profileData';
+// Personal.tsx
+import type { ProfileContent } from '../types/portfolio';
 import profileImg from '../picture/profile.jpg';
 
-// Export for backward compatibility
-export const myDetailsData = profileDatabase;
-
 // Main Profile Component
-export const Profile = ({ data }: { data: ProfileData }) => {
+export const Profile = ({ data }: { data: ProfileContent }) => {
   return (
     <div className="profile-page-wrapper">
       <div className="profile-card-container">
@@ -21,7 +17,7 @@ export const Profile = ({ data }: { data: ProfileData }) => {
           <h2 className="profile-name">{data.name}</h2>
           
           <div className="profile-roles">
-            {data.role.map((role, index) => (
+            {data.role && data.role.map((role, index) => (
               <span key={index} className="role-badge">{role}</span>
             ))}
           </div>
@@ -47,15 +43,15 @@ export const Profile = ({ data }: { data: ProfileData }) => {
           <div className="sidebar-section">
             <h3>SOCIALS</h3>
             <ul className="social-list">
-              {data.socials.map((item, index) => (
+              {data.socials && data.socials.map((item, index) => (
                 <li key={index}>
-                  <span className="social-label">{item.label}:</span> 
-                  {item.link ? (
-                    <a href={item.link} target="_blank" rel="noreferrer" className="social-link">
-                      {item.value} <i className="bi bi-box-arrow-up-right"></i>
+                  <span className="social-label">{item.platform}:</span> 
+                  {item.url ? (
+                    <a href={item.url} target="_blank" rel="noreferrer" className="social-link">
+                      {item.username || item.platform} <i className="bi bi-box-arrow-up-right"></i>
                     </a>
                   ) : (
-                    <span className="social-value">{item.value}</span>
+                    <span className="social-value">{item.username || item.platform}</span>
                   )}
                 </li>
               ))}
@@ -76,9 +72,9 @@ export const Profile = ({ data }: { data: ProfileData }) => {
           <section className="content-section">
             <h3 className="section-header">TECHNICAL SKILLS</h3>
             <div className="skills-grid">
-              {data.technicalSkills.map((skill, index) => (
+              {data.technicalSkills && data.technicalSkills.map((s, index) => (
                 <div key={index} className="skill-tag technical">
-                  {skill}
+                  {s.skill} <span style={{ fontSize: '0.7rem', opacity: 0.7 }}>({s.level})</span>
                 </div>
               ))}
             </div>
@@ -88,7 +84,7 @@ export const Profile = ({ data }: { data: ProfileData }) => {
           <section className="content-section">
             <h3 className="section-header">TOOLS & SOFTWARE</h3>
             <div className="skills-grid">
-              {data.tools.map((tool, index) => (
+              {data.tools && data.tools.map((tool, index) => (
                 <div key={index} className="skill-tag tool">
                   {tool}
                 </div>
@@ -100,7 +96,7 @@ export const Profile = ({ data }: { data: ProfileData }) => {
           <section className="content-section">
             <h3 className="section-header">LANGUAGES</h3>
             <div className="language-list">
-              {data.languages.map((lang, index) => (
+              {data.languages && data.languages.map((lang, index) => (
                 <div key={index} className="lang-item">
                   <span className="lang-name">{lang.lang}</span>
                   <span className="lang-dot">•</span>
@@ -114,7 +110,7 @@ export const Profile = ({ data }: { data: ProfileData }) => {
           <section className="content-section">
             <h3 className="section-header">CERTIFICATIONS</h3>
             <ul className="cert-list">
-              {data.certifications.map((cert, index) => (
+              {data.certifications && data.certifications.map((cert, index) => (
                 <li key={index} className="cert-item">
                   <i className="bi bi-patch-check-fill cert-icon"></i>
                   <span>{cert}</span>

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import './CSS/App.css';
 import './CSS/variables.css';
@@ -12,6 +12,7 @@ import { Profile } from './frontend/Personal';
 import Login from './frontend/Login';
 import AdminDashboard from './frontend/AdminDashboard';
 import profileImg from './picture/profile.jpg';
+import type { HomeContent, ProfileContent, ProjectExperience } from './types/portfolio';
 
 // Smooth scroll navigation
 const scrollToSection = (sectionId: string) => {
@@ -96,15 +97,12 @@ const Navbar = ({ isAdmin }: { isAdmin: boolean }) => {
 };
 
 // Hero Section with dynamic data
-const HeroSection = ({ data }: { data: any }) => {
-  const [isVisible, setIsVisible] = useState(false);
-  useEffect(() => { setIsVisible(true); }, []);
-
+const HeroSection = ({ data }: { data: HomeContent | null }) => {
   if (!data) return <div style={{ height: '100vh' }}></div>;
 
   return (
     <section id="home" className="section hero-section">
-      <div className={`hero-glass-card ${isVisible ? 'fade-in' : ''}`}>
+      <div className="hero-glass-card fade-in">
         <div className="hero-content">
           <p className="greeting animate-slide-down">
             <i className="bi bi-hand-wave"></i> {data.greeting}
@@ -127,27 +125,27 @@ const HeroSection = ({ data }: { data: any }) => {
 };
 
 const PortfolioPage = ({ isAdmin, onLogout }: { isAdmin: boolean, onLogout: () => void }) => {
-  const [homeData, setHomeData] = useState(null);
-  const [profileData, setProfileData] = useState(null);
+  const [homeData, setHomeData] = useState<HomeContent | null>(null);
+  const [profileData, setProfileData] = useState<ProfileContent | null>(null);
+  const [projectsData, setProjectsData] = useState<ProjectExperience[]>([]);
 
   useEffect(() => {
-    const fetchData = async (url: string, setter: any) => {
+    const fetchData = async <T,>(url: string, setter: (data: T) => void) => {
       try {
         const res = await fetch(url);
         const contentType = res.headers.get("content-type");
         if (res.ok && contentType && contentType.includes("application/json")) {
           const data = await res.json();
           setter(data);
-        } else {
-          console.error(`Error fetching ${url}: Not a JSON response`);
         }
       } catch (err) {
         console.error(`Failed to fetch from ${url}:`, err);
       }
     };
 
-    fetchData('http://localhost:5000/api/home', setHomeData);
-    fetchData('http://localhost:5000/api/profile', setProfileData);
+    fetchData<HomeContent>('/api/home', setHomeData);
+    fetchData<ProfileContent>('/api/profile', setProfileData);
+    fetchData<ProjectExperience[]>('/api/projects', setProjectsData);
   }, []);
 
   return (
@@ -157,7 +155,7 @@ const PortfolioPage = ({ isAdmin, onLogout }: { isAdmin: boolean, onLogout: () =
         <HeroSection data={homeData} />
         
         <section id="experience" className="section experience-section">
-          <Experience />
+          <Experience data={projectsData} />
         </section>
         
         <section id="profile" className="section profile-section">
@@ -199,10 +197,10 @@ function App() {
 
   useEffect(() => {
     const user = localStorage.getItem('adminUser');
-    if (user) {
+    if (user && !isAdmin) {
       setIsAdmin(true);
     }
-  }, []);
+  }, [isAdmin]);
 
   const handleLogout = () => {
     localStorage.removeItem('adminUser');

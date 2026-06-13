@@ -1,3 +1,5 @@
+const https = require('https');
+const fs = require('fs');
 const path = require('path');
 require('dotenv').config({ path: path.resolve(__dirname, '../../.env') });
 const express = require('express');
@@ -9,6 +11,19 @@ const db = require('./config/database.cjs');
 const app = express();
 const PORT = process.env.BACKEND_PORT || 5000;
 const JWT_SECRET = process.env.JWT_SECRET || 'fallback_secret';
+
+// SSL Certificate Options
+let httpsOptions;
+try {
+  httpsOptions = {
+    key: fs.readFileSync(path.join(__dirname, 'certs/key.pem')),
+    cert: fs.readFileSync(path.join(__dirname, 'certs/cert.pem'))
+  };
+} catch (err) {
+  console.error('[SECURITY ERROR] SSL Certificates (key.pem/cert.pem) not found in src/backend/certs/');
+  console.log('Please generate self-signed certificates for local development:');
+  console.log('openssl req -x509 -newkey rsa:4096 -keyout src/backend/certs/key.pem -out src/backend/certs/cert.pem -days 365 -nodes');
+}
 
 app.use(cors());
 app.use(express.json());
@@ -152,7 +167,8 @@ app.post('/api/profile', authenticateToken, (req, res) => {
 
 // --- Projects (Experience) Routes ---
 app.get('/api/projects', (req, res) => {
-  db.all('SELECT * FROM projects ORDER BY id DESC', (err, rows) => {
+  // Only get active projects
+  db.all('SELECT * FROM projects WHERE is_deleted = 0 ORDER BY id DESC', (err, rows) => {
     if (err) return res.status(500).json({ error: err.message });
     rows.forEach(row => {
       row.role = JSON.parse(row.role || '[]');
@@ -166,17 +182,54 @@ app.get('/api/projects', (req, res) => {
 
 app.post('/api/projects', authenticateToken, (req, res) => {
   const data = req.body;
-  db.run(
-    `INSERT INTO projects (title, date, role, details, link, tags) VALUES (?, ?, ?, ?, ?, ?)`,
-    [
-      data.title, data.date, JSON.stringify(data.role), 
-      JSON.stringify(data.details), JSON.stringify(data.link), JSON.stringify(data.tags)
-    ],
-    function(err) {
-      if (err) return res.status(500).json({ error: err.message });
-      res.json({ message: 'Project added', id: this.lastID });
-    }
-  );
+  const { id, title, date, role, details, link, tags, image_url, description } = data;
+
+  if (id) {
+    // 1. BACKUP old data first
+    db.get('SELECT * FROM projects WHERE id = ?', [id], (err, oldRow) => {
+      if (oldRow) {
+        db.run(
+          'INSERT INTO history_log (table_name, record_id, old_data, action_type) VALUES (?, ?, ?, ?)',
+          ['projects', id, JSON.stringify(oldRow), 'UPDATE']
+        );
+      }
+      
+      // 2. UPDATE existing project
+      db.run(
+        `UPDATE projects SET title=?, date=?, role=?, details=?, link=?, tags=?, image_url=?, description=? WHERE id=?`,
+        [
+          title, date, JSON.stringify(role), JSON.stringify(details), 
+          JSON.stringify(link), JSON.stringify(tags), image_url, description, id
+        ],
+        function(err) {
+          if (err) return res.status(500).json({ error: err.message });
+          res.json({ message: 'Project updated and old version archived' });
+        }
+      );
+    });
+  } else {
+    // ... INSERT new project logic
+    db.run(
+      `INSERT INTO projects (title, date, role, details, link, tags, image_url, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+      [
+        title, date, JSON.stringify(role), JSON.stringify(details), 
+        JSON.stringify(link), JSON.stringify(tags), image_url, description
+      ],
+      function(err) {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json({ message: 'Project added', id: this.lastID });
+      }
+    );
+  }
+});
+
+app.delete('/api/projects/:id', authenticateToken, (req, res) => {
+  const { id } = req.params;
+  // Soft Delete: Just mark as is_deleted = 1
+  db.run('UPDATE projects SET is_deleted = 1 WHERE id = ?', [id], function(err) {
+    if (err) return res.status(500).json({ error: err.message });
+    res.json({ message: 'Project archived successfully (Soft Delete)' });
+  });
 });
 
 // Catch-all for undefined routes
@@ -184,10 +237,19 @@ app.use((req, res) => {
   res.status(404).json({ error: `Route ${req.originalUrl} not found` });
 });
 
-app.listen(PORT, () => {
-  console.log(`Backend server is running on http://localhost:${PORT}`);
-  console.log(`JWT secret loaded: ${JWT_SECRET !== 'fallback_secret' ? 'YES' : 'NO'}`);
-});
+// Replace app.listen with https.createServer
+if (httpsOptions) {
+  https.createServer(httpsOptions, app).listen(PORT, () => {
+    console.log(`[SECURE] Backend server is running on https://localhost:${PORT}`);
+    console.log(`JWT secret loaded: ${JWT_SECRET !== 'fallback_secret' ? 'YES' : 'NO'}`);
+  });
+} else {
+  // Fallback to HTTP but warn the user
+  app.listen(PORT, () => {
+    console.warn(`[WARNING] SSL certs missing. Falling back to http://localhost:${PORT}`);
+    console.log('Run the openssl command above to enable HTTPS.');
+  });
+}
 
 // Prevent process from exiting on uncaught errors
 process.on('uncaughtException', (err) => {

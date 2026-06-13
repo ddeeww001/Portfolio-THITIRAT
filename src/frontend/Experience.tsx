@@ -1,12 +1,8 @@
 // Experience.tsx
-// Import types from centralized database
-import { type ProjectData, type LinkItem } from '../data/projectsData';
 import { useState } from 'react';
+import type { ProjectExperience, LinkItem } from '../types/portfolio';
 
-// Re-export for backward compatibility
-export type { ProjectData, LinkItem };
-
-export const ProjectCart = ({ data }: { data: ProjectData }) => {
+export const ProjectCart = ({ data }: { data: ProjectExperience }) => {
   const [imageLoaded, setImageLoaded] = useState<{ [key: string]: boolean }>({});
   const [imageError, setImageError] = useState<{ [key: string]: boolean }>({});
 
@@ -60,7 +56,7 @@ export const ProjectCart = ({ data }: { data: ProjectData }) => {
 
       {/* Project Links with Preview */}
       <div className="link-preview">
-        {data.link.map((item, index) => (
+        {data.link && data.link.map((item: LinkItem, index: number) => (
           <a 
             key={index} 
             href={item.url} 
@@ -113,5 +109,3 @@ export const ProjectCart = ({ data }: { data: ProjectData }) => {
     </div>
   );
 };
-
-// Made with Bob

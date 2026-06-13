@@ -57,6 +57,16 @@ function initializeDatabase() {
       username TEXT UNIQUE,
       password TEXT
     )`);
+
+    // 5. History Log Table (For keeping old data)
+    db.run(`CREATE TABLE IF NOT EXISTS history_log (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      table_name TEXT,
+      record_id INTEGER,
+      old_data TEXT,
+      action_type TEXT, -- 'UPDATE' or 'DELETE'
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    )`);
     
     console.log('Database tables initialized.');
   });

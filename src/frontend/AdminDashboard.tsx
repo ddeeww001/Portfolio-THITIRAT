@@ -1,186 +1,146 @@
-
-import React, { useState, useEffect } from 'react';
-import '../CSS/login.css'; // Reuse glassmorphism styles
+import React, { useState, useEffect, useCallback } from 'react';
 import '../CSS/variables.css';
+import '../CSS/admin.css';
+import AdminHome from './admin/AdminHome';
+import AdminProfile from './admin/AdminProfile';
+import AdminExperience from './admin/AdminExperience';
+import type { HomeContent, ProfileContent, ProjectExperience } from '../types/portfolio';
 
 const AdminDashboard: React.FC = () => {
   const [activeTab, setActiveSection] = useState<'home' | 'profile' | 'projects'>('home');
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
 
-  // Form States
-  const [homeData, setHomeData] = useState<any>(null);
-  const [profileData, setProfileData] = useState<any>(null);
-  const [projects, setProjects] = useState<any[]>([]);
+  const [homeData, setHomeData] = useState<HomeContent | null>(null);
+  const [profileData, setProfileData] = useState<ProfileContent | null>(null);
+  const [projects, setProjects] = useState<ProjectExperience[]>([]);
+
+  const fetchHome = useCallback(async () => {
+    try {
+      const res = await fetch('/api/home');
+      if (res.ok) setHomeData(await res.json());
+    } catch (e) { console.error(e); }
+  }, []);
+
+  const fetchProfile = useCallback(async () => {
+    try {
+      const res = await fetch('/api/profile');
+      if (res.ok) setProfileData(await res.json());
+    } catch (e) { console.error(e); }
+  }, []);
+
+  const fetchProjects = useCallback(async () => {
+    try {
+      const res = await fetch('/api/projects');
+      if (res.ok) setProjects(await res.json());
+    } catch (e) { console.error(e); }
+  }, []);
 
   useEffect(() => {
     fetchHome();
     fetchProfile();
     fetchProjects();
-  }, []);
+  }, [fetchHome, fetchProfile, fetchProjects]);
 
-  const fetchHome = async () => {
-    try {
-      const res = await fetch('http://localhost:5000/api/home');
-      if (res.ok && res.headers.get("content-type")?.includes("application/json")) {
-        const data = await res.json();
-        setHomeData(data);
-      }
-    } catch (e) { console.error("Error fetching home", e); }
-  };
-
-  const fetchProfile = async () => {
-    try {
-      const res = await fetch('http://localhost:5000/api/profile');
-      if (res.ok && res.headers.get("content-type")?.includes("application/json")) {
-        const data = await res.json();
-        setProfileData(data);
-      }
-    } catch (e) { console.error("Error fetching profile", e); }
-  };
-
-  const fetchProjects = async () => {
-    try {
-      const res = await fetch('http://localhost:5000/api/projects');
-      if (res.ok && res.headers.get("content-type")?.includes("application/json")) {
-        const data = await res.json();
-        setProjects(data);
-      }
-    } catch (e) { console.error("Error fetching projects", e); }
-  };
-
-
-  const handleUpdateHome = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleUpdate = async (endpoint: string, data: any) => {
     setLoading(true);
     const token = localStorage.getItem('adminToken');
     try {
-      const res = await fetch('http://localhost:5000/api/home', {
+      const res = await fetch(`/api/${endpoint}`, {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify(homeData),
+        body: JSON.stringify(data),
       });
-      if (res.status === 401 || res.status === 403) {
-        alert('Session expired. Please login again.');
-        window.location.href = '/login';
-        return;
+      if (res.ok) {
+        setMessage('บันทึกข้อมูลเรียบร้อยแล้ว!');
+        setTimeout(() => setMessage(''), 3000);
+        if (endpoint === 'home') fetchHome();
+        if (endpoint === 'profile') fetchProfile();
+        if (endpoint === 'projects') fetchProjects();
       }
-      if (res.ok) setMessage('Home data updated successfully!');
-    } catch (err) { setMessage('Error updating home data'); }
+    } catch (err) { 
+      console.error(err);
+      setMessage('เกิดข้อผิดพลาดในการบันทึก'); 
+      setTimeout(() => setMessage(''), 3000);
+    }
     setLoading(false);
   };
 
-  const handleUpdateProfile = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
+  const handleDeleteProject = async (id: number) => {
+    if (!window.confirm('คุณแน่ใจหรือไม่ว่าต้องการลบโปรเจกต์นี้?')) return;
+    
     const token = localStorage.getItem('adminToken');
     try {
-      const res = await fetch('http://localhost:5000/api/profile', {
-        method: 'POST',
-        headers: { 
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify(profileData),
+      const res = await fetch(`/api/projects/${id}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${token}` }
       });
-      if (res.status === 401 || res.status === 403) {
-        alert('Session expired. Please login again.');
-        window.location.href = '/login';
-        return;
+      if (res.ok) {
+        setMessage('ลบโปรเจกต์เรียบร้อยแล้ว');
+        setTimeout(() => setMessage(''), 3000);
+        fetchProjects();
       }
-      if (res.ok) setMessage('Profile updated successfully!');
-    } catch (err) { setMessage('Error updating profile'); }
-    setLoading(false);
+    } catch (e) { 
+      console.error(e);
+      setMessage('เกิดข้อผิดพลาดในการลบ'); 
+    }
   };
 
   return (
-    <div className="login-container" style={{ padding: '100px 20px', alignItems: 'flex-start' }}>
-      <div className="login-glass-card" style={{ maxWidth: '900px', width: '100%' }}>
-        <div className="login-header">
-          <h2>Admin Dashboard</h2>
-          <p>จัดการเนื้อหาในเว็บไซต์ของคุณ</p>
-        </div>
-
-        <div className="dashboard-tabs" style={{ display: 'flex', gap: '10px', marginBottom: '20px' }}>
-          <button className={`btn-secondary ${activeTab === 'home' ? 'active' : ''}`} onClick={() => setActiveSection('home')}>Home</button>
-          <button className={`btn-secondary ${activeTab === 'profile' ? 'active' : ''}`} onClick={() => setActiveSection('profile')}>Profile</button>
-          <button className={`btn-secondary ${activeTab === 'projects' ? 'active' : ''}`} onClick={() => setActiveSection('projects')}>Projects</button>
-        </div>
-
-        {message && <p className="success-message" style={{ color: '#4BB543', textAlign: 'center', marginBottom: '15px' }}>{message}</p>}
-
-        {activeTab === 'home' && homeData && (
-          <form className="login-form" onSubmit={handleUpdateHome}>
-            <div className="form-group">
-              <label>Greeting</label>
-              <input type="text" value={homeData.greeting} onChange={(e) => setHomeData({...homeData, greeting: e.target.value})} />
-            </div>
-            <div className="form-group">
-              <label>Name</label>
-              <input type="text" value={homeData.name} onChange={(e) => setHomeData({...homeData, name: e.target.value})} />
-            </div>
-            <div className="form-group">
-              <label>Role</label>
-              <input type="text" value={homeData.role} onChange={(e) => setHomeData({...homeData, role: e.target.value})} />
-            </div>
-            <div className="form-group">
-              <label>Description</label>
-              <textarea 
-                style={{ background: 'var(--bg-card)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-md)', padding: '12px', color: 'white' }}
-                rows={4}
-                value={homeData.description} 
-                onChange={(e) => setHomeData({...homeData, description: e.target.value})} 
-              />
-            </div>
-            <button type="submit" className="login-btn" disabled={loading}>Save Home Changes</button>
-          </form>
-        )}
-
-        {activeTab === 'profile' && profileData && (
-          <form className="login-form" onSubmit={handleUpdateProfile}>
-             <div className="form-group">
-              <label>Introduce</label>
-              <textarea 
-                style={{ background: 'var(--bg-card)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-md)', padding: '12px', color: 'white' }}
-                rows={4}
-                value={profileData.introduce} 
-                onChange={(e) => setProfileData({...profileData, introduce: e.target.value})} 
-              />
-            </div>
-            <div className="form-group">
-              <label>Email</label>
-              <input type="email" value={profileData.email} onChange={(e) => setProfileData({...profileData, email: e.target.value})} />
-            </div>
-            <div className="form-group">
-              <label>Phone</label>
-              <input type="text" value={profileData.phone} onChange={(e) => setProfileData({...profileData, phone: e.target.value})} />
-            </div>
-            <button type="submit" className="login-btn" disabled={loading}>Save Profile Changes</button>
-          </form>
-        )}
-
-        {activeTab === 'projects' && (
-          <div className="projects-list">
-            <p style={{ color: 'var(--text-secondary)', marginBottom: '15px' }}>รายการโปรเจกต์ปัจจุบัน ({projects.length})</p>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-              {projects.map((p) => (
-                <div key={p.id} style={{ background: 'var(--bg-card)', padding: '15px', borderRadius: 'var(--radius-md)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span>{p.title}</span>
-                  <button className="text-link-btn" style={{ color: '#ff4d4d' }}>Delete</button>
-                </div>
-              ))}
-            </div>
-            <button className="login-btn" style={{ marginTop: '20px' }}>Add New Project</button>
+    <div className="admin-layout">
+      <aside className="admin-sidebar">
+        <div className="admin-logo">PORTFOLIO ADMIN</div>
+        <nav className="sidebar-nav">
+          <div className={`nav-item ${activeTab === 'home' ? 'active' : ''}`} onClick={() => setActiveSection('home')}>
+            <i className="bi bi-house-door"></i> <span className="nav-text">หน้า Home</span>
           </div>
-        )}
-
-        <div className="back-home" style={{ marginTop: '30px' }}>
-          <a href="/">← Back to Portfolio</a>
+          <div className={`nav-item ${activeTab === 'profile' ? 'active' : ''}`} onClick={() => setActiveSection('profile')}>
+            <i className="bi bi-person"></i> <span className="nav-text">ข้อมูล Profile</span>
+          </div>
+          <div className={`nav-item ${activeTab === 'projects' ? 'active' : ''}`} onClick={() => setActiveSection('projects')}>
+            <i className="bi bi-briefcase"></i> <span className="nav-text">ผลงาน (Projects)</span>
+          </div>
+        </nav>
+        <div className="logout-btn" onClick={() => { localStorage.removeItem('adminToken'); window.location.href='/'; }}>
+          <i className="bi bi-box-arrow-right"></i> <span className="nav-text">ออกจากระบบ</span>
         </div>
-      </div>
+      </aside>
+
+      <main className="admin-main">
+        {message && <div className="toast-msg">{message}</div>}
+        
+        <header style={{ marginBottom: 'var(--spacing-lg)' }}>
+          <h1>{activeTab === 'home' ? 'จัดการหน้า Home' : activeTab === 'profile' ? 'จัดการข้อมูลส่วนตัว' : 'จัดการผลงานและประสบการณ์'}</h1>
+          <p style={{ color: 'var(--text-secondary)' }}>ปรับแต่งเนื้อหาในเว็บไซต์ของคุณได้ที่นี่</p>
+        </header>
+
+        <div className="admin-content-card">
+          {activeTab === 'home' && (
+            <AdminHome 
+              data={homeData} 
+              onSave={(d) => handleUpdate('home', d)} 
+              loading={loading} 
+            />
+          )}
+          {activeTab === 'profile' && (
+            <AdminProfile 
+              data={profileData} 
+              onSave={(d) => handleUpdate('profile', d)} 
+              loading={loading} 
+            />
+          )}
+          {activeTab === 'projects' && (
+            <AdminExperience 
+              projects={projects} 
+              onAdd={(p) => handleUpdate('projects', p)} 
+              onDelete={handleDeleteProject} 
+            />
+          )}
+        </div>
+      </main>
     </div>
   );
 };

@@ -19,10 +19,10 @@ const Login: React.FC = () => {
 
   const checkBackend = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/health');
+      const res = await fetch('/api/health');
       if (res.ok) setBackendStatus('online');
       else setBackendStatus('offline');
-    } catch (e) {
+    } catch {
       setBackendStatus('offline');
     }
   };
@@ -34,7 +34,7 @@ const Login: React.FC = () => {
     
     try {
       // Direct call to port 5000
-      const response = await fetch('http://localhost:5000/api/login', {
+      const response = await fetch('/api/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
