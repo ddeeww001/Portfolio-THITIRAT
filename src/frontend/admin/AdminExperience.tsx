@@ -27,7 +27,13 @@ const AdminExperience: React.FC<AdminExperienceProps> = ({ projects, onAdd, onDe
 
   const handleEdit = (project: ProjectExperience) => {
     setEditingProject(project);
-    setFormData({ ...project });
+    setFormData({
+      ...project,
+      role: Array.isArray(project.role) ? project.role : [],
+      details: Array.isArray(project.details) ? project.details : [],
+      link: Array.isArray(project.link) ? project.link : [],
+      tags: Array.isArray(project.tags) ? project.tags : []
+    });
     setIsAdding(false);
   };
 
@@ -112,7 +118,7 @@ const AdminExperience: React.FC<AdminExperienceProps> = ({ projects, onAdd, onDe
               </div>
 
               <h4 style={{ margin: '20px 0 10px', color: 'var(--text-primary)' }}>บทบาท (Roles)</h4>
-              {formData.role.map((r, i) => (
+              {formData.role && formData.role.map((r, i) => (
                 <div key={i} className="array-item">
                   <input type="text" className="form-control" value={r} onChange={(e) => handleArrayChange('role', i, e.target.value)} />
                   <button type="button" className="btn-remove" onClick={() => handleRemoveItem('role', i)}><i className="bi bi-trash"></i></button>
@@ -121,7 +127,7 @@ const AdminExperience: React.FC<AdminExperienceProps> = ({ projects, onAdd, onDe
               <button type="button" className="btn-add" onClick={() => handleAddItem('role')}>+ เพิ่มบทบาท</button>
 
               <h4 style={{ margin: '20px 0 10px', color: 'var(--text-primary)' }}>รายละเอียด (Details)</h4>
-              {formData.details.map((d, i) => (
+              {formData.details && formData.details.map((d, i) => (
                 <div key={i} className="array-item">
                   <textarea className="form-control" value={d} onChange={(e) => handleArrayChange('details', i, e.target.value)} />
                   <button type="button" className="btn-remove" onClick={() => handleRemoveItem('details', i)}><i className="bi bi-trash"></i></button>
@@ -130,7 +136,7 @@ const AdminExperience: React.FC<AdminExperienceProps> = ({ projects, onAdd, onDe
               <button type="button" className="btn-add" onClick={() => handleAddItem('details')}>+ เพิ่มรายละเอียด</button>
 
               <h4 style={{ margin: '20px 0 10px', color: 'var(--text-primary)' }}>ลิงก์ (Links)</h4>
-              {formData.link.map((l, i) => (
+              {formData.link && formData.link.map((l, i) => (
                 <div key={i} className="array-item" style={{ flexDirection: 'column', alignItems: 'flex-start', border: '1px solid var(--glass-border)', padding: '10px', borderRadius: '8px', marginBottom: '10px' }}>
                   <div style={{ display: 'flex', width: '100%', gap: '10px', marginBottom: '5px' }}>
                     <input type="text" placeholder="Label (e.g. GitHub)" className="form-control" value={l.label} onChange={(e) => handleArrayChange('link', i, { ...l, label: e.target.value })} />
