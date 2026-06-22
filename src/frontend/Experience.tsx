@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+=======
+﻿// Experience.tsx
+import { type ProjectData, type LinkItem } from '../data/projectsData';
+>>>>>>> parent of 26484bd ( Revert docs(Portfolio_01): restructure project with centralized data management and unified dark theme This reverts commit e356d4d2d2afee6560399b0df809b44bb3977eb0.)
 import { useState } from 'react';
 import type { ProjectExperience, LinkItem } from '../types/portfolio';
 
@@ -119,6 +124,77 @@ export const ProjectCart = ({ data }: { data: ProjectExperience }) => {
           </div>
         )}
       </div>
+<<<<<<< HEAD
     </article>
+=======
+
+      <div className="project-details">
+        <ul>
+          {data.details.map((detail, index) => (
+            <li key={index}>{detail}</li>
+          ))}
+        </ul>
+      </div>
+
+      {data.caseStudy && (
+        <div className="case-study-section">
+          <button 
+            className="toggle-case-study"
+            onClick={() => setShowCaseStudy(!showCaseStudy)}
+          >
+            <i className={`bi ${showCaseStudy ? 'bi-dash-circle' : 'bi-plus-circle'}`}></i>
+            {showCaseStudy ? " Close Case Study" : " View Case Study & Storytelling"}
+          </button>
+          
+          {showCaseStudy && (
+            <div className="case-study-content animate-fade-in">
+              <div className="case-grid">
+                <div className="case-item">
+                  <h4><i className="bi bi-exclamation-octagon text-danger"></i> Problem</h4>
+                  <p>{data.caseStudy.problem}</p>
+                </div>
+                <div className="case-item">
+                  <h4><i className="bi bi-check2-circle text-success"></i> Solution</h4>
+                  <p>{data.caseStudy.solution}</p>
+                </div>
+                <div className="case-item">
+                  <h4><i className="bi bi-tools"></i> Tools Used</h4>
+                  <p>{data.caseStudy.toolsUsed}</p>
+                </div>
+                <div className="case-item">
+                  <h4><i className="bi bi-lightbulb"></i> What I Learned</h4>
+                  <p>{data.caseStudy.learning}</p>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
+      <div className="project-links-grid">
+        {data.link.map((item, index) => (
+          <a key={index} href={item.url} target="_blank" rel="noreferrer" className="project-link-item">
+            <div className="preview-card">
+              {!imageLoaded[item.url] && !imageError[item.url] && (
+                <div className="image-skeleton"><div className="skeleton-shimmer"></div></div>
+              )}
+              <img
+                src={`https://api.microlink.io/?url=${encodeURIComponent(item.url)}&screenshot=true&embed=screenshot.url`}
+                alt={item.label}
+                className={`preview-image ${imageLoaded[item.url] ? 'loaded' : ''}`}
+                onLoad={() => handleImageLoad(item.url)}
+                onError={(e) => handleImageError(e, item.url)}
+                loading="lazy"
+              />
+              <div className="link-info">
+                <span className="link-label">{item.label}</span>
+                <i className="bi bi-box-arrow-up-right"></i>
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+>>>>>>> parent of 26484bd ( Revert docs(Portfolio_01): restructure project with centralized data management and unified dark theme This reverts commit e356d4d2d2afee6560399b0df809b44bb3977eb0.)
   );
 };

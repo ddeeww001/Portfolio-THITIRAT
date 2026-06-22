@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { useEffect, useState, useMemo } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useLocation, Navigate } from 'react-router-dom';
 import './CSS/App.css';
@@ -7,6 +8,15 @@ import './CSS/home.css';
 import './CSS/profile.css';
 import './CSS/experience.css';
 import './CSS/showExperience.css';
+=======
+﻿import { useEffect, useState } from 'react';
+import './App.css';
+import './variables.css';
+import './navbar.css';
+import './home.css';
+import './profile.css';
+import './experience.css';
+>>>>>>> parent of 26484bd ( Revert docs(Portfolio_01): restructure project with centralized data management and unified dark theme This reverts commit e356d4d2d2afee6560399b0df809b44bb3977eb0.)
 
 import Experience from './frontend/showExperience';
 import { Profile } from './frontend/Personal';

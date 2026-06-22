@@ -1,9 +1,21 @@
+<<<<<<< HEAD
 // Personal.tsx
 import type { ProfileContent } from '../types/portfolio';
 import profileImg from '../picture/profile.jpg';
 
 // Main Profile Component
 export const Profile = ({ data }: { data: ProfileContent }) => {
+=======
+﻿// Import data from centralized database
+import { profileDatabase, type ProfileData } from '../data/profileData';
+import profileImg from '../picture/profile.jpg';
+
+// Export for backward compatibility
+export const myDetailsData = profileDatabase;
+
+// Main Profile Component
+export const Profile = ({ data }: { data: ProfileData }) => {
+>>>>>>> parent of 26484bd ( Revert docs(Portfolio_01): restructure project with centralized data management and unified dark theme This reverts commit e356d4d2d2afee6560399b0df809b44bb3977eb0.)
   return (
     <div className="profile-page-wrapper">
       <div className="profile-card-container">

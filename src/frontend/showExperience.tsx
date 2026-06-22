@@ -1,8 +1,15 @@
+<<<<<<< HEAD
 import { useState, useMemo } from 'react';
 import type { ProjectExperience } from '../types/portfolio';
 import { ProjectCart } from './Experience';
 import '../CSS/experience.css';
 import '../CSS/showExperience.css';
+=======
+﻿import { useState } from 'react';
+import { projectsDatabase, type ProjectData } from '../data/projectsData'; 
+import { ProjectCart } from './Experience'; 
+import '../experience.css';
+>>>>>>> parent of 26484bd ( Revert docs(Portfolio_01): restructure project with centralized data management and unified dark theme This reverts commit e356d4d2d2afee6560399b0df809b44bb3977eb0.)
 
 interface ShowExperienceProps {
   data: ProjectExperience[];
@@ -44,6 +51,7 @@ function ShowExperience({ data }: ShowExperienceProps) {
         <p>ผลงานและประสบการณ์ที่น่าสนใจ</p>
       </div>
 
+<<<<<<< HEAD
       <div className="experience-filter-bar">
         <button
           className={`filter-btn ${activeFilter === 'all' ? 'active' : ''}`}
@@ -65,6 +73,13 @@ function ShowExperience({ data }: ShowExperienceProps) {
       <div className="experience-grid">
         {filteredData.map((project: ProjectExperience) => (
           <ProjectCart key={project.id} data={project} />
+=======
+      <div className="projects-list">
+        {filteredProjects.map((project: ProjectData) => (
+          <section className="snap-section project-slide" key={project.id}>
+            <ProjectCart data={project} />
+          </section>
+>>>>>>> parent of 26484bd ( Revert docs(Portfolio_01): restructure project with centralized data management and unified dark theme This reverts commit e356d4d2d2afee6560399b0df809b44bb3977eb0.)
         ))}
       </div>
     </div>

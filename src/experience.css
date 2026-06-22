@@ -1,0 +1,260 @@
+﻿/* ========================================= */
+/* EXPERIENCE SECTION - UNIFIED THEME */
+/* ========================================= */
+
+.experience-presentation-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--spacing-xl) var(--spacing-md);
+  font-family: var(--font-body);
+}
+
+.experience-header-section {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.experience-header-section h1 {
+  color: var(--text-primary);
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 30px;
+  position: relative;
+}
+
+.experience-header-section h1::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 3px;
+  background: var(--primary-gradient);
+  border-radius: var(--radius-full);
+}
+
+/* ========================================= */
+/* FILTER BUTTONS */
+/* ========================================= */
+
+.filter-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.filter-btn {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  padding: 8px 20px;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  font-weight: 500;
+}
+
+.filter-btn:hover {
+  border-color: var(--accent-purple-light);
+  color: var(--text-primary);
+}
+
+.filter-btn.active {
+  background: var(--primary-gradient);
+  color: var(--text-primary);
+  border-color: transparent;
+  box-shadow: var(--shadow-glow);
+}
+
+/* ========================================= */
+/* PROJECT CARD */
+/* ========================================= */
+
+.projects-list {
+  width: 100%;
+  max-width: 1100px;
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+}
+
+.snap-section.project-slide {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 40px;
+  transition: all var(--transition-base);
+  box-shadow: var(--shadow-sm);
+}
+
+.snap-section.project-slide:hover {
+  border-color: var(--border-medium);
+  transform: translateY(-4px);
+  background: var(--bg-card-hover);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Updated Grid: 60% Text, 40% Image */
+.project-card-container {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 40px;
+  align-items: start;
+}
+
+/* ========================================= */
+/* PROJECT CONTENT (LEFT) */
+/* ========================================= */
+
+.project-header h2 {
+  font-size: 1.8rem;
+  margin-bottom: 12px;
+  background: var(--primary-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.project-date {
+  display: block;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+.project-role {
+  font-size: 1rem;
+  color: var(--accent-purple-light);
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.project-details ul {
+  list-style: none;
+  padding: 0;
+}
+
+.project-details li {
+  position: relative;
+  padding-left: 20px;
+  margin-bottom: 10px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.project-details li::before {
+  content: "→";
+  position: absolute;
+  left: 0;
+  color: var(--primary-purple);
+}
+
+/* ========================================= */
+/* PROJECT PREVIEW (RIGHT - THE "FRAME") */
+/* ========================================= */
+
+.project-links-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.preview-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  transition: all var(--transition-base);
+  /* Added padding to create the "Frame" look */
+  padding: 12px; 
+}
+
+.preview-card:hover {
+  border-color: var(--accent-purple-light);
+  transform: scale(1.02);
+}
+
+.preview-image {
+  width: 100%;
+  height: 180px; /* Controlled height */
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+  display: block;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  background: var(--bg-card);
+}
+
+.preview-image.loaded {
+  opacity: 1;
+}
+
+.link-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 4px 4px 4px;
+  color: var(--text-primary);
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+/* ========================================= */
+/* CASE STUDY SECTION */
+/* ========================================= */
+
+.case-study-section {
+  grid-column: 1 / -1;
+  margin-top: 30px;
+  padding-top: 30px;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.toggle-case-study {
+  background: transparent;
+  border: 1px solid var(--border-medium);
+  color: var(--text-secondary);
+  padding: 12px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  width: 100%;
+  transition: all var(--transition-base);
+}
+
+.toggle-case-study:hover {
+  border-color: var(--accent-purple-light);
+  color: var(--text-primary);
+  background: rgba(113, 41, 237, 0.05);
+}
+
+.case-study-content {
+  margin-top: 20px;
+  padding: 30px;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-subtle);
+}
+
+.case-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+}
+
+/* ========================================= */
+/* RESPONSIVE */
+/* ========================================= */
+
+@media (max-width: 900px) {
+  .project-card-container {
+    grid-template-columns: 1fr;
+  }
+  
+  .preview-image {
+    height: 220px;
+  }
+}
