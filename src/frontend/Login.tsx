@@ -85,7 +85,7 @@ const Login: React.FC = () => {
         
         <form className="login-form" onSubmit={handleLogin}>
           <div className="form-group">
-            <label htmlFor="username">Username</label>
+            <label htmlFor="username"><i className="bi bi-person"></i> Username</label>
             <input 
               type="text" 
               id="username" 
@@ -96,7 +96,7 @@ const Login: React.FC = () => {
           </div>
           
           <div className="form-group">
-            <label htmlFor="password">Password</label>
+            <label htmlFor="password"><i className="bi bi-lock"></i> Password</label>
             <input 
               type="password" 
               id="password" 
@@ -115,7 +115,7 @@ const Login: React.FC = () => {
         </form>
 
         <div className="back-home">
-          <a href="/">← Back to Portfolio</a>
+          <a href="/"><i className="bi bi-arrow-left"></i> Back to Portfolio</a>
         </div>
       </div>
 

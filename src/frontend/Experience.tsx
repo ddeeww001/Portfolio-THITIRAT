@@ -1,4 +1,3 @@
-// Experience.tsx
 import { useState } from 'react';
 import type { ProjectExperience, LinkItem } from '../types/portfolio';
 
@@ -13,10 +12,10 @@ export const ProjectCart = ({ data }: { data: ProjectExperience }) => {
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>, url: string) => {
     const target = e.currentTarget;
     setImageError(prev => ({ ...prev, [url]: true }));
-    
+
     target.style.objectFit = "contain";
     target.style.padding = "20px";
-    
+
     if (url.includes('drive.google')) {
       target.src = "https://upload.wikimedia.org/wikipedia/commons/d/da/Google_Drive_logo.png";
     } else if (url.includes('notion')) {
@@ -30,82 +29,96 @@ export const ProjectCart = ({ data }: { data: ProjectExperience }) => {
     }
   };
 
+  const categoryIcon = () => {
+    const tags = data.tags || [];
+    if (tags.some(t => t.toLowerCase().includes('ui') || t.toLowerCase().includes('ux') || t.toLowerCase().includes('design'))) {
+      return 'bi-palette';
+    }
+    if (tags.some(t => t.toLowerCase().includes('react') || t.toLowerCase().includes('vue') || t.toLowerCase().includes('frontend') || t.toLowerCase().includes('web'))) {
+      return 'bi-code-slash';
+    }
+    if (tags.some(t => t.toLowerCase().includes('figma'))) {
+      return 'bi-vector-pen';
+    }
+    return 'bi-folder2-open';
+  };
+
   return (
-    <div className="title">
-      {/* Project Header */}
-      <div className="project-header">
-        <h2>{data.title}</h2>
-        <h3 className="project-date">{data.date}</h3>
-        <h3 className="project-role">
-          {Array.isArray(data.role) ? data.role.join(' • ') : data.role}
-        </h3>
+    <article className="project-card">
+      <div className="project-card-image">
+        {!imageLoaded[data.image_url || ''] && !imageError[data.image_url || ''] && data.image_url && (
+          <div className="image-skeleton">
+            <div className="skeleton-shimmer"></div>
+          </div>
+        )}
+        {data.image_url && (
+          <img
+            src={data.image_url}
+            alt={data.title}
+            style={{
+              display: imageLoaded[data.image_url] || imageError[data.image_url] ? "block" : "none"
+            }}
+            onLoad={() => handleImageLoad(data.image_url)}
+            onError={(e) => handleImageError(e, data.image_url)}
+          />
+        )}
+        <div className="project-card-overlay">
+          <span className="project-card-category">
+            <i className={`bi ${categoryIcon()}`}></i>
+            {data.tags && data.tags.length > 0 ? data.tags[0] : 'Project'}
+          </span>
+        </div>
       </div>
 
-      {/* Project Details */}
-      {data.details && data.details.length > 0 && (
-        <div className="details">
-          <ul>
-            {data.details.map((detail, index) => (
-              <li className="project-grid" key={index}>
-                {detail}
+      <div className="project-card-body">
+        <div className="project-card-meta">
+          <span className="project-card-date">
+            <i className="bi bi-calendar3"></i> {data.date}
+          </span>
+          <span className="project-card-role">
+            {Array.isArray(data.role) ? data.role.join(' / ') : data.role}
+          </span>
+        </div>
+
+        <h3 className="project-card-title">{data.title}</h3>
+
+        {data.description && (
+          <p className="project-card-desc">{data.description}</p>
+        )}
+
+        {data.details && data.details.length > 0 && (
+          <ul className="project-card-details">
+            {data.details.slice(0, 3).map((detail, index) => (
+              <li key={index}>
+                <i className="bi bi-check-circle"></i> {detail}
               </li>
             ))}
           </ul>
-        </div>
-      )}
+        )}
 
-      {/* Project Links with Preview */}
-      <div className="link-preview">
-        {data.link && data.link.map((item: LinkItem, index: number) => (
-          <a 
-            key={index} 
-            href={item.url} 
-            target="_blank" 
-            rel="noreferrer"
-            className="preview-link"
-          >
-            <div className="preview-card">
-              {/* Loading skeleton */}
-              {!imageLoaded[item.url] && !imageError[item.url] && (
-                <div className="image-skeleton">
-                  <div className="skeleton-shimmer"></div>
-                </div>
-              )}
-              
-              {/* Actual image */}
-              <img
-                src={`https://api.microlink.io/?url=${encodeURIComponent(item.url)}&screenshot=true&embed=screenshot.url`}
-                alt={item.label}
-                style={{ 
-                  width: "100%", 
-                  height: "180px", 
-                  objectFit: "cover", 
-                  display: imageLoaded[item.url] || imageError[item.url] ? "block" : "none"
-                }}
-                onLoad={() => handleImageLoad(item.url)}
-                onError={(e) => handleImageError(e, item.url)}
-              />
-              
-              {/* Link label with icon */}
-              <div className="url-name">
-                <span>{item.label}</span>
-                <i className="bi bi-link-45deg link-icon"></i>
-              </div>
-            </div>
-          </a>
-        ))}
-      </div>
-
-      {/* Tags if available */}
-      {data.tags && data.tags.length > 0 && (
-        <div className="project-tags">
-          {data.tags.map((tag, index) => (
-            <span key={index} className="tag">
-              {tag}
-            </span>
+        <div className="project-card-links">
+          {data.link && data.link.map((item: LinkItem, index: number) => (
+            <a
+              key={index}
+              href={item.url}
+              target="_blank"
+              rel="noreferrer"
+              className="project-link-btn"
+            >
+              <i className="bi bi-box-arrow-up-right"></i>
+              <span>{item.label}</span>
+            </a>
           ))}
         </div>
-      )}
-    </div>
+
+        {data.tags && data.tags.length > 0 && (
+          <div className="project-card-tags">
+            {data.tags.map((tag, index) => (
+              <span key={index} className="card-tag">{tag}</span>
+            ))}
+          </div>
+        )}
+      </div>
+    </article>
   );
 };

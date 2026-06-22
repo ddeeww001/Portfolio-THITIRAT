@@ -1,11 +1,12 @@
 import { useEffect, useState, useMemo } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link, useLocation, Navigate } from 'react-router-dom';
 import './CSS/App.css';
 import './CSS/variables.css';
 import './CSS/navbar.css';
 import './CSS/home.css';
 import './CSS/profile.css';
 import './CSS/experience.css';
+import './CSS/showExperience.css';
 
 import Experience from './frontend/showExperience';
 import { Profile } from './frontend/Personal';
@@ -22,7 +23,7 @@ const scrollToSection = (sectionId: string) => {
   }
 };
 
-const Navbar = ({ isAdmin }: { isAdmin: boolean }) => {
+const Navbar = () => {
   const [activeSection, setActiveSection] = useState('home');
   const location = useLocation();
   const isLoginPage = location.pathname === '/login' || location.pathname === '/admin-dashboard';
@@ -73,20 +74,7 @@ const Navbar = ({ isAdmin }: { isAdmin: boolean }) => {
         >
           Profile
         </button>
-        <div className="navbar-right" style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-          {isAdmin && (
-            <Link to="/admin-dashboard" className="admin-badge" style={{ 
-              background: 'var(--primary-gradient)', 
-              color: 'white', 
-              padding: '4px 12px', 
-              borderRadius: 'var(--radius-full)',
-              fontSize: '0.7rem',
-              fontWeight: 'bold',
-              textDecoration: 'none'
-            }}>
-              Admin Dashboard
-            </Link>
-          )}
+        <div className="navbar-right" style={{ display: 'flex', alignItems: 'center' }}>
           <Link to="/login" className="profile-btn">
             <img alt="ddeeww_o_o" src={profileImg} className="navbar-profile-pic" />
           </Link>
@@ -150,7 +138,7 @@ const PortfolioPage = ({ isAdmin, onLogout }: { isAdmin: boolean, onLogout: () =
 
   return (
     <>
-      <Navbar isAdmin={isAdmin} />
+      <Navbar />
       <main className="main-content">
         <HeroSection data={homeData} />
         
@@ -193,17 +181,13 @@ const PortfolioPage = ({ isAdmin, onLogout }: { isAdmin: boolean, onLogout: () =
 };
 
 function App() {
-  const [isAdmin, setIsAdmin] = useState(false);
-
-  useEffect(() => {
-    const user = localStorage.getItem('adminUser');
-    if (user && !isAdmin) {
-      setIsAdmin(true);
-    }
-  }, [isAdmin]);
+  const [isAdmin, setIsAdmin] = useState(() => {
+    return !!localStorage.getItem('adminUser');
+  });
 
   const handleLogout = () => {
     localStorage.removeItem('adminUser');
+    localStorage.removeItem('adminToken');
     setIsAdmin(false);
     window.location.href = '/';
   };
@@ -219,8 +203,8 @@ function App() {
 
         <Routes>
           <Route path="/" element={<PortfolioPage isAdmin={isAdmin} onLogout={handleLogout} />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/admin-dashboard" element={isAdmin ? <AdminDashboard /> : <Login />} />
+          <Route path="/login" element={isAdmin ? <Navigate to="/admin-dashboard" replace /> : <Login />} />
+          <Route path="/admin-dashboard" element={isAdmin ? <AdminDashboard /> : <Navigate to="/login" replace />} />
         </Routes>
       </div>
     </Router>
