@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
-import '../CSS/login.css';
-import '../CSS/variables.css';
+import './CSS/login.css';
+import './CSS/variables.css';
 import { handleApiError } from '../utils/apiErrorHandler';
 import type { ApiError } from '../utils/apiErrorHandler';
 import ErrorMessage from '../components/ErrorMessage';
