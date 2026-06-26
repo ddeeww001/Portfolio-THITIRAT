@@ -13,11 +13,13 @@
 
 .experience-header h1 {
   font-size: 2.5rem;
-  font-weight: 700;
+  font-weight: 800;
   letter-spacing: -0.03em;
   background: var(--primary-gradient);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
+  color: transparent;
   margin-bottom: 8px;
 }
 
@@ -50,16 +52,17 @@
 }
 
 .filter-btn:hover {
-  border-color: var(--border-medium);
-  color: var(--text-primary);
-  background: rgba(255, 255, 255, 0.03);
+  border-color: var(--accent-purple-light);
+  color: var(--accent-purple-light);
+  background: rgba(113, 41, 237, 0.05);
 }
 
 .filter-btn.active {
-  background: var(--primary-gradient);
-  border-color: transparent;
-  color: var(--text-primary);
-  box-shadow: 0 4px 12px var(--accent-glow);
+  background: var(--primary-purple);
+  border-color: var(--primary-purple);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(113, 41, 237, 0.3);
+  font-weight: 700;
 }
 
 .filter-btn i {
@@ -73,8 +76,11 @@
   padding-bottom: 40px;
 }
 
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 @media (max-width: 400px) {
-  .experience-grid {
-    grid-template-columns: 1fr;
-  }
+  .experience-grid { grid-template-columns: 1fr; }
 }

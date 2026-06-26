@@ -5,6 +5,17 @@ export const ProjectCart = ({ data }: { data: ProjectExperience }) => {
   const [imageLoaded, setImageLoaded] = useState<{ [key: string]: boolean }>({});
   const [imageError, setImageError] = useState<{ [key: string]: boolean }>({});
 
+  const getPreviewImage = (): string | null => {
+    if (data.image_url) return data.image_url;
+    if (data.link && data.link.length > 0) {
+      const firstUrl = data.link[0].url;
+      return `https://api.microlink.io/?url=${encodeURIComponent(firstUrl)}&screenshot=true&embed=screenshot.url`;
+    }
+    return null;
+  };
+
+  const previewImage = getPreviewImage();
+
   const handleImageLoad = (url: string) => {
     setImageLoaded(prev => ({ ...prev, [url]: true }));
   };
@@ -12,7 +23,6 @@ export const ProjectCart = ({ data }: { data: ProjectExperience }) => {
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>, url: string) => {
     const target = e.currentTarget;
     setImageError(prev => ({ ...prev, [url]: true }));
-
     target.style.objectFit = "contain";
     target.style.padding = "20px";
 
@@ -43,23 +53,37 @@ export const ProjectCart = ({ data }: { data: ProjectExperience }) => {
     return 'bi-folder2-open';
   };
 
+  const getLinkIcon = (url: string): string => {
+    if (url.includes('github.com')) return 'bi-github';
+    if (url.includes('figma.com')) return 'bi-vector-pen';
+    if (url.includes('canva.com')) return 'bi-palette';
+    if (url.includes('drive.google')) return 'bi-google';
+    if (url.includes('facebook.com')) return 'bi-facebook';
+    if (url.includes('devfolio.co')) return 'bi-code-slash';
+    if (url.includes('medium.com')) return 'bi-book';
+    if (url.includes('lablab.ai')) return 'bi-robot';
+    if (url.includes('heyzine.com')) return 'bi-book';
+    return 'bi-box-arrow-up-right';
+  };
+
   return (
     <article className="project-card">
       <div className="project-card-image">
-        {!imageLoaded[data.image_url || ''] && !imageError[data.image_url || ''] && data.image_url && (
+        {previewImage && !imageLoaded[previewImage] && !imageError[previewImage] && (
           <div className="image-skeleton">
             <div className="skeleton-shimmer"></div>
           </div>
         )}
-        {data.image_url && (
+        {previewImage && (
           <img
-            src={data.image_url}
+            src={previewImage}
             alt={data.title}
+            className="link-preview"
             style={{
-              display: imageLoaded[data.image_url] || imageError[data.image_url] ? "block" : "none"
+              display: imageLoaded[previewImage] || imageError[previewImage] ? "block" : "none"
             }}
-            onLoad={() => handleImageLoad(data.image_url)}
-            onError={(e) => handleImageError(e, data.image_url)}
+            onLoad={() => handleImageLoad(previewImage)}
+            onError={(e) => handleImageError(e, previewImage)}
           />
         )}
         <div className="project-card-overlay">
@@ -105,7 +129,7 @@ export const ProjectCart = ({ data }: { data: ProjectExperience }) => {
               rel="noreferrer"
               className="project-link-btn"
             >
-              <i className="bi bi-box-arrow-up-right"></i>
+              <i className={`bi ${getLinkIcon(item.url)}`}></i>
               <span>{item.label}</span>
             </a>
           ))}

@@ -1,32 +1,36 @@
-/* ========================================= */
-/* UNIFIED THEME NAVBAR */
-/* ========================================= */
-
 .navbar {
   position: fixed;
   top: 20px;
   left: 50%;
   transform: translateX(-50%);
-
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 10px 20px;
   border-radius: var(--radius-full);
-
-  /* Glass Effect with Theme Colors */
-  background: var(--glass-bg);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid var(--glass-border);
+  background: rgba(5, 5, 5, 0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border-subtle);
   box-shadow: var(--shadow-md);
-
   z-index: 1000;
   width: 90%;
   max-width: 600px;
 }
 
-.navbar nav {
+.navbar::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent-purple-light), transparent);
+  opacity: 0.2;
+  border-radius: var(--radius-full);
+}
+
+.navbar-inner {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -34,42 +38,83 @@
   justify-content: center;
 }
 
+.navbar-brand {
+  font-family: var(--font-heading);
+  font-size: 0.9rem;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: var(--accent-purple-light);
+  text-decoration: none;
+  margin-right: auto;
+  white-space: nowrap;
+}
+
+.navbar-links {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
 .navbar button {
   background: transparent;
   border: none;
   color: var(--text-secondary);
   font-family: var(--font-heading);
-  font-size: 0.95rem;
-  font-weight: 500;
+  font-size: 0.9rem;
+  font-weight: 600;
   padding: 8px 20px;
   border-radius: var(--radius-full);
   cursor: pointer;
   transition: all var(--transition-base);
   white-space: nowrap;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .navbar button:hover {
   color: var(--text-primary);
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(113, 41, 237, 0.05);
 }
 
 .navbar button.active {
-  color: var(--text-primary);
-  background: var(--primary-gradient);
+  color: #fff;
+  background: var(--primary-purple);
   box-shadow: var(--shadow-glow);
+  font-weight: 700;
 }
 
-/* Profile Button */
-.navbar button.profile-btn {
+.nav-login-btn {
+  color: var(--text-muted) !important;
+  font-size: 0.85rem !important;
+  padding: 8px 16px !important;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.nav-login-btn:hover {
+  color: var(--accent-purple-light) !important;
+}
+
+.navbar.scrolled {
+  background: rgba(5, 5, 5, 0.95);
+  border-color: var(--border-medium);
+}
+
+.profile-btn {
   padding: 4px;
   margin-left: 8px;
   background: transparent;
   border: 2px solid var(--border-subtle);
   border-radius: 50%;
   transition: all var(--transition-base);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.navbar button.profile-btn:hover {
+.profile-btn:hover {
   border-color: var(--accent-purple-light);
   transform: scale(1.05);
   box-shadow: var(--shadow-glow);
@@ -83,22 +128,18 @@
   display: block;
 }
 
-/* ========================================= */
-/* RESPONSIVE */
-/* ========================================= */
-
 @media (max-width: 600px) {
   .navbar {
     width: 95%;
     padding: 8px 12px;
   }
 
-  .navbar nav {
+  .navbar-inner {
     gap: 4px;
   }
 
   .navbar button {
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     padding: 6px 14px;
   }
 
@@ -114,9 +155,7 @@
 
 @media (max-width: 400px) {
   .navbar button {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     padding: 6px 10px;
   }
 }
-
-/* Made with Bob */

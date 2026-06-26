@@ -8,9 +8,9 @@ export interface HomeContent {
 }
 
 export interface SocialMedia {
-  platform: string; // e.g., GitHub, Email
-  url: string;      // e.g., https://github.com/...
-  username?: string; // Optional: display name
+  platform: string;
+  url: string;
+  username?: string;
 }
 
 export interface TechnicalSkill {
@@ -54,4 +54,10 @@ export interface ProjectExperience {
   image_url: string;
   description: string;
   is_deleted?: number;
+}
+
+export interface ApiError {
+  message: string;
+  instruction: string;
+  technicalDetails?: string;
 }

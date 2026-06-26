@@ -1,6 +1,5 @@
-
 import React from 'react';
-import type { ApiError } from '../utils/apiErrorHandler';
+import type { ApiError } from '../types/portfolio';
 
 interface Props {
   error: ApiError | null;
@@ -11,7 +10,7 @@ const ErrorMessage: React.FC<Props> = ({ error, onClose }) => {
   if (!error) return null;
 
   return (
-    <div className="error-overlay" style={{
+    <div style={{
       padding: '15px',
       margin: '10px 0',
       background: 'rgba(255, 77, 77, 0.15)',

@@ -1,21 +1,16 @@
-
-export interface ApiError {
-  message: string;
-  instruction: string;
-  technicalDetails?: string;
-}
+import type { ApiError } from '../types/portfolio';
 
 export const handleApiError = (response: Response | null, error?: any): ApiError => {
   if (!response) {
     return {
       message: "ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์หลังบ้านได้",
-      instruction: "กรุณาเปิด Terminal และรันคำสั่ง 'node src/backend/server.cjs' ก่อนใช้งาน",
+      instruction: "กรุณาเปิด Terminal และรันคำสั่ง 'npm run server' ก่อนใช้งาน",
       technicalDetails: error?.message
     };
   }
 
   const contentType = response.headers.get("content-type");
-  
+
   if (contentType && contentType.includes("text/html")) {
     return {
       message: "ตรวจพบการส่งข้อมูลผิดพลาด (ได้รับ HTML แทน JSON)",
