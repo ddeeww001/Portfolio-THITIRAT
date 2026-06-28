@@ -5,7 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "server": "nodemon src/backend/server.cjs",
+    "server": "node src/backend/server.cjs",
+    "dev:server": "nodemon src/backend/server.cjs",
+    "dev:all": "start /B npm run dev:server & npm run dev",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview"

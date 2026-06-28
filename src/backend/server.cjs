@@ -9,8 +9,10 @@ const jwt = require('jsonwebtoken');
 
 const app = express();
 const PORT = process.env.BACKEND_PORT || 5000;
+const PROD_PORT = process.env.PORT || 3000;
 const JWT_SECRET = process.env.JWT_SECRET || 'fallback_secret';
-const DB_PATH = process.env.DATABASE_PATH || path.join(__dirname, '../data/portfolio.db');
+const DB_PATH_RAW = process.env.DATABASE_PATH || 'data/portfolio.db';
+const DB_PATH = path.isAbsolute(DB_PATH_RAW) ? DB_PATH_RAW : path.resolve(__dirname, '..', DB_PATH_RAW);
 
 const sqlite3 = require('sqlite3').verbose();
 const dbDir = path.dirname(DB_PATH);
@@ -63,6 +65,7 @@ function initializeDatabase() {
       tags TEXT DEFAULT '[]',
       image_url TEXT DEFAULT '',
       description TEXT DEFAULT '',
+      case_study TEXT DEFAULT '',
       is_deleted INTEGER DEFAULT 0
     )`);
 
@@ -144,82 +147,47 @@ function seedDefaultData() {
     if (!err && row.count === 0) {
       const projects = [
         {
-          title: 'GRAND SUWAN',
-          date: '5 / 11 / 2024',
-          role: JSON.stringify(["Fullstack Developer"]),
-          details: JSON.stringify([
-            "Created website, Quotation, and LINE api for Family Business.",
-            "Seamlessly linked Quotation Forms with LINE Messaging API/Notify.",
-            "Automated the data flow to ensure consistent and timely responses to customer leads."
-          ]),
-          link: JSON.stringify([
-            { label: "Google Drive", url: "https://drive.google.com/drive/folders/1NVeNw2uRRK6cXBaPld896XcZjgbEl7Pg?usp=sharing" },
-            { label: "Website", url: "https://www.grandsuwanproperty.com/" }
-          ]),
-          tags: JSON.stringify(["Fullstack", "API Integration", "Business"]),
-          image_url: '',
-          description: 'Website and LINE API integration for family real estate business'
-        },
-        {
-          title: 'HACKATHON : Design mascot CENTRAL THAM',
-          date: '30 / 10 / 2025 - 31 / 10 / 2025',
-          role: JSON.stringify(["Designer"]),
-          details: JSON.stringify([
-            "Collaborated with a teammate to brainstorm and create a mascot."
-          ]),
-          link: JSON.stringify([
-            { label: "Google Drive", url: "https://drive.google.com/drive/folders/1yHbN5bEUX7J-nh5HPlfEDBv5ML67_Qqt?usp=sharing" },
-            { label: "CENTRAL THAM", url: "https://www.centraltham.com/th/newsroom/news-and-updates/150/central-tham-mascot-contest-illustration-impact-with-central-tham" }
-          ]),
-          tags: JSON.stringify(["Hackathon", "Design", "Illustration"]),
-          image_url: '',
-          description: 'Mascot design for Central Tham hackathon contest'
-        },
-        {
-          title: 'SMART ACCOUNTING AND MANAGEMENT',
-          date: '27 / 8 / 2025',
+          title: 'AI HACKATHON : BobInsight (IBM Bob Hackathon)',
+          date: '2024',
           role: JSON.stringify(["Frontend Developer", "UX/UI Designer"]),
           details: JSON.stringify([
-            "Designed the user interface for product selection and customized dashboards.",
-            "Developed a Point of Sale (POS) and Accounting system for Ban Mae Hoi Ngoen School."
+            "Developed an AI-driven insight platform to simplify complex data visualization.",
+            "Collaborated in a team to integrate IBM AI technologies into a seamless user experience."
           ]),
           link: JSON.stringify([
-            { label: "Project Link", url: "https://www.canva.com/design/DAG-RdyzwBM/DpWwYhyVe11hhewbgSG1Aw/view" },
-            { label: "Medium Article", url: "https://medium.com/@dewthitirat/journey-of-my-project-โปรเจคแรกกับ-smart-accountingand-management-9cb386688094" }
+            { label: "Project Link", url: "https://lablab.ai/ai-hackathons/ibm-bob-hackathon/uia/bobinsight" },
+            { label: "GitHub", url: "https://github.com/Pinont/UIA-LABLAB" }
           ]),
-          tags: JSON.stringify(["Frontend", "UX/UI", "Dashboard"]),
+          tags: JSON.stringify(["Frontend", "UX/UI"]),
           image_url: '',
-          description: 'POS and Accounting web app for school business management'
+          description: 'AI-driven data insight platform for IBM Bob Hackathon',
+          case_study: JSON.stringify({
+            problem: "การทำความเข้าใจข้อมูล (Data Insights) จำนวนมากเป็นเรื่องยากและใช้เวลานานสำหรับผู้ใช้งานทั่วไป",
+            solution: "สร้าง Platform ที่ใช้ AI ช่วยวิเคราะห์และสรุปข้อมูลออกมาเป็น Visual ที่เข้าใจง่ายและโต้ตอบได้",
+            toolsUsed: "React สำหรับ Frontend และ IBM AI Services สำหรับการประมวลผลข้อมูล",
+            learning: "ได้เรียนรู้การทำงานร่วมกับเทคโนโลยี AI ของ IBM และการออกแบบ Dashboard ที่ต้องรองรับการแสดงผลข้อมูลแบบ Dynamic"
+          })
         },
         {
-          title: 'Design templates',
-          date: '4 / 11 / 2025 - 8 / 11 / 2025',
-          role: JSON.stringify(["Designer"]),
+          title: 'HACKATHON : ETHChaingmai',
+          date: '28 / 01 /2026 - 3 / 02 / 2026',
+          role: JSON.stringify(["Frontend"]),
           details: JSON.stringify([
-            "Design templates light team and dark team for COLLEGE OF ARTS, MEDIA AND TECHNOLOGY"
+            "Customized specific parts of the homepage design and implemented a map feature by connecting to an API to fetch and render location."
           ]),
           link: JSON.stringify([
-            { label: "LIGHT TEAM", url: "https://www.canva.com/design/DAG-MThjO7s/QHk_AUP7K2tppS4AOaaVSw/view?utm_content=DAG-MThjO7s&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=hb480482753" },
-            { label: "DARK TEAM", url: "https://www.canva.com/design/DAG-MfTGOD0/8Ecgfe9gtOXGT0X4QVi89Q/view?utm_content=DAG-MfTGOD0&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h0db13d2742" }
+            { label: "Project", url: "https://devfolio.co/projects/relief-mesh-7406" },
+            { label: "Presentation", url: "https://www.canva.com/design/DAHAEBR-F5o/kU3WI2J8YAblFhI51HkCuA/view?utm_content=DAHAEBR-F5o&utm_campaign=designshare&utm_medium=link&utm_source=viewer" }
           ]),
-          tags: JSON.stringify(["Design", "Templates", "Branding"]),
+          tags: JSON.stringify(["Frontend"]),
           image_url: '',
-          description: 'Light and dark design templates for CAMT'
-        },
-        {
-          title: 'CAMT open house : WEB3 Club',
-          date: '27 / 8 / 2025',
-          role: JSON.stringify(["Designer"]),
-          details: JSON.stringify([
-            "End-to-end booklet design, logo creation, and design poster customization."
-          ]),
-          link: JSON.stringify([
-            { label: "Booklet", url: "https://heyzine.com/flip-book/6c7e35871a.html?ref=web3.camt.cmu.ac.th" },
-            { label: "Website Web3", url: "https://web3.camt.cmu.ac.th/" }
-          ]),
-          tags: JSON.stringify(["Design", "Branding", "Web3"]),
-          image_url: '',
-          description: 'Branding and booklet design for CAMT Web3 Club open house'
+          description: 'Real-time disaster relief map with API integration',
+          case_study: JSON.stringify({
+            problem: "ความยากในการเข้าถึงข้อมูลพิกัดความช่วยเหลือในพื้นที่ห่างไกลระหว่างเกิดภัยพิบัติ",
+            solution: "สร้างระบบแผนที่แบบ Real-time ที่ดึงข้อมูลผ่าน API เพื่อแสดงจุดที่ต้องการความช่วยเหลืออย่างแม่นยำ",
+            toolsUsed: "React ร่วมกับ Leaflet API เพื่อการจัดการแผนที่ที่เบาและรวดเร็ว",
+            learning: "ได้เรียนรู้การจัดการ Asynchronous data จาก API และการทำ UI สำหรับแผนที่ให้ใช้งานง่ายในสภาวะคับขัน"
+          })
         },
         {
           title: 'YOUNG DEV HACKATHON',
@@ -233,44 +201,112 @@ function seedDefaultData() {
           ]),
           tags: JSON.stringify(["Teaching", "Workshop", "UX/UI"]),
           image_url: '',
-          description: 'Workshop instructor for web design process at hackathon'
+          description: 'Workshop instructor for web design process at hackathon',
+          case_study: ''
         },
         {
-          title: 'HACKATHON : ETHChaingmai',
-          date: '28 / 01 / 2026 - 3 / 02 / 2026',
-          role: JSON.stringify(["Frontend"]),
+          title: 'CAMT open house : WEB3 Club, Design, Blockchain, Chiang Mai',
+          date: '27 / 8 / 2025',
+          role: JSON.stringify(["Designer"]),
           details: JSON.stringify([
-            "Customized specific parts of the homepage design and implemented a map feature."
+            "End-to-end booklet design, logo creation, and design poster customization."
           ]),
           link: JSON.stringify([
-            { label: "Project", url: "https://devfolio.co/projects/relief-mesh-7406" },
-            { label: "Presentation", url: "https://www.canva.com/design/DAHAEBR-F5o/kU3WI2J8YAblFhI51HkCuA/view" }
+            { label: "Booklet", url: "https://heyzine.com/flip-book/6c7e35871a.html?ref=web3.camt.cmu.ac.th" },
+            { label: "Website Web3", url: "https://web3.camt.cmu.ac.th/" }
           ]),
-          tags: JSON.stringify(["Hackathon", "Frontend", "API Integration"]),
+          tags: JSON.stringify(["Design"]),
           image_url: '',
-          description: 'Real-time disaster relief map with API integration'
+          description: 'Branding and booklet design for CAMT Web3 Club open house',
+          case_study: JSON.stringify({
+            problem: "ความเข้าใจเรื่อง Web3 เป็นเรื่องยากสำหรับบุคคลทั่วไป ทำให้สื่อประชาสัมพันธ์เดิมไม่ดึงดูด",
+            solution: "ออกแบบ Booklet และ Logo ใหม่โดยใช้ Visual Language ที่ทันสมัยแต่ดูเป็นมิตร เพื่อลดกำแพงความเข้าใจ",
+            toolsUsed: "Affinity และ Figma สำหรับงาน Vector ที่มีความแม่นยำสูง",
+            learning: "เข้าใจการทำ Branding ให้เข้ากับกลุ่มเป้าหมายเฉพาะทาง และการสื่อสารข้อมูลซับซ้อนผ่านงานดีไซน์"
+          })
         },
         {
-          title: 'AI HACKATHON : BobInsight',
-          date: '2024',
+          title: 'Design templates',
+          date: '4 / 11 / 2025 - 8 / 11 / 2025',
+          role: JSON.stringify(["Designer"]),
+          details: JSON.stringify([
+            "Design templates light team and dark team for COLLEGE OF ARTS, MEDIA AND TECHNOLOGY"
+          ]),
+          link: JSON.stringify([
+            { label: "\u2014 LIGHT TEAM", url: "https://www.canva.com/design/DAG-MThjO7s/QHk_AUP7K2tppS4AOaaVSw/view?utm_content=DAG-MThjO7s&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=hb480482753" },
+            { label: "\u2014 DARK TEAM", url: "https://www.canva.com/design/DAG-MfTGOD0/8Ecgfe9gtOXGT0X4QVi89Q/view?utm_content=DAG-MfTGOD0&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h0db13d2742" }
+          ]),
+          tags: JSON.stringify(["Design", "Templates", "Branding"]),
+          image_url: '',
+          description: 'Light and dark design templates for CAMT',
+          case_study: ''
+        },
+        {
+          title: 'GROUP PROJECT : SMART ACCOUNTING AND MANAGEMENT',
+          date: '27 / 8 / 2025',
           role: JSON.stringify(["Frontend Developer", "UX/UI Designer"]),
           details: JSON.stringify([
-            "Developed an AI-driven insight platform to simplify complex data visualization.",
-            "Collaborated in a team to integrate IBM AI technologies into a seamless user experience."
+            "Designed the user interface for product selection and customized dashboards.",
+            "Developed a Point of Sale (POS) and Accounting system for Ban Mae Hoi Ngoen School."
           ]),
           link: JSON.stringify([
-            { label: "Project Link", url: "https://lablab.ai/ai-hackathons/ibm-bob-hackathon/uia/bobinsight" },
-            { label: "GitHub", url: "https://github.com/Pinont/UIA-LABLAB" }
+            { label: "Project Link", url: "https://www.canva.com/design/DAG-RdyzwBM/DpWwYhyVe11hhewbgSG1Aw/view?utm_content=DAG-RdyzwBM&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h5d0f09fba1" }
           ]),
-          tags: JSON.stringify(["Frontend", "UX/UI", "AI"]),
+          tags: JSON.stringify(["Frontend", "UX/UI"]),
           image_url: '',
-          description: 'AI-driven data insight platform for IBM Bob Hackathon'
+          description: 'POS and Accounting web app for school business management',
+          case_study: JSON.stringify({
+            problem: "โรงเรียนบ้านแม่ฮ้อยเงินประสบปัญหาการจัดการบัญชีและสต็อกสินค้าที่ล่าช้าเนื่องจากใช้ระบบกระดาษ (Manual)",
+            solution: "พัฒนาเว็บแอปพลิเคชัน POS และระบบจัดการบัญชีที่มี UI เรียบง่าย เน้นการตัดสต็อกอัตโนมัติและการออกรายงานที่แม่นยำ",
+            toolsUsed: "HTML, CSS, JavaScript และการออกแบบ User Flow ผ่าน Figma เพื่อความง่ายในการใช้งาน",
+            learning: "เรียนรู้กระบวนการพัฒนาซอฟต์แวร์เพื่อแก้ปัญหาในชีวิตจริง (Real-world system development) และการทำงานร่วมกับลูกค้ากลุ่มโรงเรียน"
+          })
+        },
+        {
+          title: 'HACKATHON : Design mascot CENTRAL THAM',
+          date: '30 / 10 /2025 - 31 / 10 /2025',
+          role: JSON.stringify(["Design mascot"]),
+          details: JSON.stringify([
+            "Collaborated with a teammate to brainstorm and create a mascot."
+          ]),
+          link: JSON.stringify([
+            { label: "Google Drive", url: "https://drive.google.com/drive/folders/1yHbN5bEUX7J-nh5HPlfEDBv5ML67_Qqt?usp=sharing" },
+            { label: "CENTRAL THAM", url: "https://www.centraltham.com/th/newsroom/news-and-updates/150/central-tham-mascot-contest-illustration-impact-with-central-tham?fbclid=IwVERDUANwNt5leHRuA2FlbQIxMQABHvyW9tTacB4Tazik376LqPpoJUTVxjyg2cep4NC0u2eoOM1lKEtpr4APLc_q_aem_jeqlMmr6v_LT0I8hTT1W7g" }
+          ]),
+          tags: JSON.stringify(["Hackathon", "Design", "Illustration"]),
+          image_url: '',
+          description: 'Mascot design for Central Tham hackathon contest',
+          case_study: ''
+        },
+        {
+          title: 'GRAND SUWAN',
+          date: '5 / 11 / 2024',
+          role: JSON.stringify(["Fullstack Developer"]),
+          details: JSON.stringify([
+            "Created website, Quotation, and LINE api for Family Business.",
+            "Platform: Built and designed on Wix.",
+            "Seamlessly linked Quotation Forms with LINE Messaging API/Notify.",
+            "Automated the data flow to ensure consistent and timely responses to customer leads."
+          ]),
+          link: JSON.stringify([
+            { label: "Google Drive", url: "https://drive.google.com/drive/folders/1NVeNw2uRRK6cXBaPld896XcZjgbEl7Pg?usp=sharing" },
+            { label: "Website", url: "https://www.grandsuwanproperty.com/" }
+          ]),
+          tags: JSON.stringify(["Frontend"]),
+          image_url: '',
+          description: 'Website and LINE API integration for family real estate business',
+          case_study: JSON.stringify({
+            problem: "ธุรกิจครอบครัวขาดระบบรับเรื่องลูกค้าที่รวดเร็ว ทำให้เสียโอกาสในการขาย",
+            solution: "สร้างระบบส่งข้อมูลจากแบบฟอร์มใบเสนอราคาตรงเข้า LINE Notify เพื่อให้ทีมงานรู้ตัวทันที",
+            toolsUsed: "Wix สำหรับโครงสร้างเว็บ และ LINE Messaging API สำหรับระบบแจ้งเตือน",
+            learning: "เรียนรู้ความสำคัญของการทำ Automation ในธุรกิจ เพื่อลดขั้นตอนการทำงานด้วยมือ"
+          })
         }
       ];
 
-      const stmt = db.prepare(`INSERT INTO projects (title, date, role, details, link, tags, image_url, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`);
+      const stmt = db.prepare(`INSERT INTO projects (title, date, role, details, link, tags, image_url, description, case_study) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`);
       projects.forEach(p => {
-        stmt.run([p.title, p.date, p.role, p.details, p.link, p.tags, p.image_url, p.description]);
+        stmt.run([p.title, p.date, p.role, p.details, p.link, p.tags, p.image_url, p.description, p.case_study]);
       });
       stmt.finalize();
       console.log(`[SEED] ${projects.length} projects inserted`);
@@ -301,6 +337,12 @@ try {
 
 app.use(cors());
 app.use(express.json());
+
+const distPath = path.join(__dirname, '../../dist');
+if (fs.existsSync(distPath)) {
+  app.use(express.static(distPath));
+  console.log(`[STATIC] Serving production build from ${distPath}`);
+}
 
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', message: 'Backend is running' });
@@ -440,6 +482,7 @@ app.get('/api/projects', (req, res) => {
       row.details = JSON.parse(row.details || '[]');
       row.link = JSON.parse(row.link || '[]');
       row.tags = JSON.parse(row.tags || '[]');
+      row.case_study = row.case_study ? JSON.parse(row.case_study) : null;
     });
     res.json(rows);
   });
@@ -447,7 +490,7 @@ app.get('/api/projects', (req, res) => {
 
 app.post('/api/projects', authenticateToken, (req, res) => {
   const data = req.body;
-  const { id, title, date, role, details, link, tags, image_url, description } = data;
+  const { id, title, date, role, details, link, tags, image_url, description, case_study } = data;
 
   if (id) {
     db.get('SELECT * FROM projects WHERE id = ?', [id], (err, oldRow) => {
@@ -459,10 +502,11 @@ app.post('/api/projects', authenticateToken, (req, res) => {
       }
 
       db.run(
-        `UPDATE projects SET title=?, date=?, role=?, details=?, link=?, tags=?, image_url=?, description=? WHERE id=?`,
+        `UPDATE projects SET title=?, date=?, role=?, details=?, link=?, tags=?, image_url=?, description=?, case_study=? WHERE id=?`,
         [
           title, date, JSON.stringify(role), JSON.stringify(details),
-          JSON.stringify(link), JSON.stringify(tags), image_url, description, id
+          JSON.stringify(link), JSON.stringify(tags), image_url, description,
+          case_study ? JSON.stringify(case_study) : '', id
         ],
         function(err) {
           if (err) return res.status(500).json({ error: err.message });
@@ -472,10 +516,11 @@ app.post('/api/projects', authenticateToken, (req, res) => {
     });
   } else {
     db.run(
-      `INSERT INTO projects (title, date, role, details, link, tags, image_url, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+      `INSERT INTO projects (title, date, role, details, link, tags, image_url, description, case_study) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         title, date, JSON.stringify(role), JSON.stringify(details),
-        JSON.stringify(link), JSON.stringify(tags), image_url, description
+        JSON.stringify(link), JSON.stringify(tags), image_url, description,
+        case_study ? JSON.stringify(case_study) : ''
       ],
       function(err) {
         if (err) return res.status(500).json({ error: err.message });
@@ -494,12 +539,22 @@ app.delete('/api/projects/:id', authenticateToken, (req, res) => {
 });
 
 app.use((req, res) => {
-  res.status(404).json({ error: `Route ${req.originalUrl} not found` });
+  if (fs.existsSync(distPath) && !req.path.startsWith('/api')) {
+    res.sendFile(path.join(distPath, 'index.html'));
+  } else {
+    res.status(404).json({ error: `Route ${req.originalUrl} not found` });
+  }
 });
 
 if (httpsOptions) {
   https.createServer(httpsOptions, app).listen(PORT, () => {
     console.log(`[SECURE] Backend server is running on https://localhost:${PORT}`);
+    console.log(`JWT secret loaded: ${JWT_SECRET !== 'fallback_secret' ? 'YES' : 'NO'}`);
+  });
+} else if (fs.existsSync(distPath)) {
+  app.listen(PROD_PORT, () => {
+    console.log(`[PRODUCTION] Portfolio running at http://localhost:${PROD_PORT}`);
+    console.log(`Serving static files from ${distPath}`);
     console.log(`JWT secret loaded: ${JWT_SECRET !== 'fallback_secret' ? 'YES' : 'NO'}`);
   });
 } else {

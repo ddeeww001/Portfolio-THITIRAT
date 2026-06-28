@@ -43,6 +43,13 @@ export interface LinkItem {
   url: string;
 }
 
+export interface CaseStudy {
+  problem: string;
+  solution: string;
+  toolsUsed: string;
+  learning: string;
+}
+
 export interface ProjectExperience {
   id: number;
   title: string;
@@ -53,6 +60,7 @@ export interface ProjectExperience {
   tags: string[];
   image_url: string;
   description: string;
+  case_study: CaseStudy | null;
   is_deleted?: number;
 }
 

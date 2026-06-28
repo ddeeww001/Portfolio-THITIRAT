@@ -33,6 +33,13 @@ export const handleApiError = (response: Response | null, error?: any): ApiError
     };
   }
 
+  if (response.status === 404){
+    return {
+      message: "",
+      instruction: "",
+    };
+  }
+
   return {
     message: "เกิดข้อผิดพลาดที่ไม่ทราบสาเหตุ",
     instruction: "ลองตรวจสอบการเชื่อมต่ออินเทอร์เน็ต หรือสถานะของฐานข้อมูล SQLite",

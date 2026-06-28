@@ -3,6 +3,7 @@
   min-height: 100vh;
   background: var(--bg-main);
   position: relative;
+  overflow-x: hidden;
 }
 
 .main-content {
@@ -29,7 +30,8 @@
 
 .experience-section {
   background: var(--bg-secondary);
-  padding-top: 100px;
+  padding-top: 120px;
+  padding-bottom: 80px;
   min-height: auto;
   position: relative;
 }
@@ -41,15 +43,39 @@
   left: 0;
   right: 0;
   height: 1px;
-  background: linear-gradient(90deg, transparent, var(--accent-purple-light), transparent);
-  opacity: 0.15;
+  background: linear-gradient(90deg, transparent 5%, var(--accent-purple-light) 50%, transparent 95%);
+  opacity: 0.2;
+}
+
+.experience-section::after {
+  content: '';
+  position: absolute;
+  top: -200px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 600px;
+  height: 400px;
+  background: radial-gradient(ellipse, rgba(113, 41, 237, 0.08) 0%, transparent 70%);
+  pointer-events: none;
 }
 
 .profile-section {
   background: var(--bg-main);
-  padding-top: 100px;
-  padding-bottom: 100px;
+  padding-top: 120px;
+  padding-bottom: 120px;
   min-height: auto;
+  position: relative;
+}
+
+.profile-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 5%, var(--accent-purple-light) 50%, transparent 95%);
+  opacity: 0.15;
 }
 
 .footer {
@@ -67,12 +93,12 @@
   left: 0;
   right: 0;
   height: 1px;
-  background: linear-gradient(90deg, transparent, var(--accent-purple-light), transparent);
-  opacity: 0.15;
+  background: linear-gradient(90deg, transparent 5%, var(--accent-purple-light) 50%, transparent 95%);
+  opacity: 0.2;
 }
 
 .footer-content {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
@@ -82,8 +108,9 @@
 }
 
 .footer-content p {
-  color: var(--text-secondary);
-  font-size: 0.9rem;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  letter-spacing: 0.3px;
 }
 
 .footer-links {
@@ -92,9 +119,12 @@
 }
 
 .footer-links a {
-  color: var(--text-secondary);
-  font-size: 0.9rem;
-  transition: color var(--transition-base);
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  transition: all var(--transition-base);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .footer-links a:hover {
@@ -109,6 +139,15 @@
 
   .hero-section {
     min-height: 100vh;
+  }
+
+  .experience-section {
+    padding-top: 80px;
+  }
+
+  .profile-section {
+    padding-top: 80px;
+    padding-bottom: 80px;
   }
 
   .footer-content {

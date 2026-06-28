@@ -142,7 +142,24 @@ export const ProjectCart = ({ data }: { data: ProjectExperience }) => {
             ))}
           </div>
         )}
+
+        {data.case_study && (
+          <div className="project-case-study">
+            <h4 className="case-study-title"><i className="bi bi-lightbulb"></i> Case Study</h4>
+            <CaseStudyItem icon="bi-exclamation-triangle" label="ปัญหา" text={data.case_study.problem} />
+            <CaseStudyItem icon="bi-wrench-adjustable" label="ทางออก" text={data.case_study.solution} />
+            <CaseStudyItem icon="bi-tools" label="เครื่องมือ" text={data.case_study.toolsUsed} />
+            <CaseStudyItem icon="bi-mortarboard" label="สิ่งที่ได้เรียนรู้" text={data.case_study.learning} />
+          </div>
+        )}
       </div>
     </article>
   );
 };
+
+const CaseStudyItem = ({ icon, label, text }: { icon: string; label: string; text: string }) => (
+  <div className="case-study-item">
+    <span className="case-study-label"><i className={`bi ${icon}`}></i> {label}</span>
+    <p className="case-study-text">{text}</p>
+  </div>
+);
