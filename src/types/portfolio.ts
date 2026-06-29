@@ -1,0 +1,71 @@
+export interface HomeContent {
+  id?: number;
+  greeting: string;
+  name: string;
+  role: string;
+  description: string;
+  about_me_link: string;
+}
+
+export interface SocialMedia {
+  platform: string;
+  url: string;
+  username?: string;
+}
+
+export interface TechnicalSkill {
+  skill: string;
+  level: string;
+}
+
+export interface LanguageSkill {
+  lang: string;
+  level: string;
+}
+
+export interface ProfileContent {
+  id?: number;
+  name: string;
+  email: string;
+  phone: string;
+  birthday: string;
+  introduce: string;
+  role: string[];
+  socials: SocialMedia[];
+  technicalSkills: TechnicalSkill[];
+  tools: string[];
+  languages: LanguageSkill[];
+  certifications: string[];
+}
+
+export interface LinkItem {
+  label: string;
+  url: string;
+}
+
+export interface CaseStudy {
+  problem: string;
+  solution: string;
+  toolsUsed: string;
+  learning: string;
+}
+
+export interface ProjectExperience {
+  id: number;
+  title: string;
+  date: string;
+  role: string[];
+  details: string[];
+  link: LinkItem[];
+  tags: string[];
+  image_url: string;
+  description: string;
+  case_study: CaseStudy | null;
+  is_deleted?: number;
+}
+
+export interface ApiError {
+  message: string;
+  instruction: string;
+  technicalDetails?: string;
+}

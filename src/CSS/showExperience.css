@@ -1,0 +1,118 @@
+.show-experience-wrapper {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-lg);
+}
+
+.experience-header {
+  text-align: center;
+  margin-bottom: 80px;
+  animation: fadeInDown 0.8s ease-out;
+}
+
+.experience-header h1 {
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  background: var(--primary-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+}
+
+.experience-header p {
+  color: var(--text-muted);
+  font-size: 1.05rem;
+  letter-spacing: 0.3px;
+}
+
+.experience-filter-bar {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 56px;
+}
+
+.filter-btn {
+  background: transparent;
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  padding: 10px 24px;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+}
+
+.filter-btn:hover {
+  border-color: var(--accent-purple-light);
+  color: var(--accent-purple-light);
+  background: rgba(113, 41, 237, 0.06);
+  box-shadow: 0 0 16px rgba(113, 41, 237, 0.08);
+}
+
+.filter-btn.active {
+  background: var(--primary-purple);
+  border-color: var(--primary-purple);
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(113, 41, 237, 0.4);
+  font-weight: 700;
+}
+
+.filter-btn i {
+  font-size: 0.9rem;
+}
+
+.experience-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
+  gap: 32px;
+  padding-bottom: 60px;
+}
+
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 900px) {
+  .experience-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .experience-header {
+    margin-bottom: 48px;
+  }
+
+  .experience-filter-bar {
+    gap: 6px;
+    margin-bottom: 36px;
+  }
+
+  .filter-btn {
+    padding: 8px 16px;
+    font-size: 0.78rem;
+  }
+
+  .experience-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}
+
+@media (max-width: 400px) {
+  .experience-grid { grid-template-columns: 1fr; }
+}
