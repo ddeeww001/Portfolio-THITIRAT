@@ -1,0 +1,122 @@
+/* ========================================= */
+/* UNIFIED THEME NAVBAR */
+/* ========================================= */
+
+.navbar {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 20px;
+  border-radius: var(--radius-full);
+
+  /* Glass Effect with Theme Colors */
+  background: var(--glass-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-md);
+
+  z-index: 1000;
+  width: 90%;
+  max-width: 600px;
+}
+
+.navbar nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  justify-content: center;
+}
+
+.navbar button {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+  font-weight: 500;
+  padding: 8px 20px;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  white-space: nowrap;
+}
+
+.navbar button:hover {
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.navbar button.active {
+  color: var(--text-primary);
+  background: var(--primary-gradient);
+  box-shadow: var(--shadow-glow);
+}
+
+/* Profile Button */
+.navbar button.profile-btn {
+  padding: 4px;
+  margin-left: 8px;
+  background: transparent;
+  border: 2px solid var(--border-subtle);
+  border-radius: 50%;
+  transition: all var(--transition-base);
+}
+
+.navbar button.profile-btn:hover {
+  border-color: var(--accent-purple-light);
+  transform: scale(1.05);
+  box-shadow: var(--shadow-glow);
+}
+
+.navbar-profile-pic {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ========================================= */
+/* RESPONSIVE */
+/* ========================================= */
+
+@media (max-width: 600px) {
+  .navbar {
+    width: 95%;
+    padding: 8px 12px;
+  }
+
+  .navbar nav {
+    gap: 4px;
+  }
+
+  .navbar button {
+    font-size: 0.85rem;
+    padding: 6px 14px;
+  }
+
+  .navbar-profile-pic {
+    width: 32px;
+    height: 32px;
+  }
+
+  .navbar button.profile-btn {
+    margin-left: 4px;
+  }
+}
+
+@media (max-width: 400px) {
+  .navbar button {
+    font-size: 0.8rem;
+    padding: 6px 10px;
+  }
+}
+
+/* Made with Bob */
