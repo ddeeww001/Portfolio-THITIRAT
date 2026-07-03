@@ -9,11 +9,11 @@
 
 .hero-glass-card {
   background: var(--glass-bg);
-  backdrop-filter: blur(16px);
+  backdrop-filter: blur(24px);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-xl);
-  padding: 60px 40px;
-  max-width: 800px;
+  padding: 80px 40px;
+  max-width: 900px;
   text-align: center;
   box-shadow: var(--shadow-lg);
   position: relative;
@@ -42,8 +42,8 @@
 }
 
 .hero-name {
-  font-size: clamp(2.5rem, 5vw, 4rem);
-  margin: 0 0 10px 0;
+  font-size: clamp(3rem, 8vw, 5rem);
+  margin: 0 0 20px 0;
   background: var(--primary-gradient);
   background-size: 200% 200%;
   -webkit-background-clip: text;
@@ -51,22 +51,24 @@
   color: transparent;
   animation: gradientShift 3s ease infinite;
   font-weight: 800;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
 }
 
 .hero-role {
   color: var(--text-secondary);
-  font-size: clamp(1.2rem, 3vw, 1.8rem);
-  font-weight: 400;
-  margin-bottom: 30px;
+  font-size: clamp(1.4rem, 4vw, 2rem);
+  font-weight: 500;
+  margin-bottom: 40px;
+  letter-spacing: -0.01em;
 }
 
 .hero-description {
   color: var(--text-muted);
-  font-size: 1.1rem;
-  line-height: 1.8;
-  max-width: 600px;
-  margin: 0 auto 40px auto;
+  font-size: 1.2rem;
+  line-height: 1.6;
+  max-width: 650px;
+  margin: 0 auto 50px auto;
 }
 
 /* ========================================= */
