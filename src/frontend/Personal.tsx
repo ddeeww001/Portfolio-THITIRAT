@@ -82,7 +82,7 @@ export const Profile = ({ data }: { data: ProfileData }) => {
                 {data.technicalSkills.map((skill, index) => (
                   <div key={index} className="skill-tag technical" title={skill}>
                     <img 
-                      src={`/src/picture/icons/${skill.toLowerCase()}.svg`} 
+                      src={`/icons/${skill.toLowerCase()}.svg`} 
                       onError={(e) => { (e.target as HTMLImageElement).src = 'https://cdn-icons-png.flaticon.com/512/6062/6062218.png' }} 
                       alt={skill} 
                     />
@@ -98,7 +98,7 @@ export const Profile = ({ data }: { data: ProfileData }) => {
                 {data.tools.map((tool, index) => (
                   <div key={index} className="skill-tag tool" title={tool}>
                     <img 
-                      src={`/src/picture/icons/${tool.toLowerCase().replace(/\s+/g, '-')}.svg`} 
+                      src={`/icons/${tool.toLowerCase().replace(/\s+/g, '-')}.svg`} 
                       onError={(e) => { (e.target as HTMLImageElement).src = 'https://cdn-icons-png.flaticon.com/512/6062/6062218.png' }} 
                       alt={tool} 
                     />
