@@ -22,25 +22,28 @@ export const Profile = ({ data }: { data: ProfileData }) => {
           
           <div className="profile-roles">
             {data.role.map((role, index) => (
-              <span key={index} className="role-badge">{role}</span>
+               <span key={index} className="role-badge">
+                 <i className="bi bi-patch-check-fill" style={{ marginRight: '6px' }}></i>
+                 {role}
+               </span>
             ))}
           </div>
 
           <div className="sidebar-section">
             <h3>CONTACT INFO</h3>
             <ul className="contact-list">
-              <li>
-                <span className="icon">📧</span>
-                <a href={`mailto:${data.email}`}>{data.email}</a>
-              </li>
-              <li>
-                <span className="icon">📞</span>
-                <span>{data.phone}</span>
-              </li>
-              <li>
-                <span className="icon">🎂</span>
-                <span>{data.birthday}</span>
-              </li>
+               <li>
+                 <span className="icon"><i className="bi bi-envelope-fill"></i></span>
+                 <a href={`mailto:${data.email}`}>{data.email}</a>
+               </li>
+               <li>
+                 <span className="icon"><i className="bi bi-telephone-fill"></i></span>
+                 <span>{data.phone}</span>
+               </li>
+               <li>
+                 <span className="icon"><i className="bi bi-cake2-fill"></i></span>
+                 <span>{data.birthday}</span>
+               </li>
             </ul>
           </div>
 
@@ -72,29 +75,37 @@ export const Profile = ({ data }: { data: ProfileData }) => {
             <p className="introduce-text">{data.introduce}</p>
           </section>
 
-          {/* Technical Skills */}
-          <section className="content-section">
-            <h3 className="section-header">TECHNICAL SKILLS</h3>
-            <div className="skills-grid">
-              {data.technicalSkills.map((skill, index) => (
-                <div key={index} className="skill-tag technical">
-                  {skill}
-                </div>
-              ))}
-            </div>
-          </section>
+            {/* Technical Skills */}
+            <section className="content-section">
+              <h3 className="section-header">TECHNICAL SKILLS</h3>
+              <div className="skills-grid">
+                {data.technicalSkills.map((skill, index) => (
+                  <div key={index} className="skill-tag technical" title={skill}>
+                    <img 
+                      src={`/src/picture/icons/${skill.toLowerCase()}.svg`} 
+                      onError={(e) => { (e.target as HTMLImageElement).src = 'https://cdn-icons-png.flaticon.com/512/6062/6062218.png' }} 
+                      alt={skill} 
+                    />
+                  </div>
+                ))}
+              </div>
+            </section>
 
-          {/* Tools */}
-          <section className="content-section">
-            <h3 className="section-header">TOOLS & SOFTWARE</h3>
-            <div className="skills-grid">
-              {data.tools.map((tool, index) => (
-                <div key={index} className="skill-tag tool">
-                  {tool}
-                </div>
-              ))}
-            </div>
-          </section>
+            {/* Tools */}
+            <section className="content-section">
+              <h3 className="section-header">TOOLS & SOFTWARE</h3>
+              <div className="skills-grid">
+                {data.tools.map((tool, index) => (
+                  <div key={index} className="skill-tag tool" title={tool}>
+                    <img 
+                      src={`/src/picture/icons/${tool.toLowerCase().replace(/\s+/g, '-')}.svg`} 
+                      onError={(e) => { (e.target as HTMLImageElement).src = 'https://cdn-icons-png.flaticon.com/512/6062/6062218.png' }} 
+                      alt={tool} 
+                    />
+                  </div>
+                ))}
+              </div>
+            </section>
 
           {/* Languages */}
           <section className="content-section">
@@ -115,10 +126,10 @@ export const Profile = ({ data }: { data: ProfileData }) => {
             <h3 className="section-header">CERTIFICATIONS</h3>
             <ul className="cert-list">
               {data.certifications.map((cert, index) => (
-                <li key={index} className="cert-item">
-                  <span className="cert-icon">📜</span>
-                  <span>{cert}</span>
-                </li>
+               <li key={index} className="cert-item">
+                 <span className="cert-icon"><i className="bi bi-award-fill"></i></span>
+                 <span>{cert}</span>
+               </li>
               ))}
             </ul>
           </section>
