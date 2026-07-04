@@ -81,11 +81,7 @@ export const Profile = ({ data }: { data: ProfileData }) => {
               <div className="skills-grid">
                 {data.technicalSkills.map((skill, index) => (
                   <div key={index} className="skill-tag technical" title={skill}>
-                    <img 
-                      src={`/icons/${skill.toLowerCase()}.svg`} 
-                      onError={(e) => { (e.target as HTMLImageElement).src = 'https://cdn-icons-png.flaticon.com/512/6062/6062218.png' }} 
-                      alt={skill} 
-                    />
+                    <img src={`/icons/${skill.toLowerCase()}.svg`}   alt={skill} />
                   </div>
                 ))}
               </div>
@@ -97,11 +93,7 @@ export const Profile = ({ data }: { data: ProfileData }) => {
               <div className="skills-grid">
                 {data.tools.map((tool, index) => (
                   <div key={index} className="skill-tag tool" title={tool}>
-                    <img 
-                      src={`/icons/${tool.toLowerCase().replace(/\s+/g, '-')}.svg`} 
-                      onError={(e) => { (e.target as HTMLImageElement).src = 'https://cdn-icons-png.flaticon.com/512/6062/6062218.png' }} 
-                      alt={tool} 
-                    />
+                    <img src={`/icons/${tool.toLowerCase().replace(/\s+/g, '-')}.svg`}alt={tool} />
                   </div>
                 ))}
               </div>
