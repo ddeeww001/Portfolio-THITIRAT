@@ -83,7 +83,23 @@ export const profileDatabase: ProfileData = {
   
   certifications: [
     "UXUI Foundation Program (LIFELONG) - Organized by T.C.C. Technology Co., Ltd",
-    "Creativity and Imagination (LIFELONG)"
+    "Creativity and Imagination (LIFELONG)",
+    "Agile Thinking",
+    "Logical Reasoning",
+    "Logical Resoning",
+    "Aapability",
+    "Active listening",
+    "Adopting different perspectives",
+    "Asink the right questions",
+    "Learning how to learn",
+    "Seeking relevant information",
+    "Storytelling and Pulblic Speaking",
+    "Structured Provlem Ssoving",
+    "Synthizing messages",
+    "Time Management and Priotization",
+    "Translatingg Knoeledge to different context",
+    "Understanding Biases",
+    "Work-plan Development"
   ]
 };
 

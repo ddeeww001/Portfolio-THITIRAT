@@ -1,43 +1,95 @@
 
+import React, { useEffect, useState } from 'react';
 import { profileDatabase } from '../data/profileData';
-import './certificate.css';
+import './CSS/certificate.css';
 
 const Certificate = () => {
-  // Mapping ชื่อใน Database -> ชื่อไฟล์จริงในโฟลเดอร์ public/certify_LifeLongLearning/
+  const [visibleCerts, setVisibleCerts] = useState<number[]>([]);
+  
   const certMapping: { [key: string]: string } = {
     "UXUI Foundation Program (LIFELONG) - Organized by T.C.C. Technology Co., Ltd": "UXUI Foundation Program.pdf",
     "Creativity and Imagination (LIFELONG)": "Creativity and Imageination.pdf",
-    // คุณสามารถเพิ่มการ Map ชื่ออื่นๆ ได้ที่นี่ เช่น:
-    // "Agile Thinking": "Agile Thinking.pdf",
+    "Agile Thinking": "Agile Thinking.pdf",
+    "Logical Reasoning": "Logical Reasoning.pdf",
+    "Logical Resoning": "Logical Resoning.pdf",
+    "Aapability": "Aapability.pdf",
+    "Active listening": "Active listening.pdf",
+    "Adopting different perspectives": "Adopting different perspectives.pdf",
+    "Asink the right questions": "Asink the right questions.pdf",
+    "Learning how to learn": "Learning how to learn.pdf",
+    "Seeking relevant information": "Seeking relevant information.pdf",
+    "Storytelling and Pulblic Speaking": "Storytelling and Pulblic Speaking.pdf",
+    "Structured Provlem Ssoving": "Structured Provlem Ssoving.pdf",
+    "Synthizing messages": "Synthizing messages.pdf",
+    "Time Management and Priotization": "Time Management and Priotization.pdf",
+    "Translatingg Knoeledge to different context": "Translatingg Knoeledge to different context.pdf",
+    "Understanding Biases": "Understanding Biases.pdf",
+    "Work-plan Development": "Work-plan Development.pdf",
   };
 
   const certifications = profileDatabase.certifications;
-  
-  // สร้างชุดข้อมูลซ้ำ 3 ชุดเพื่อให้เลื่อนวนได้แบบไร้รอยต่อ (Infinite Loop)
-  const loopCerts = [...certifications, ...certifications, ...certifications];
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const index = parseInt(entry.target.getAttribute('data-index') || '0');
+            setVisibleCerts((prev) => [...new Set([...prev, index])]);
+          }
+        });
+      },
+      { 
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px' 
+      }
+    );
+
+    const elements = document.querySelectorAll('.cert-item-wrapper');
+    elements.forEach((el) => observer.observe(el));
+
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <section id="certificates" className="certificate-section">
       <div className="cert-container">
-        <h2 className="cert-header">CERTIFICATIONS</h2>
+        <div className="cert-header-wrapper">
+          <h2 className="cert-header">CERTIFICATIONS</h2>
+          <div className="cert-header-underline"></div>
+        </div>
         
-        <div className="cert-slider">
-          <div className="cert-track">
-            {loopCerts.map((cert, index) => {
-              // ถ้าไม่มีใน Mapping ให้ใช้ชื่อไฟล์ที่เป็นตัวเล็กและเปลี่ยนช่องว่างเป็น _ (หรือใส่ชื่อ default)
+        <div className="cert-timeline-wrapper">
+          <div className="timeline-main-line"></div>
+          
+          <div className="cert-list">
+            {certifications.map((cert, index) => {
               const fileName = certMapping[cert] || `${cert.toLowerCase().replace(/\s+/g, '_')}.pdf`;
+              const isEven = index % 2 === 0;
               
               return (
-                <div className="cert-card" key={index}>
-                  <div className="cert-image-wrapper">
-                    <embed 
-                      src={`/certify_LifeLongLearning/${fileName}`} 
-                      type="application/pdf"
-                      style={{ width: '100%', height: '100%', border: 'none' }}
-                    />
+                <div 
+                  className={`cert-item-wrapper ${isEven ? 'left' : 'right'}`} 
+                  key={index}
+                  data-index={index}
+                >
+                  <div className={`cert-card ${visibleCerts.includes(index) ? 'visible' : ''}`} 
+                       style={{ transitionDelay: `${(index % 3) * 0.1}s` }}>
+                    <div className="cert-image-wrapper">
+                      <embed 
+                        src={`/certify_LifeLongLearning/${fileName}`} 
+                        type="application/pdf"
+                        style={{ width: '100%', height: '100%', border: 'none' }}
+                      />
+                    </div>
+                    <div className="cert-info">
+                      <p>{cert}</p>
+                    </div>
                   </div>
-                  <div className="cert-info">
-                    <p>{cert}</p>
+                  
+                  <div className="cert-connector">
+                    <div className="connector-line"></div>
+                    <div className="connector-dot"></div>
                   </div>
                 </div>
               );

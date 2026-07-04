@@ -5,8 +5,10 @@ import './frontend/CSS/navbar.css';
 import './frontend/CSS/home.css';
 import './frontend/CSS/profile.css';
 import './frontend/CSS/experience.css';
+import './frontend/CSS/certificate.css';
 
 import Experience from './frontend/showExperience';
+import Certificate from './frontend/Certificate';
 import { Profile, myDetailsData } from './frontend/Personal';
 import profileImg from './picture/profile.jpg';
 
@@ -23,7 +25,7 @@ const Navbar = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ['home', 'experience', 'profile'];
+      const sections = ['home', 'experience', 'certificates', 'profile'];
       const scrollPosition = window.scrollY + 100;
 
       for (const section of sections) {
@@ -56,6 +58,12 @@ const Navbar = () => {
           className={activeSection === 'experience' ? 'active' : ''}
         >
           Experience
+        </button>
+        <button
+          onClick={() => scrollToSection('certificates')}
+          className={activeSection === 'certificates' ? 'active' : ''}
+        >
+          Certificates
         </button>
         <button
           onClick={() => scrollToSection('profile')}
@@ -115,12 +123,15 @@ function App() {
     <div className="app-container">
       <Navbar />
       
-      {/* Single scrollable page with all sections */}
       <main>
         <HeroSection />
         
         <section id="experience" className="section experience-section">
           <Experience />
+        </section>
+
+        <section id="certificates" className="section">
+          <Certificate />
         </section>
         
         <section id="profile" className="section profile-section">
@@ -128,7 +139,6 @@ function App() {
         </section>
       </main>
 
-      {/* Footer */}
       <footer className="footer">
         <div className="footer-content">
           <p>© 2026 THITIRAT SIRISAWAD. All rights reserved.</p>
