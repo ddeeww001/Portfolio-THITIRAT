@@ -1,10 +1,10 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { useRef } from 'react';
 import { profileDatabase } from '../data/profileData';
 import './CSS/certificate.css';
 
 const Certificate = () => {
-  const [visibleCerts, setVisibleCerts] = useState<number[]>([]);
+  const scrollRef = useRef<HTMLDivElement>(null);
   
   const certMapping: { [key: string]: string } = {
     "UXUI Foundation Program (LIFELONG) - Organized by T.C.C. Technology Co., Ltd": "UXUI Foundation Program.pdf",
@@ -28,28 +28,26 @@ const Certificate = () => {
   };
 
   const certifications = profileDatabase.certifications;
+  // Duplicate for seamless infinite loop
+  const loopCerts = [...certifications, ...certifications, ...certifications];
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const index = parseInt(entry.target.getAttribute('data-index') || '0');
-            setVisibleCerts((prev) => [...new Set([...prev, index])]);
-          }
-        });
-      },
-      { 
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px' 
+  const scroll = (direction: 'left' | 'right') => {
+    if (scrollRef.current) {
+      const scrollAmount = 340;
+      const currentScroll = scrollRef.current.scrollLeft;
+
+      if (direction === 'left' && currentScroll <= 0) {
+        scrollRef.current.scrollLeft = scrollRef.current.scrollWidth / 3;
+      } else if (direction === 'right' && currentScroll >= (scrollRef.current.scrollWidth * 2) / 3) {
+        scrollRef.current.scrollLeft = scrollRef.current.scrollWidth / 3;
       }
-    );
 
-    const elements = document.querySelectorAll('.cert-item-wrapper');
-    elements.forEach((el) => observer.observe(el));
-
-    return () => observer.disconnect();
-  }, []);
+      scrollRef.current.scrollBy({
+        left: direction === 'left' ? -scrollAmount : scrollAmount,
+        behavior: 'smooth'
+      });
+    }
+  };
 
   return (
     <section id="certificates" className="certificate-section">
@@ -59,22 +57,17 @@ const Certificate = () => {
           <div className="cert-header-underline"></div>
         </div>
         
-        <div className="cert-timeline-wrapper">
-          <div className="timeline-main-line"></div>
+        <div className="cert-slider-wrapper">
+          <button className="nav-btn prev" onClick={() => scroll('left')}>
+            <span className="nav-text">&lt;</span>
+          </button>
           
-          <div className="cert-list">
-            {certifications.map((cert, index) => {
-              const fileName = certMapping[cert] || `${cert.toLowerCase().replace(/\s+/g, '_')}.pdf`;
-              const isEven = index % 2 === 0;
-              
-              return (
-                <div 
-                  className={`cert-item-wrapper ${isEven ? 'left' : 'right'}`} 
-                  key={index}
-                  data-index={index}
-                >
-                  <div className={`cert-card ${visibleCerts.includes(index) ? 'visible' : ''}`} 
-                       style={{ transitionDelay: `${(index % 3) * 0.1}s` }}>
+          <div className="cert-slider" ref={scrollRef}>
+            <div className="cert-track">
+              {loopCerts.map((cert, index) => {
+                const fileName = certMapping[cert] || `${cert.toLowerCase().replace(/\s+/g, '_')}.pdf`;
+                return (
+                  <div className="cert-card" key={index}>
                     <div className="cert-image-wrapper">
                       <embed 
                         src={`/certify_LifeLongLearning/${fileName}`} 
@@ -86,15 +79,14 @@ const Certificate = () => {
                       <p>{cert}</p>
                     </div>
                   </div>
-                  
-                  <div className="cert-connector">
-                    <div className="connector-line"></div>
-                    <div className="connector-dot"></div>
-                  </div>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
+
+          <button className="nav-btn next" onClick={() => scroll('right')}>
+            <span className="nav-text">&gt;</span>
+          </button>
         </div>
       </div>
     </section>

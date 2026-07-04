@@ -3,11 +3,11 @@
 /* ========================================= */
 
 :root {
-  /* Playmode Palette - Deep Blacks & Vibrant Accents */
-  --primary-accent: #C5FF47; /* The iconic lime-green/yellow accent */
+  /* Nexola Palette - Sophisticated Dark Mode */
+  --primary-accent: #C5FF47; 
   --primary-gradient: linear-gradient(135deg, #C5FF47, #B48CFF);
 
-  /* Backgrounds - True Black for OLED effect */
+  /* Backgrounds - Deep Matte Black */
   --bg-main: #000000;
   --bg-secondary: #0A0A0A;
   --bg-card: #111111;
@@ -19,31 +19,31 @@
   --text-muted: #666666;
   --text-accent: var(--primary-accent);
 
-  /* Borders */
+  /* Borders - Very subtle */
   --border-subtle: #1A1A1A;
   --border-medium: #262626;
   --border-bright: #333333;
 
-  /* Glass Effect - Playmode uses very subtle, dark glass */
-  --glass-bg: rgba(0, 0, 0, 0.6);
-  --glass-border: rgba(255, 255, 255, 0.1);
+  /* Glass Effect - Minimalist */
+  --glass-bg: rgba(0, 0, 0, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.05);
 
-  /* Shadows & Glows */
-  --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.8);
-  --shadow-glow: 0 0 30px rgba(197, 255, 71, 0.2);
+  /* Shadows - Soft and deep */
+  --shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.8);
+  --shadow-glow: 0 0 25px rgba(197, 255, 71, 0.15);
 
-  /* Typography - Modern Sans */
-  --font-heading: 'Inter', -apple-system, system-ui, sans-serif;
-  --font-body: 'Inter', -apple-system, system-ui, sans-serif;
+  /* Typography - Inter for that Agency look */
+  --font-heading: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 
   /* Spacing & Radius */
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 20px;
-  --radius-xl: 32px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 20px;
   --radius-full: 9999px;
 
-  --transition-base: 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  --transition-base: 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 /* ========================================= */
