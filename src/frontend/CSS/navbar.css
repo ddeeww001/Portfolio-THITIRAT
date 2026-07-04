@@ -4,32 +4,31 @@
 
 .navbar {
   position: fixed;
-  top: 20px;
+  top: 30px;
   left: 50%;
   transform: translateX(-50%);
 
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 10px 20px;
+  padding: 8px 12px;
   border-radius: var(--radius-full);
 
-  /* Glass Effect with Theme Colors */
-  background: var(--glass-bg);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border: 1px solid var(--glass-border);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-lg);
 
   z-index: 1000;
-  width: 90%;
-  max-width: 600px;
+  width: auto;
+  min-width: 300px;
 }
 
 .navbar nav {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 4px;
   width: 100%;
   justify-content: center;
 }
@@ -39,23 +38,24 @@
   border: none;
   color: var(--text-secondary);
   font-family: var(--font-heading);
-  font-size: 0.95rem;
-  font-weight: 500;
-  padding: 8px 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 8px 16px;
   border-radius: var(--radius-full);
   cursor: pointer;
   transition: all var(--transition-base);
-  white-space: nowrap;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
 }
 
 .navbar button:hover {
   color: var(--text-primary);
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .navbar button.active {
-  color: var(--text-primary);
-  background: var(--primary-gradient);
+  color: #000;
+  background: var(--primary-accent);
   box-shadow: var(--shadow-glow);
 }
 

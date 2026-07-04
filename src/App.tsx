@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
-import './App.css';
-import './variables.css';
-import './navbar.css';
-import './home.css';
-import './profile.css';
-import './experience.css';
+import './frontend/CSS/App.css';
+import './frontend/CSS/variables.css';
+import './frontend/CSS/navbar.css';
+import './frontend/CSS/home.css';
+import './frontend/CSS/profile.css';
+import './frontend/CSS/experience.css';
 
 import Experience from './frontend/showExperience';
 import { Profile, myDetailsData } from './frontend/Personal';
@@ -83,7 +83,7 @@ const HeroSection = () => {
     <section id="home" className="section hero-section">
       <div className={`hero-glass-card ${isVisible ? 'fade-in' : ''}`}>
         <div className="hero-content">
-          <p className="greeting animate-slide-down">👋 Welcome to my portfolio</p>
+          <p className="greeting animate-slide-down">Welcome to my portfolio</p>
           <h1 className="hero-name animate-slide-up">THITIRAT SIRISAWAD</h1>
           <h2 className="hero-role animate-fade-in">UX/UI Designer & Frontend Developer</h2>
           <p className="hero-description animate-fade-in-delay">
@@ -116,7 +116,7 @@ function App() {
       <Navbar />
       
       {/* Single scrollable page with all sections */}
-      <main className="main-content">
+      <main>
         <HeroSection />
         
         <section id="experience" className="section experience-section">
