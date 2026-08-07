@@ -79,28 +79,23 @@ export const ContactSection: React.FC = () => {
         <div style={{ textAlign: 'center', marginBottom: '60px' }}>
           <div className="availability-pill">
             <span className="status-dot"></span>
-            <span>GET IN TOUCH • LET'S TALK</span>
+            <span>NO FORMS. NO HOOPS. JUST THIS.</span>
           </div>
           <h2
             style={{
               fontSize: 'clamp(2.2rem, 5vw, 4rem)',
               fontFamily: 'var(--font-display)',
               fontWeight: 800,
-              lineHeight: 1.1,
-              letterSpacing: '-0.02em',
-              background: 'var(--text-gradient)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
+              lineHeight: 1.05,
+              letterSpacing: '-0.03em',
               marginBottom: '16px',
+              color: '#ffffff',
             }}
           >
-            LET'S BUILD SOMETHING <br />
-            <span style={{ color: 'var(--neon-lime)', WebkitTextFillColor: 'var(--neon-lime)' }}>
-              EXTRAORDINARY
-            </span>
+            LET'S TALK .
           </h2>
-          <p style={{ color: 'var(--text-secondary)', maxWidth: '600px', margin: '0 auto', fontSize: '1.05rem' }}>
-            Have a project in mind or interested in collaborating? Drop me a message or connect directly via social links!
+          <p style={{ color: 'var(--text-secondary)', maxWidth: '620px', margin: '0 auto', fontSize: '1.1rem' }}>
+            It’s prime time at the studio. Perfect light for building — send over your idea and let's create something extraordinary.
           </p>
         </div>
 

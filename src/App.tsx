@@ -13,6 +13,8 @@ import Certificate from './frontend/certificate';
 import { Profile, myDetailsData } from './frontend/Personal';
 import { CustomCursor } from './frontend/components/CustomCursor';
 import { MarqueeTicker } from './frontend/components/MarqueeTicker';
+import { ServicesSection } from './frontend/components/ServicesSection';
+import { StudioFAQ } from './frontend/components/StudioFAQ';
 import { ContactSection } from './frontend/components/ContactSection';
 import { playClickSound, playHoverSound, setSoundEnabled } from './frontend/components/SoundEffects';
 import profileImg from './picture/profile.jpg';
@@ -31,7 +33,7 @@ const Navbar = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ['home', 'experience', 'certificates', 'profile', 'contact'];
+      const sections = ['home', 'services', 'experience', 'certificates', 'profile', 'faq', 'contact'];
       const scrollPosition = window.scrollY + 120;
 
       for (const section of sections) {
@@ -58,14 +60,14 @@ const Navbar = () => {
   };
 
   return (
-    <div className="navbar" style={{ background: 'rgba(7, 8, 10, 0.85)', backdropFilter: 'blur(16px)', borderBottom: '1px solid var(--border-subtle)' }}>
+    <div className="navbar" style={{ background: 'rgba(10, 10, 12, 0.88)', backdropFilter: 'blur(16px)', borderBottom: '1px solid var(--border-subtle)' }}>
       <nav style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', maxWidth: '1200px', margin: '0 auto', padding: '0 20px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
           <button onClick={() => scrollToSection('home')} className="profile-btn" onMouseEnter={playHoverSound} style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
-            <img alt="Thitirat Sirisawad" src={profileImg} className="navbar-profile-pic" style={{ width: '38px', height: '38px', borderRadius: '50%', border: '2px solid var(--neon-lime)' }} />
+            <img alt="Thitirat Sirisawad" src={profileImg} className="navbar-profile-pic" style={{ width: '38px', height: '38px', borderRadius: '50%', border: '2px solid #ffffff' }} />
           </button>
           <span style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: '1.1rem', letterSpacing: '-0.02em', color: 'var(--text-primary)' }}>
-            THITIRAT<span style={{ color: 'var(--neon-lime)' }}>.</span>
+            THITIRAT<span style={{ color: '#ffffff' }}>.</span>
           </span>
         </div>
 
@@ -73,14 +75,20 @@ const Navbar = () => {
           <button onClick={() => scrollToSection('home')} className={activeSection === 'home' ? 'active' : ''} onMouseEnter={playHoverSound}>
             Home
           </button>
+          <button onClick={() => scrollToSection('services')} className={activeSection === 'services' ? 'active' : ''} onMouseEnter={playHoverSound}>
+            Services
+          </button>
           <button onClick={() => scrollToSection('experience')} className={activeSection === 'experience' ? 'active' : ''} onMouseEnter={playHoverSound}>
-            Projects
+            Work
           </button>
           <button onClick={() => scrollToSection('certificates')} className={activeSection === 'certificates' ? 'active' : ''} onMouseEnter={playHoverSound}>
             Certificates
           </button>
           <button onClick={() => scrollToSection('profile')} className={activeSection === 'profile' ? 'active' : ''} onMouseEnter={playHoverSound}>
             About
+          </button>
+          <button onClick={() => scrollToSection('faq')} className={activeSection === 'faq' ? 'active' : ''} onMouseEnter={playHoverSound}>
+            FAQ
           </button>
           <button onClick={() => scrollToSection('contact')} className={activeSection === 'contact' ? 'active' : ''} onMouseEnter={playHoverSound}>
             Contact
@@ -102,69 +110,70 @@ const Navbar = () => {
   );
 };
 
-// Hero Section with Trionn Aesthetic
+// Studio Hero Section Inspired by OhhMyDesign
 const HeroSection = () => {
   return (
-    <section id="home" className="section hero-section" style={{ minHeight: '92vh', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', padding: '120px 20px 60px' }}>
-      <div style={{ maxWidth: '1000px', textAlign: 'center', zIndex: 1 }}>
+    <section id="home" className="section hero-section" style={{ minHeight: '92vh', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', padding: '130px 20px 70px' }}>
+      <div style={{ maxWidth: '1080px', textAlign: 'center', zIndex: 1 }}>
         
         {/* Availability Badge */}
-        <div className="availability-pill animate-fade-in" style={{ display: 'inline-flex', marginBottom: '28px' }}>
+        <div className="availability-pill animate-fade-in" style={{ display: 'inline-flex', marginBottom: '32px' }}>
           <span className="status-dot"></span>
-          <span>AVAILABLE FOR FREELANCE & FULL-TIME ROLES</span>
+          <span>AVAILABLE FOR FREELANCE & FULL-TIME ROLES WORLDWIDE</span>
         </div>
 
-        {/* Hero Title */}
+        {/* Studio Impact Hero Title */}
         <h1
           className="animate-slide-up"
           style={{
-            fontSize: 'clamp(2.8rem, 7vw, 5.5rem)',
+            fontSize: 'clamp(2.8rem, 8vw, 6.2rem)',
             fontFamily: 'var(--font-display)',
             fontWeight: 800,
-            lineHeight: 1.05,
-            letterSpacing: '-0.03em',
-            marginBottom: '20px',
+            lineHeight: 1.02,
+            letterSpacing: '-0.04em',
+            marginBottom: '24px',
+            color: '#ffffff',
           }}
         >
-          THITIRAT SIRISAWAD <br />
-          <span style={{ background: 'var(--primary-gradient)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-            CREATIVE FRONTEND & UX/UI
+          IMPOSSIBLE TO <br />
+          <span style={{ color: '#ffffff', WebkitTextFillColor: '#ffffff', borderBottom: '3px solid #ffffff' }}>
+            IGNORE .
           </span>
         </h1>
 
         <p
           className="animate-fade-in-delay"
           style={{
-            fontSize: 'clamp(1rem, 2vw, 1.25rem)',
+            fontSize: 'clamp(1.05rem, 2.2vw, 1.35rem)',
             color: 'var(--text-secondary)',
-            maxWidth: '720px',
-            margin: '0 auto 36px',
+            maxWidth: '760px',
+            margin: '0 auto 40px',
             lineHeight: 1.6,
           }}
         >
-          Dedicated to building intuitive, high-performance digital products and visually captivating web experiences with modern architecture.
+          Thitirat Sirisawad — Creative Frontend & UX/UI Designer crafting bold digital products, intuitive web applications, and interfaces that refuse to look ordinary.
         </p>
 
-        {/* Hero Action Buttons */}
+        {/* Studio Hero Action Buttons */}
         <div className="animate-fade-in-delay-2" style={{ display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap' }}>
           <button
             onClick={() => scrollToSection('experience')}
             style={{
-              background: 'var(--neon-lime)',
-              color: '#0b0f19',
+              background: '#ffffff',
+              color: '#0a0a0c',
               border: 'none',
-              padding: '14px 32px',
+              padding: '16px 36px',
               borderRadius: 'var(--radius-full)',
               fontWeight: 800,
               fontSize: '0.95rem',
               cursor: 'pointer',
-              boxShadow: '0 0 25px var(--neon-lime-glow)',
+              boxShadow: '0 0 25px rgba(255, 255, 255, 0.25)',
               transition: 'all 0.3s ease',
             }}
             className="interactive-hover"
             onMouseEnter={playHoverSound}
           >
-            VIEW FEATURED WORK ↗
+            SEE THE WORK ↗
           </button>
 
           <button
@@ -173,7 +182,7 @@ const HeroSection = () => {
               background: 'rgba(255, 255, 255, 0.05)',
               border: '1px solid var(--border-medium)',
               color: 'var(--text-primary)',
-              padding: '14px 32px',
+              padding: '16px 36px',
               borderRadius: 'var(--radius-full)',
               fontWeight: 600,
               fontSize: '0.95rem',
@@ -183,23 +192,39 @@ const HeroSection = () => {
             className="interactive-hover"
             onMouseEnter={playHoverSound}
           >
-            GET IN TOUCH
+            TALK WITH ME
           </button>
         </div>
+      </div>
+    </section>
+  );
+};
 
-        {/* Scroll Indicator */}
-        <div
-          onClick={() => scrollToSection('experience')}
+// Studio Statement Banner Section Inspired by OhhMyDesign
+const StudioStatementSection = () => {
+  return (
+    <section style={{ padding: '90px 20px', background: 'var(--trionn-bg-alt)', borderTop: '1px solid var(--border-subtle)', borderBottom: '1px solid var(--border-subtle)' }}>
+      <div style={{ maxWidth: '1000px', margin: '0 auto', textAlign: 'center' }}>
+        <div className="availability-pill" style={{ marginBottom: '20px', display: 'inline-flex' }}>
+          <span className="status-dot"></span>
+          <span>THE STUDIO PHILOSOPHY</span>
+        </div>
+        <h2
           style={{
-            marginTop: '60px',
-            cursor: 'pointer',
-            color: 'var(--neon-lime)',
-            fontSize: '1.5rem',
-            animation: 'bounce 2s infinite',
+            fontSize: 'clamp(2rem, 4.5vw, 3.4rem)',
+            fontFamily: 'var(--font-display)',
+            fontWeight: 800,
+            lineHeight: 1.15,
+            letterSpacing: '-0.03em',
+            marginBottom: '20px',
+            color: '#ffffff',
           }}
         >
-          ↓
-        </div>
+          We make people stop and ask, who made that?
+        </h2>
+        <p style={{ color: 'var(--text-secondary)', fontSize: '1.15rem', maxWidth: '720px', margin: '0 auto', lineHeight: 1.65 }}>
+          That reaction is the whole job. Strategy, UI/UX design, and clean frontend code built for products that refuse to look ordinary. No templates, ever.
+        </p>
       </div>
     </section>
   );
@@ -219,19 +244,29 @@ function App() {
         {/* Marquee Loop Ticker */}
         <MarqueeTicker />
 
+        {/* Studio Philosophy Statement */}
+        <StudioStatementSection />
+
+        {/* Services Grid Section ("What I Make") */}
+        <ServicesSection />
+
+        {/* Featured Work Showcase Grid */}
         <section id="experience" className="section experience-section">
           <Experience />
         </section>
 
-        <section id="certificates" className="section">
-          <Certificate />
-        </section>
+        {/* Continuous Certificate Marquee Gallery */}
+        <Certificate />
 
+        {/* Profile & Live GitHub API Hub */}
         <section id="profile" className="section profile-section">
           <Profile data={myDetailsData} />
         </section>
 
-        {/* Security & Anti-Spam Contact Form */}
+        {/* Studio FAQ ("The Nosy Section") */}
+        <StudioFAQ />
+
+        {/* Contact Form & Studio Footer */}
         <ContactSection />
       </main>
 
@@ -239,15 +274,15 @@ function App() {
         <div className="footer-content" style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '20px' }}>
           <div>
             <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
-              © 2026 THITIRAT SIRISAWAD. All rights reserved. • Redesigned with Trionn Cyber Aesthetics.
+              © 2026 THITIRAT SIRISAWAD. All rights reserved. • Studio Architecture Inspired by OhhMyDesign.
             </p>
           </div>
           <div className="footer-links" style={{ display: 'flex', gap: '20px' }}>
-            <a href="https://github.com/ddeeww001" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--neon-lime)' }}>
+            <a href="https://github.com/ddeeww001" target="_blank" rel="noopener noreferrer" style={{ color: '#ffffff', fontWeight: 600 }}>
               GitHub ↗
             </a>
-            <a href="mailto:dewthitirat@gmail.com" style={{ color: 'var(--text-primary)' }}>
-              Email Direct
+            <a href="mailto:dewthitirat@gmail.com" style={{ color: 'var(--text-secondary)' }}>
+              hello@thitirat.dev
             </a>
           </div>
         </div>
@@ -257,6 +292,7 @@ function App() {
 }
 
 export default App;
+
 
 
 // Made with Bob
