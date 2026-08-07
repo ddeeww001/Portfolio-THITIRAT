@@ -1,134 +1,134 @@
-/* ========================================= */
-/* UNIFIED THEME - COLOR VARIABLES */
-/* ========================================= */
+/* ======================================================== */
+/* PREMIUM MONOCHROME DESIGN SYSTEM - BLACK, WHITE, GREY    */
+/* ======================================================== */
 
 :root {
-  /* Nexola Palette - Sophisticated Dark Mode */
-  --primary-accent: #C5FF47; 
-  --primary-gradient: linear-gradient(135deg, #C5FF47, #B48CFF);
+  /* Obsidian Black & Dark Charcoal Backgrounds */
+  --trionn-bg: #0a0a0c;          /* Deep pitch obsidian black */
+  --trionn-bg-alt: #121318;      /* Dark charcoal header/footer/section background */
+  --trionn-card: #1a1b22;        /* High-end dark slate card background */
+  --trionn-card-hover: #262732;  /* Interactive slate elevation state */
 
-  /* Backgrounds - Deep Matte Black */
-  --bg-main: #000000;
-  --bg-secondary: #0A0A0A;
-  --bg-card: #111111;
-  --bg-card-hover: #1A1A1A;
+  /* High-Contrast Crisp Monochrome Accents */
+  --neon-lime: #ffffff;          /* Pure crisp white primary accent */
+  --neon-lime-glow: rgba(255, 255, 255, 0.2);
+  --neon-purple: #e4e4e7;        /* Light silver grey secondary accent */
+  --neon-purple-glow: rgba(228, 228, 231, 0.15);
+  --neon-cyan: #a1a1aa;          /* Medium slate grey status accent */
+  --neon-cyan-glow: rgba(161, 161, 170, 0.15);
 
-  /* Text Colors */
-  --text-primary: #FFFFFF;
-  --text-secondary: #A1A1AA;
-  --text-muted: #666666;
-  --text-accent: var(--primary-accent);
+  /* Primary Theme Gradients (Monochrome) */
+  --primary-accent: #ffffff; 
+  --primary-gradient: linear-gradient(135deg, #ffffff 0%, #d4d4d8 50%, #a1a1aa 100%);
+  --text-gradient: linear-gradient(135deg, #ffffff 30%, #a1a1aa 100%);
+  --neon-gradient: linear-gradient(90deg, #ffffff, #d4d4d8, #a1a1aa, #ffffff);
 
-  /* Borders - Very subtle */
-  --border-subtle: #1A1A1A;
-  --border-medium: #262626;
-  --border-bright: #333333;
+  /* Background Tokens */
+  --bg-main: var(--trionn-bg);
+  --bg-secondary: var(--trionn-bg-alt);
+  --bg-card: var(--trionn-card);
+  --bg-card-hover: var(--trionn-card-hover);
 
-  /* Glass Effect - Minimalist */
-  --glass-bg: rgba(0, 0, 0, 0.7);
-  --glass-border: rgba(255, 255, 255, 0.05);
+  /* Typography */
+  --font-display: 'Syne', 'Outfit', sans-serif;
+  --font-heading: 'Outfit', 'Space Grotesk', sans-serif;
+  --font-body: 'Outfit', sans-serif;
+  --font-mono: 'Space Grotesk', monospace;
 
-  /* Shadows - Soft and deep */
-  --shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.8);
-  --shadow-glow: 0 0 25px rgba(197, 255, 71, 0.15);
+  /* Text Colors (High Contrast Monochrome) */
+  --text-primary: #ffffff;       /* Crisp white */
+  --text-secondary: #d4d4d8;     /* Light silver grey */
+  --text-muted: #a1a1aa;         /* Medium slate grey */
+  --text-accent: #ffffff;        /* White accent */
 
-  /* Typography - Inter for that Agency look */
-  --font-heading: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  /* Borders & Glass */
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-medium: rgba(255, 255, 255, 0.16);
+  --border-glow: rgba(255, 255, 255, 0.35);
 
-  /* Spacing & Radius */
-  --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 12px;
-  --radius-xl: 20px;
+  --glass-bg: rgba(18, 19, 24, 0.85);
+  --glass-border: rgba(255, 255, 255, 0.12);
+
+  /* Shadows */
+  --shadow-lg: 0 20px 40px -10px rgba(0, 0, 0, 0.7);
+  --shadow-glow: 0 0 20px rgba(255, 255, 255, 0.15);
+
+  /* Spacing, Radius & Transitions */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
   --radius-full: 9999px;
 
-  --transition-base: 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  --transition-fast: 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-base: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-bounce: 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-/* ========================================= */
-/* GLOBAL STYLES */
-/* ========================================= */
-
+/* Global Reset & Base */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+  color-scheme: dark;
+  max-width: 100vw;
+  overflow-x: hidden !important;
+}
+
 body {
   font-family: var(--font-body);
-  background: var(--bg-main);
+  background-color: var(--trionn-bg);
   color: var(--text-primary);
-  line-height: 1.6;
-  overflow-x: hidden;
-  scroll-behavior: smooth;
+  line-height: 1.65;
+  max-width: 100vw;
+  overflow-x: hidden !important;
+  position: relative;
+  -webkit-font-smoothing: antialiased;
 }
 
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--bg-secondary);
+  background: var(--trionn-bg-alt);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--border-medium);
+  background: rgba(255, 255, 255, 0.3);
   border-radius: var(--radius-full);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--border-bright);
+  background: #ffffff;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
 }
 
 /* Selection */
 ::selection {
-  background: var(--accent-purple-light);
-  color: var(--bg-main);
+  background: #ffffff;
+  color: #0a0a0c;
 }
 
-/* Focus Styles */
+/* Focus Outline */
 :focus-visible {
-  outline: 2px solid var(--accent-purple-light);
-  outline-offset: 2px;
+  outline: 2px solid #ffffff;
+  outline-offset: 4px;
 }
 
-/* Headings */
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: var(--font-heading);
+/* Typography Defaults */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
   font-weight: 700;
-  line-height: 1.2;
-  color: var(--text-primary);
+  letter-spacing: -0.02em;
 }
 
-/* Links */
 a {
-  color: var(--accent-purple-light);
+  color: inherit;
   text-decoration: none;
-  transition: color var(--transition-base);
 }
-
-a:hover {
-  color: var(--primary-purple);
-}
-
-/* Smooth Animations */
-@media (prefers-reduced-motion: reduce) {
-
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-}
-
-/* Made with Bob */

@@ -1,11 +1,12 @@
-
-import React, { useRef } from 'react';
+import { useState } from 'react';
 import { profileDatabase } from '../data/profileData';
+import { playClickSound, playHoverSound } from './components/SoundEffects';
 import './CSS/certificate.css';
 
 const Certificate = () => {
-  const scrollRef = useRef<HTMLDivElement>(null);
-  
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCert, setSelectedCert] = useState<{ title: string; file: string } | null>(null);
+
   const certMapping: { [key: string]: string } = {
     "UXUI Foundation Program (LIFELONG) - Organized by T.C.C. Technology Co., Ltd": "UXUI Foundation Program.pdf",
     "Creativity and Imagination (LIFELONG)": "Creativity and Imageination.pdf",
@@ -28,69 +29,231 @@ const Certificate = () => {
   };
 
   const certifications = profileDatabase.certifications;
-  // Duplicate for seamless infinite loop
-  const loopCerts = [...certifications, ...certifications, ...certifications];
 
-  const scroll = (direction: 'left' | 'right') => {
-    if (scrollRef.current) {
-      const scrollAmount = 340;
-      const currentScroll = scrollRef.current.scrollLeft;
+  const filteredCerts = certifications.filter((cert) =>
+    cert.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
-      if (direction === 'left' && currentScroll <= 0) {
-        scrollRef.current.scrollLeft = scrollRef.current.scrollWidth / 3;
-      } else if (direction === 'right' && currentScroll >= (scrollRef.current.scrollWidth * 2) / 3) {
-        scrollRef.current.scrollLeft = scrollRef.current.scrollWidth / 3;
-      }
-
-      scrollRef.current.scrollBy({
-        left: direction === 'left' ? -scrollAmount : scrollAmount,
-        behavior: 'smooth'
-      });
-    }
-  };
+  // Duplicate list for continuous infinite marquee looping
+  const marqueeList = [...filteredCerts, ...filteredCerts];
 
   return (
-    <section id="certificates" className="certificate-section">
-      <div className="cert-container">
-        <div className="cert-header-wrapper">
-          <h2 className="cert-header">CERTIFICATIONS</h2>
-          <div className="cert-header-underline"></div>
-        </div>
-        
-        <div className="cert-slider-wrapper">
-          <button className="nav-btn prev" onClick={() => scroll('left')}>
-            <span className="nav-text">&lt;</span>
-          </button>
-          
-          <div className="cert-slider" ref={scrollRef}>
-            <div className="cert-track">
-              {loopCerts.map((cert, index) => {
-                const fileName = certMapping[cert] || `${cert.toLowerCase().replace(/\s+/g, '_')}.pdf`;
-                return (
-                  <div className="cert-card" key={index}>
-                    <div className="cert-image-wrapper">
-                      <embed 
-                        src={`/certify_LifeLongLearning/${fileName}`} 
-                        type="application/pdf"
-                        style={{ width: '100%', height: '100%', border: 'none' }}
-                      />
-                    </div>
-                    <div className="cert-info">
-                      <p>{cert}</p>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
+    <section id="certificates" className="certificate-section" style={{ padding: '80px 0', overflow: 'hidden' }}>
+      <div className="cert-container" style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px' }}>
+        <div style={{ textAlign: 'center', marginBottom: '40px' }}>
+          <div className="availability-pill">
+            <span className="status-dot"></span>
+            <span>CONTINUOUS TICKER • VERIFIED ACCOMPLISHMENTS</span>
           </div>
+          <h2
+            style={{
+              fontSize: 'clamp(2.2rem, 5vw, 3.8rem)',
+              fontFamily: 'var(--font-display)',
+              fontWeight: 800,
+              lineHeight: 1.1,
+              letterSpacing: '-0.02em',
+              background: 'var(--text-gradient)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              marginBottom: '16px',
+            }}
+          >
+            CERTIFICATIONS & <br />
+            <span style={{ color: '#ffffff', WebkitTextFillColor: '#ffffff' }}>
+              CREDENTIALS
+            </span>
+          </h2>
+          <p style={{ color: 'var(--text-secondary)', maxWidth: '600px', margin: '0 auto 24px', fontSize: '1.05rem' }}>
+            Continuous infinite gallery of verified certificates from Lifelong Learning programs, design workshops, and agile technical domains.
+          </p>
 
-          <button className="nav-btn next" onClick={() => scroll('right')}>
-            <span className="nav-text">&gt;</span>
-          </button>
+          {/* Search Filter Box */}
+          <div style={{ maxWidth: '400px', margin: '0 auto 30px' }}>
+            <input
+              type="text"
+              placeholder="Search certification title..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              style={{
+                width: '100%',
+                background: 'rgba(255, 255, 255, 0.04)',
+                border: '1px solid var(--border-medium)',
+                borderRadius: 'var(--radius-full)',
+                padding: '10px 20px',
+                color: 'var(--text-primary)',
+                fontFamily: 'var(--font-body)',
+                fontSize: '0.9rem',
+                outline: 'none',
+              }}
+            />
+          </div>
         </div>
       </div>
+
+      {/* Continuous Infinite Marquee Track Container */}
+      <div className="cert-marquee-container">
+        <div className="cert-marquee-track">
+          {marqueeList.map((cert, index) => {
+            const fileName = certMapping[cert] || `${cert.toLowerCase().replace(/\s+/g, '_')}.pdf`;
+            const filePath = `/certify_LifeLongLearning/${fileName}`;
+
+            return (
+              <div
+                key={index}
+                style={{
+                  minWidth: '290px',
+                  maxWidth: '290px',
+                  background: 'var(--trionn-card)',
+                  border: '1px solid var(--border-medium)',
+                  borderRadius: 'var(--radius-lg)',
+                  padding: '20px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'space-between',
+                  boxShadow: 'var(--shadow-lg)',
+                  transition: 'all 0.3s ease',
+                  cursor: 'pointer',
+                }}
+                className="interactive-hover"
+                onClick={() => {
+                  playClickSound();
+                  setSelectedCert({ title: cert, file: filePath });
+                }}
+              >
+                <div>
+                  {/* Real Scaled PDF Document Visual Thumbnail */}
+                  <div
+                    style={{
+                      height: '150px',
+                      background: '#0a0a0c',
+                      borderRadius: 'var(--radius-md)',
+                      marginBottom: '16px',
+                      border: '1px solid var(--border-subtle)',
+                      overflow: 'hidden',
+                      position: 'relative',
+                    }}
+                  >
+                    <iframe
+                      src={`${filePath}#toolbar=0&navpanes=0&scrollbar=0`}
+                      title={cert}
+                      style={{
+                        width: '240%',
+                        height: '240%',
+                        transform: 'scale(0.42)',
+                        transformOrigin: 'top left',
+                        border: 'none',
+                        pointerEvents: 'none',
+                      }}
+                    />
+
+                    {/* Verified Badge Stamp */}
+                    <div
+                      style={{
+                        position: 'absolute',
+                        top: '8px',
+                        right: '8px',
+                        background: 'rgba(10, 10, 12, 0.85)',
+                        border: '1px solid var(--border-glow)',
+                        borderRadius: 'var(--radius-full)',
+                        padding: '2px 8px',
+                        fontSize: '0.65rem',
+                        color: '#ffffff',
+                        fontFamily: 'var(--font-mono)',
+                        fontWeight: 700,
+                        backdropFilter: 'blur(4px)',
+                      }}
+                    >
+                      ✓ VERIFIED
+                    </div>
+                  </div>
+
+                  <h4
+                    style={{
+                      fontSize: '0.92rem',
+                      color: 'var(--text-primary)',
+                      lineHeight: 1.4,
+                      marginBottom: '12px',
+                      fontFamily: 'var(--font-heading)',
+                      height: '2.8em',
+                      overflow: 'hidden',
+                      display: '-webkit-box',
+                      WebkitLineClamp: 2,
+                      WebkitBoxOrient: 'vertical',
+                    }}
+                  >
+                    {cert}
+                  </h4>
+                </div>
+
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    playClickSound();
+                    setSelectedCert({ title: cert, file: filePath });
+                  }}
+                  onMouseEnter={playHoverSound}
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.06)',
+                    border: '1px solid var(--border-medium)',
+                    color: '#ffffff',
+                    padding: '8px 14px',
+                    borderRadius: 'var(--radius-full)',
+                    fontSize: '0.8rem',
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    width: '100%',
+                    marginTop: '10px',
+                    transition: 'all 0.2s ease',
+                  }}
+                >
+                  PREVIEW DOCUMENT ↗
+                </button>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Certificate Lightbox Modal Viewer */}
+      {selectedCert && (
+        <div className="modal-backdrop" onClick={() => setSelectedCert(null)}>
+          <div
+            className="modal-card"
+            style={{ maxWidth: '850px', height: '85vh' }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button className="modal-close-btn" onClick={() => setSelectedCert(null)}>
+              ✕
+            </button>
+
+            <h3 style={{ fontSize: '1.3rem', color: 'var(--text-primary)', marginBottom: '16px', paddingRight: '40px' }}>
+              {selectedCert.title}
+            </h3>
+
+            <div style={{ width: '100%', height: 'calc(100% - 100px)', borderRadius: 'var(--radius-md)', overflow: 'hidden', background: '#0a0a0c' }}>
+              <iframe
+                src={selectedCert.file}
+                title={selectedCert.title}
+                style={{ width: '100%', height: '100%', border: 'none' }}
+              />
+            </div>
+
+            <div style={{ marginTop: '16px', display: 'flex', justifyContent: 'flex-end', gap: '12px' }}>
+              <a
+                href={selectedCert.file}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="modal-link-btn"
+              >
+                OPEN FULL PDF ↗
+              </a>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 };
 
 export default Certificate;
+

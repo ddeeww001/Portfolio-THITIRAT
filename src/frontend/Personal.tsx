@@ -1,133 +1,209 @@
-
-// Import data from centralized database
 import { profileDatabase, type ProfileData } from '../data/profileData';
 import profileImg from '../picture/profile.jpg';
+import { playHoverSound } from './components/SoundEffects';
+import { GitHubSection } from './components/GitHubSection';
 
-// Export for backward compatibility
 export const myDetailsData = profileDatabase;
 
-// Main Profile Component
 export const Profile = ({ data }: { data: ProfileData }) => {
   return (
-    <div className="profile-page-wrapper">
-      <div className="profile-card-container">
-        
-        {/* --- ส่วนด้านซ้าย (Left Sidebar): รูป + ข้อมูลส่วนตัว --- */}
-        <aside className="profile-sidebar">
-          <div className="profile-pic-wrapper">
-            <img src={profileImg} alt={data.name} />
+    <div className="profile-page-wrapper" style={{ padding: '80px 20px 40px', maxWidth: '1200px', margin: '0 auto' }}>
+      <div style={{ textAlign: 'center', marginBottom: '50px' }}>
+        <div className="availability-pill">
+          <span className="status-dot"></span>
+          <span>PROFILE & TECH STACK • THITIRAT SIRISAWAD</span>
+        </div>
+        <h2
+          style={{
+            fontSize: 'clamp(2.2rem, 5vw, 3.8rem)',
+            fontFamily: 'var(--font-display)',
+            fontWeight: 800,
+            lineHeight: 1.1,
+            letterSpacing: '-0.02em',
+            background: 'var(--text-gradient)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            marginBottom: '16px',
+          }}
+        >
+          ABOUT ME & <br />
+          <span style={{ color: '#ffffff', WebkitTextFillColor: '#ffffff' }}>
+            CAPABILITIES
+          </span>
+        </h2>
+      </div>
+
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+          gap: '30px',
+        }}
+      >
+        {/* Profile Card Sidebar */}
+        <aside
+          style={{
+            background: 'var(--trionn-card)',
+            border: '1px solid var(--border-medium)',
+            borderRadius: 'var(--radius-xl)',
+            padding: '40px',
+            boxShadow: 'var(--shadow-lg)',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            textAlign: 'center',
+          }}
+        >
+          <div
+            style={{
+              width: '140px',
+              height: '140px',
+              borderRadius: '50%',
+              overflow: 'hidden',
+              border: '3px solid var(--neon-lime)',
+              boxShadow: '0 0 25px var(--neon-lime-glow)',
+              marginBottom: '20px',
+            }}
+          >
+            <img src={profileImg} alt={data.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
           </div>
-          
-          <h2 className="profile-name">{data.name}</h2>
-          
-          <div className="profile-roles">
-            {data.role.map((role, index) => (
-               <span key={index} className="role-badge">
-                 <i className="bi bi-patch-check-fill" style={{ marginRight: '6px' }}></i>
-                 {role}
-               </span>
+
+          <h3 style={{ fontSize: '1.6rem', color: 'var(--text-primary)', fontFamily: 'var(--font-display)', marginBottom: '8px' }}>
+            {data.name}
+          </h3>
+
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', justifyContent: 'center', marginBottom: '24px' }}>
+            {data.role.map((role, idx) => (
+              <span
+                key={idx}
+                style={{
+                  background: 'rgba(56, 189, 248, 0.1)',
+                  color: 'var(--neon-lime)',
+                  border: '1px solid var(--border-glow)',
+                  padding: '4px 14px',
+                  borderRadius: 'var(--radius-full)',
+                  fontSize: '0.8rem',
+                  fontFamily: 'var(--font-mono)',
+                  fontWeight: 600,
+                }}
+              >
+                ✦ {role}
+              </span>
             ))}
           </div>
 
-          <div className="sidebar-section">
-            <h3>CONTACT INFO</h3>
-            <ul className="contact-list">
-               <li>
-                 <span className="icon"><i className="bi bi-envelope-fill"></i></span>
-                 <a href={`mailto:${data.email}`}>{data.email}</a>
-               </li>
-               <li>
-                 <span className="icon"><i className="bi bi-telephone-fill"></i></span>
-                 <span>{data.phone}</span>
-               </li>
-               <li>
-                 <span className="icon"><i className="bi bi-cake2-fill"></i></span>
-                 <span>{data.birthday}</span>
-               </li>
-            </ul>
-          </div>
+          <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', lineHeight: 1.6, marginBottom: '28px' }}>
+            {data.introduce}
+          </p>
 
-          <div className="sidebar-section">
-            <h3>SOCIALS</h3>
-            <ul className="social-list">
-              {data.socials.map((item, index) => (
-                <li key={index}>
-                  <span className="social-label">{item.label}:</span> 
-                  {item.link ? (
-                    <a href={item.link} target="_blank" rel="noreferrer" className="social-link">
-                      {item.value} ↗
-                    </a>
-                  ) : (
-                    <span className="social-value">{item.value}</span>
-                  )}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </aside>
-
-        {/* --- ส่วนด้านขวา (Main Content): Skills & Certs --- */}
-        <main className="profile-content">
-          
-          {/* Introduction */}
-          <section className="content-section">
-            <h1 className="section-header">ABOUT ME</h1>
-            <p className="introduce-text">{data.introduce}</p>
-          </section>
-
-            {/* Technical Skills */}
-            <section className="content-section">
-              <h3 className="section-header">TECHNICAL SKILLS</h3>
-              <div className="skills-grid">
-                {data.technicalSkills.map((skill, index) => (
-                  <div key={index} className="skill-tag technical" title={skill}>
-                    <img src={`/icons/${skill.toLowerCase()}.svg`}   alt={skill} />
-                  </div>
-                ))}
-              </div>
-            </section>
-
-            {/* Tools */}
-            <section className="content-section">
-              <h3 className="section-header">TOOLS & SOFTWARE</h3>
-              <div className="skills-grid">
-                {data.tools.map((tool, index) => (
-                  <div key={index} className="skill-tag tool" title={tool}>
-                    <img src={`/icons/${tool.toLowerCase().replace(/\s+/g, '-')}.svg`}alt={tool} />
-                  </div>
-                ))}
-              </div>
-            </section>
-
-          {/* Languages */}
-          <section className="content-section">
-            <h3 className="section-header">LANGUAGES</h3>
-            <div className="language-list">
-              {data.languages.map((lang, index) => (
-                <div key={index} className="lang-item">
-                  <span className="lang-name">{lang.lang}</span>
-                  <span className="lang-dot">•</span>
-                  <span className="lang-level">{lang.level}</span>
+          <div style={{ width: '100%', borderTop: '1px solid var(--border-subtle)', paddingTop: '20px', textAlign: 'left' }}>
+            <h4 style={{ fontSize: '0.85rem', fontFamily: 'var(--font-mono)', color: 'var(--text-muted)', marginBottom: '12px' }}>
+              LANGUAGE FLUENCY
+            </h4>
+            <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+              {data.languages.map((lang, idx) => (
+                <div
+                  key={idx}
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.03)',
+                    border: '1px solid var(--border-subtle)',
+                    padding: '8px 14px',
+                    borderRadius: 'var(--radius-md)',
+                    fontSize: '0.85rem',
+                  }}
+                >
+                  <strong style={{ color: 'var(--text-primary)' }}>{lang.lang}</strong> ({lang.level})
                 </div>
               ))}
             </div>
-          </section>
+          </div>
+        </aside>
 
-          {/* Certifications */}
-          <section className="content-section">
-            <h3 className="section-header">CERTIFICATIONS</h3>
-            <ul className="cert-list">
-              {data.certifications.map((cert, index) => (
-               <li key={index} className="cert-item">
-                 <span className="cert-icon"><i className="bi bi-award-fill"></i></span>
-                 <span>{cert}</span>
-               </li>
+        {/* Technical Stack Chips & Authentic Live GitHub Data */}
+        <main style={{ display: 'flex', flexDirection: 'column', gap: '30px' }}>
+          {/* Core Technical Stack (Clean Chips - No Fake Percentages) */}
+          <div
+            style={{
+              background: 'var(--trionn-card)',
+              border: '1px solid var(--border-medium)',
+              borderRadius: 'var(--radius-xl)',
+              padding: '36px',
+              boxShadow: 'var(--shadow-lg)',
+            }}
+          >
+            <h3 style={{ fontSize: '1.4rem', fontFamily: 'var(--font-display)', marginBottom: '20px', color: 'var(--text-primary)' }}>
+              Core Languages & Technologies
+            </h3>
+
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px' }}>
+              {data.technicalSkills.map((skill, idx) => (
+                <div
+                  key={idx}
+                  style={{
+                    background: 'rgba(56, 189, 248, 0.08)',
+                    border: '1px solid var(--border-glow)',
+                    padding: '10px 22px',
+                    borderRadius: 'var(--radius-full)',
+                    color: 'var(--neon-lime)',
+                    fontSize: '0.92rem',
+                    fontFamily: 'var(--font-mono)',
+                    fontWeight: 600,
+                    transition: 'all 0.3s ease',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                  }}
+                  className="interactive-hover"
+                  onMouseEnter={playHoverSound}
+                >
+                  <span>✦</span> {skill}
+                </div>
               ))}
-            </ul>
-          </section>
+            </div>
+          </div>
 
+          {/* Design Tools & Platforms */}
+          <div
+            style={{
+              background: 'var(--trionn-card)',
+              border: '1px solid var(--border-medium)',
+              borderRadius: 'var(--radius-xl)',
+              padding: '36px',
+              boxShadow: 'var(--shadow-lg)',
+            }}
+          >
+            <h3 style={{ fontSize: '1.4rem', fontFamily: 'var(--font-display)', marginBottom: '20px', color: 'var(--text-primary)' }}>
+              Design Tools & Software Environment
+            </h3>
+
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px' }}>
+              {data.tools.map((tool, idx) => (
+                <div
+                  key={idx}
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.04)',
+                    border: '1px solid var(--border-medium)',
+                    padding: '10px 20px',
+                    borderRadius: 'var(--radius-full)',
+                    color: 'var(--text-primary)',
+                    fontSize: '0.9rem',
+                    fontWeight: 500,
+                    transition: 'all 0.3s ease',
+                  }}
+                  className="interactive-hover"
+                  onMouseEnter={playHoverSound}
+                >
+                  ⚡ {tool}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Live Authentic GitHub Activity & Repositories */}
+          <GitHubSection />
         </main>
       </div>
     </div>
   );
 };
+
