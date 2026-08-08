@@ -145,7 +145,13 @@ function ShowExperience() {
                 >
                   {/* Fallback Graphic */}
                   <div style={{ textAlign: 'center', zIndex: 1 }}>
-                    <div style={{ fontSize: '1.6rem', marginBottom: '6px' }}>💻</div>
+                    <div style={{ marginBottom: '6px', display: 'flex', justifyContent: 'center' }}>
+                      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                        <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+                        <line x1="8" y1="21" x2="16" y2="21" />
+                        <line x1="12" y1="17" x2="12" y2="21" />
+                      </svg>
+                    </div>
                     <div
                       style={{
                         fontSize: '0.8rem',

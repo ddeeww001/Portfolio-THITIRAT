@@ -1,5 +1,5 @@
 import { profileDatabase, type ProfileData } from '../data/profileData';
-import profileImg from '../picture/profile.jpg';
+const profileImg = '/picture/profile.jpg';
 import { playHoverSound } from './components/SoundEffects';
 import { GitHubSection } from './components/GitHubSection';
 

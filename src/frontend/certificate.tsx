@@ -1,54 +1,46 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import * as pdfjsLib from 'pdfjs-dist';
+import pdfWorker from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
 import { profileDatabase } from '../data/profileData';
 import { playClickSound, playHoverSound } from './components/SoundEffects';
 import './CSS/certificate.css';
 
-// PDF.js Canvas Thumbnail Renderer for Real Certificate PDF Images
+// Set bundled local worker source for pdfjs-dist
+pdfjsLib.GlobalWorkerOptions.workerSrc = pdfWorker;
+
+// Real Certificate Document Page Renderer Component
 const PDFThumbnail = ({ url, title }: { url: string; title: string }) => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
+  const [rendered, setRendered] = useState(false);
+  const [imgUrl, setImgUrl] = useState<string | null>(null);
 
   useEffect(() => {
     let isMounted = true;
 
     const renderPDF = async () => {
       try {
-        if (!(window as any).pdfjsLib) {
-          const script = document.createElement('script');
-          script.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
-          document.head.appendChild(script);
-          await new Promise((resolve, reject) => {
-            script.onload = resolve;
-            script.onerror = reject;
-          });
-        }
-
-        const pdfjsLib = (window as any).pdfjsLib;
-        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-
-        const loadingTask = pdfjsLib.getDocument(url);
+        const loadingTask = pdfjsLib.getDocument({ url });
         const pdf = await loadingTask.promise;
         const page = await pdf.getPage(1);
 
-        if (!isMounted || !canvasRef.current) return;
+        if (!isMounted) return;
 
-        const canvas = canvasRef.current;
+        const viewport = page.getViewport({ scale: 1.2 });
+        const canvas = document.createElement('canvas');
         const context = canvas.getContext('2d');
-        const viewport = page.getViewport({ scale: 0.55 });
 
         canvas.height = viewport.height;
         canvas.width = viewport.width;
 
-        const renderContext = {
-          canvasContext: context,
-          viewport: viewport,
-        };
-
-        await page.render(renderContext).promise;
-        if (isMounted) setLoading(false);
+        if (context) {
+          await page.render({ canvasContext: context, viewport, canvas } as any).promise;
+          if (isMounted) {
+            const dataUrl = canvas.toDataURL('image/png');
+            setImgUrl(dataUrl);
+            setRendered(true);
+          }
+        }
       } catch (err) {
-        if (isMounted) setError(true);
+        console.log("PDF canvas fallback active for:", url, err);
       }
     };
 
@@ -61,8 +53,8 @@ const PDFThumbnail = ({ url, title }: { url: string; title: string }) => {
   return (
     <div
       style={{
-        height: '160px',
-        background: 'linear-gradient(135deg, #14151c 0%, #232430 100%)',
+        height: '165px',
+        background: '#0a0a0c',
         borderRadius: 'var(--radius-md)',
         marginBottom: '18px',
         border: '1px solid rgba(255, 255, 255, 0.16)',
@@ -74,33 +66,31 @@ const PDFThumbnail = ({ url, title }: { url: string; title: string }) => {
         boxShadow: 'inset 0 0 15px rgba(0,0,0,0.5)',
       }}
     >
-      <canvas
-        ref={canvasRef}
-        style={{
-          width: '100%',
-          height: '100%',
-          objectFit: 'cover',
-          display: error ? 'none' : 'block',
-          opacity: loading ? 0 : 1,
-          transition: 'opacity 0.4s ease',
-        }}
-      />
-
-      {/* Loading or Fallback Graphic */}
-      {(loading || error) && (
+      {/* 1. Real Rendered Certificate Image */}
+      {rendered && imgUrl ? (
+        <img
+          src={imgUrl}
+          alt={title}
+          style={{
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+          }}
+        />
+      ) : (
+        /* 2. High-Impact Visual Certificate Cover */
         <div style={{ padding: '16px', textAlign: 'center', position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'linear-gradient(135deg, #14151c 0%, #232430 100%)' }}>
-          <div style={{ fontSize: '1.8rem', marginBottom: '4px' }}>📜</div>
-          <div
-            style={{
-              fontSize: '0.72rem',
-              fontFamily: 'var(--font-mono)',
-              color: '#ffffff',
-              fontWeight: 700,
-              letterSpacing: '0.05em',
-            }}
-          >
-            {title}
+          <div style={{ marginBottom: '8px', opacity: 0.9 }}>
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+              <polyline points="14 2 14 8 20 8" />
+              <line x1="16" y1="13" x2="8" y2="13" />
+              <line x1="16" y1="17" x2="8" y2="17" />
+            </svg>
           </div>
+          <span style={{ fontSize: '0.72rem', fontFamily: 'var(--font-mono)', color: '#ffffff', fontWeight: 700, letterSpacing: '0.05em' }}>
+            {title}
+          </span>
         </div>
       )}
 

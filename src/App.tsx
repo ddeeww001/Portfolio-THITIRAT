@@ -17,7 +17,7 @@ import { ServicesSection } from './frontend/components/ServicesSection';
 import { StudioFAQ } from './frontend/components/StudioFAQ';
 import { ContactSection } from './frontend/components/ContactSection';
 import { playClickSound, playHoverSound, setSoundEnabled } from './frontend/components/SoundEffects';
-import profileImg from './picture/profile.jpg';
+const profileImg = '/picture/profile.jpg';
 
 const scrollToSection = (sectionId: string) => {
   playClickSound();

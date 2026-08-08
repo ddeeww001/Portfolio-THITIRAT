@@ -84,16 +84,19 @@ export const GitHubSection: React.FC = () => {
               width: '42px',
               height: '42px',
               borderRadius: '50%',
-              background: 'rgba(56, 189, 248, 0.12)',
+              background: 'rgba(255, 255, 255, 0.08)',
               border: '1px solid var(--border-glow)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              fontSize: '1.2rem',
-              color: 'var(--neon-lime)',
+              color: '#ffffff',
             }}
           >
-            💻
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+              <line x1="8" y1="21" x2="16" y2="21" />
+              <line x1="12" y1="17" x2="12" y2="21" />
+            </svg>
           </div>
           <div>
             <h3 style={{ fontSize: '1.4rem', color: 'var(--text-primary)', fontFamily: 'var(--font-display)' }}>
@@ -110,8 +113,8 @@ export const GitHubSection: React.FC = () => {
           target="_blank"
           rel="noopener noreferrer"
           style={{
-            background: 'rgba(56, 189, 248, 0.1)',
-            color: 'var(--neon-lime)',
+            background: 'rgba(255, 255, 255, 0.08)',
+            color: '#ffffff',
             border: '1px solid var(--border-glow)',
             padding: '8px 18px',
             borderRadius: 'var(--radius-full)',
@@ -126,8 +129,11 @@ export const GitHubSection: React.FC = () => {
       </div>
 
       {loading ? (
-        <div style={{ padding: '30px 0', textAlign: 'center', color: 'var(--text-secondary)', fontFamily: 'var(--font-mono)' }}>
-          ⚡ Fetching live GitHub statistics for ddeeww001...
+        <div style={{ padding: '30px 0', textAlign: 'center', color: 'var(--text-secondary)', fontFamily: 'var(--font-mono)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+          </svg>
+          Fetching live GitHub statistics for ddeeww001...
         </div>
       ) : error ? (
         <div style={{ padding: '20px', background: 'rgba(255, 99, 99, 0.1)', border: '1px solid #ff6363', borderRadius: 'var(--radius-md)', color: '#ff8888', fontSize: '0.9rem' }}>
