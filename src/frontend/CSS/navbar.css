@@ -11,18 +11,18 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 8px 12px;
+  padding: 6px 10px;
   border-radius: var(--radius-full);
 
   background: rgba(0, 0, 0, 0.8);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid var(--glass-border);
-  box-shadow: var(--shadow-lg);
-
+  
   z-index: 1000;
   width: auto;
   min-width: 300px;
+  transition: all var(--transition-base);
 }
 
 .navbar nav {
@@ -38,19 +38,19 @@
   border: none;
   color: var(--text-secondary);
   font-family: var(--font-heading);
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   font-weight: 600;
-  padding: 8px 16px;
+  padding: 10px 20px;
   border-radius: var(--radius-full);
   cursor: pointer;
   transition: all var(--transition-base);
   text-transform: uppercase;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.05em;
 }
 
 .navbar button:hover {
   color: var(--text-primary);
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .navbar button.active {
@@ -58,6 +58,21 @@
   background: var(--primary-accent);
   box-shadow: var(--shadow-glow);
 }
+
+.navbar button.profile-btn {
+  padding: 4px;
+  margin-left: 10px;
+  background: transparent;
+  border: 1px solid var(--border-medium);
+}
+
+.navbar-profile-pic {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
 
 /* Profile Button */
 .navbar button.profile-btn {
