@@ -135,19 +135,42 @@ function ShowExperience() {
                     overflow: 'hidden',
                     marginBottom: '18px',
                     position: 'relative',
-                    background: '#121318',
+                    background: 'linear-gradient(135deg, #14151c 0%, #232430 100%)',
                     border: '1px solid var(--border-subtle)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    padding: '16px',
                   }}
                 >
+                  {/* Fallback Graphic */}
+                  <div style={{ textAlign: 'center', zIndex: 1 }}>
+                    <div style={{ fontSize: '1.6rem', marginBottom: '6px' }}>💻</div>
+                    <div
+                      style={{
+                        fontSize: '0.8rem',
+                        fontFamily: 'var(--font-heading)',
+                        fontWeight: 700,
+                        color: '#ffffff',
+                        letterSpacing: '-0.01em',
+                      }}
+                    >
+                      {project.title}
+                    </div>
+                  </div>
+
                   <img
                     src={`https://api.microlink.io/?url=${encodeURIComponent(project.link[0].url)}&screenshot=true&embed=screenshot.url`}
                     alt={project.title}
                     style={{
+                      position: 'absolute',
+                      inset: 0,
                       width: '100%',
                       height: '100%',
                       objectFit: 'cover',
                       filter: 'contrast(1.05) brightness(0.95)',
                       transition: 'transform 0.4s ease',
+                      zIndex: 2,
                     }}
                     onError={(e) => {
                       (e.target as HTMLElement).style.display = 'none';
@@ -158,13 +181,14 @@ function ShowExperience() {
                       position: 'absolute',
                       bottom: '8px',
                       right: '8px',
-                      background: 'rgba(10, 10, 12, 0.85)',
+                      background: 'rgba(10, 10, 12, 0.88)',
                       border: '1px solid var(--border-medium)',
                       padding: '2px 8px',
                       borderRadius: 'var(--radius-full)',
                       fontSize: '0.68rem',
                       fontFamily: 'var(--font-mono)',
                       color: '#ffffff',
+                      zIndex: 3,
                     }}
                   >
                     {project.link[0].label}

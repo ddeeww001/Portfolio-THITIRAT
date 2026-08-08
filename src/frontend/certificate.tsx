@@ -88,10 +88,8 @@ const Certificate = () => {
             />
           </div>
         </div>
-      </div>
-
-      {/* Continuous Infinite Marquee Track Container */}
-      <div className="cert-marquee-container">
+      </div>      {/* Continuous Infinite Marquee Track Container */}
+      <div className="cert-marquee-container" style={{ position: 'relative', zIndex: 1 }}>
         <div className="cert-marquee-track">
           {marqueeList.map((cert, index) => {
             const fileName = certMapping[cert] || `${cert.toLowerCase().replace(/\s+/g, '_')}.pdf`;
@@ -101,12 +99,12 @@ const Certificate = () => {
               <div
                 key={index}
                 style={{
-                  minWidth: '290px',
-                  maxWidth: '290px',
+                  minWidth: '310px',
+                  maxWidth: '310px',
                   background: 'var(--trionn-card)',
                   border: '1px solid var(--border-medium)',
                   borderRadius: 'var(--radius-lg)',
-                  padding: '20px',
+                  padding: '22px',
                   display: 'flex',
                   flexDirection: 'column',
                   justifyContent: 'space-between',
@@ -121,59 +119,80 @@ const Certificate = () => {
                 }}
               >
                 <div>
-                  {/* Real Scaled PDF Document Visual Thumbnail */}
+                  {/* High-Impact Visual Certificate Document Preview Card */}
                   <div
                     style={{
-                      height: '150px',
-                      background: '#0a0a0c',
+                      height: '160px',
+                      background: 'linear-gradient(135deg, #14151c 0%, #232430 100%)',
                       borderRadius: 'var(--radius-md)',
-                      marginBottom: '16px',
-                      border: '1px solid var(--border-subtle)',
+                      marginBottom: '18px',
+                      border: '1px solid rgba(255, 255, 255, 0.16)',
                       overflow: 'hidden',
                       position: 'relative',
+                      padding: '16px',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'space-between',
+                      boxShadow: 'inset 0 0 20px rgba(0, 0, 0, 0.5)',
                     }}
                   >
-                    <iframe
-                      src={`${filePath}#toolbar=0&navpanes=0&scrollbar=0`}
-                      title={cert}
-                      style={{
-                        width: '240%',
-                        height: '240%',
-                        transform: 'scale(0.42)',
-                        transformOrigin: 'top left',
-                        border: 'none',
-                        pointerEvents: 'none',
-                      }}
-                    />
+                    {/* Top Watermark & Seal */}
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span style={{ fontSize: '0.68rem', fontFamily: 'var(--font-mono)', color: 'var(--text-muted)', letterSpacing: '0.08em' }}>
+                        ACCREDITED PDF
+                      </span>
+                      <div
+                        style={{
+                          background: 'rgba(255, 255, 255, 0.15)',
+                          border: '1px solid rgba(255, 255, 255, 0.3)',
+                          borderRadius: 'var(--radius-full)',
+                          padding: '2px 8px',
+                          fontSize: '0.65rem',
+                          color: '#ffffff',
+                          fontFamily: 'var(--font-mono)',
+                          fontWeight: 700,
+                        }}
+                      >
+                        ✓ VERIFIED
+                      </div>
+                    </div>
 
-                    {/* Verified Badge Stamp */}
-                    <div
-                      style={{
-                        position: 'absolute',
-                        top: '8px',
-                        right: '8px',
-                        background: 'rgba(10, 10, 12, 0.85)',
-                        border: '1px solid var(--border-glow)',
-                        borderRadius: 'var(--radius-full)',
-                        padding: '2px 8px',
-                        fontSize: '0.65rem',
-                        color: '#ffffff',
-                        fontFamily: 'var(--font-mono)',
-                        fontWeight: 700,
-                        backdropFilter: 'blur(4px)',
-                      }}
-                    >
-                      ✓ VERIFIED
+                    {/* Certificate Graphic Icon & Title Emblem */}
+                    <div style={{ textAlign: 'center', margin: '8px 0' }}>
+                      <div style={{ fontSize: '1.8rem', marginBottom: '4px' }}>📜</div>
+                      <div
+                        style={{
+                          fontSize: '0.75rem',
+                          fontFamily: 'var(--font-mono)',
+                          color: '#ffffff',
+                          fontWeight: 700,
+                          letterSpacing: '0.05em',
+                          textTransform: 'uppercase',
+                        }}
+                      >
+                        LIFELONG CERTIFICATE
+                      </div>
+                    </div>
+
+                    {/* Bottom Document Bar */}
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: '6px' }}>
+                      <span style={{ fontSize: '0.65rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
+                        CMU • T.C.C.
+                      </span>
+                      <span style={{ fontSize: '0.65rem', color: '#ffffff', fontFamily: 'var(--font-mono)', fontWeight: 600 }}>
+                        VIEW PDF ↗
+                      </span>
                     </div>
                   </div>
 
                   <h4
                     style={{
-                      fontSize: '0.92rem',
+                      fontSize: '0.94rem',
                       color: 'var(--text-primary)',
                       lineHeight: 1.4,
                       marginBottom: '12px',
                       fontFamily: 'var(--font-heading)',
+                      fontWeight: 700,
                       height: '2.8em',
                       overflow: 'hidden',
                       display: '-webkit-box',
@@ -193,10 +212,10 @@ const Certificate = () => {
                   }}
                   onMouseEnter={playHoverSound}
                   style={{
-                    background: 'rgba(255, 255, 255, 0.06)',
+                    background: 'rgba(255, 255, 255, 0.08)',
                     border: '1px solid var(--border-medium)',
                     color: '#ffffff',
-                    padding: '8px 14px',
+                    padding: '10px 14px',
                     borderRadius: 'var(--radius-full)',
                     fontSize: '0.8rem',
                     fontWeight: 600,
