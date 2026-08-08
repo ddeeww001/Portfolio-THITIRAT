@@ -274,7 +274,7 @@ function App() {
         <div className="footer-content" style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '20px' }}>
           <div>
             <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
-              © 2026 THITIRAT SIRISAWAD. All rights reserved. • Studio Architecture Inspired by OhhMyDesign.
+              © 2026 THITIRAT SIRISAWAD.
             </p>
           </div>
           <div className="footer-links" style={{ display: 'flex', gap: '20px' }}>
