@@ -4,9 +4,10 @@
 
 .profile-page-wrapper {
   padding: var(--spacing-xl) 0;
-  display: flex;
-  justify-content: center;
+  display: block;
   width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .profile-card-container {

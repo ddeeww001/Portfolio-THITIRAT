@@ -1,7 +1,132 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { profileDatabase } from '../data/profileData';
 import { playClickSound, playHoverSound } from './components/SoundEffects';
 import './CSS/certificate.css';
+
+// PDF.js Canvas Thumbnail Renderer for Real Certificate PDF Images
+const PDFThumbnail = ({ url, title }: { url: string; title: string }) => {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const renderPDF = async () => {
+      try {
+        if (!(window as any).pdfjsLib) {
+          const script = document.createElement('script');
+          script.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+          document.head.appendChild(script);
+          await new Promise((resolve, reject) => {
+            script.onload = resolve;
+            script.onerror = reject;
+          });
+        }
+
+        const pdfjsLib = (window as any).pdfjsLib;
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+        const loadingTask = pdfjsLib.getDocument(url);
+        const pdf = await loadingTask.promise;
+        const page = await pdf.getPage(1);
+
+        if (!isMounted || !canvasRef.current) return;
+
+        const canvas = canvasRef.current;
+        const context = canvas.getContext('2d');
+        const viewport = page.getViewport({ scale: 0.55 });
+
+        canvas.height = viewport.height;
+        canvas.width = viewport.width;
+
+        const renderContext = {
+          canvasContext: context,
+          viewport: viewport,
+        };
+
+        await page.render(renderContext).promise;
+        if (isMounted) setLoading(false);
+      } catch (err) {
+        if (isMounted) setError(true);
+      }
+    };
+
+    renderPDF();
+    return () => {
+      isMounted = false;
+    };
+  }, [url]);
+
+  return (
+    <div
+      style={{
+        height: '160px',
+        background: 'linear-gradient(135deg, #14151c 0%, #232430 100%)',
+        borderRadius: 'var(--radius-md)',
+        marginBottom: '18px',
+        border: '1px solid rgba(255, 255, 255, 0.16)',
+        overflow: 'hidden',
+        position: 'relative',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        boxShadow: 'inset 0 0 15px rgba(0,0,0,0.5)',
+      }}
+    >
+      <canvas
+        ref={canvasRef}
+        style={{
+          width: '100%',
+          height: '100%',
+          objectFit: 'cover',
+          display: error ? 'none' : 'block',
+          opacity: loading ? 0 : 1,
+          transition: 'opacity 0.4s ease',
+        }}
+      />
+
+      {/* Loading or Fallback Graphic */}
+      {(loading || error) && (
+        <div style={{ padding: '16px', textAlign: 'center', position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'linear-gradient(135deg, #14151c 0%, #232430 100%)' }}>
+          <div style={{ fontSize: '1.8rem', marginBottom: '4px' }}>📜</div>
+          <div
+            style={{
+              fontSize: '0.72rem',
+              fontFamily: 'var(--font-mono)',
+              color: '#ffffff',
+              fontWeight: 700,
+              letterSpacing: '0.05em',
+            }}
+          >
+            {title}
+          </div>
+        </div>
+      )}
+
+      {/* Verified Badge Stamp */}
+      <div
+        style={{
+          position: 'absolute',
+          top: '8px',
+          right: '8px',
+          background: 'rgba(10, 10, 12, 0.88)',
+          border: '1px solid rgba(255, 255, 255, 0.3)',
+          borderRadius: 'var(--radius-full)',
+          padding: '2px 8px',
+          fontSize: '0.65rem',
+          color: '#ffffff',
+          fontFamily: 'var(--font-mono)',
+          fontWeight: 700,
+          backdropFilter: 'blur(4px)',
+          zIndex: 2,
+        }}
+      >
+        ✓ VERIFIED
+      </div>
+    </div>
+  );
+};
 
 const Certificate = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -12,20 +137,19 @@ const Certificate = () => {
     "Creativity and Imagination (LIFELONG)": "Creativity and Imageination.pdf",
     "Agile Thinking": "Agile Thinking.pdf",
     "Logical Reasoning": "Logical Reasoning.pdf",
-    "Logical Resoning": "Logical Resoning.pdf",
-    "Aapability": "Aapability.pdf",
-    "Active listening": "Active listening.pdf",
-    "Adopting different perspectives": "Adopting different perspectives.pdf",
-    "Asink the right questions": "Asink the right questions.pdf",
-    "Learning how to learn": "Learning how to learn.pdf",
-    "Seeking relevant information": "Seeking relevant information.pdf",
-    "Storytelling and Pulblic Speaking": "Storytelling and Pulblic Speaking.pdf",
-    "Structured Provlem Ssoving": "Structured Provlem Ssoving.pdf",
-    "Synthizing messages": "Synthizing messages.pdf",
-    "Time Management and Priotization": "Time Management and Priotization.pdf",
-    "Translatingg Knoeledge to different context": "Translatingg Knoeledge to different context.pdf",
+    "Capability": "Aapability.pdf",
+    "Active Listening": "Active listening.pdf",
+    "Adopting Different Perspectives": "Adopting different perspectives.pdf",
+    "Asking the Right Questions": "Asink the right questions.pdf",
+    "Learning How to Learn": "Learning how to learn.pdf",
+    "Seeking Relevant Information": "Seeking relevant information.pdf",
+    "Storytelling and Public Speaking": "Storytelling and Pulblic Speaking.pdf",
+    "Structured Problem Solving": "Structured Provlem Ssoving.pdf",
+    "Synthesizing Messages": "Synthizing messages.pdf",
+    "Time Management and Prioritization": "Time Management and Priotization.pdf",
+    "Translating Knowledge to Different Contexts": "Translatingg Knoeledge to different context.pdf",
     "Understanding Biases": "Understanding Biases.pdf",
-    "Work-plan Development": "Work-plan Development.pdf",
+    "Work-Plan Development": "Work-plan Development.pdf",
   };
 
   const certifications = profileDatabase.certifications;
@@ -119,72 +243,9 @@ const Certificate = () => {
                 }}
               >
                 <div>
-                  {/* High-Impact Visual Certificate Document Preview Card */}
-                  <div
-                    style={{
-                      height: '160px',
-                      background: 'linear-gradient(135deg, #14151c 0%, #232430 100%)',
-                      borderRadius: 'var(--radius-md)',
-                      marginBottom: '18px',
-                      border: '1px solid rgba(255, 255, 255, 0.16)',
-                      overflow: 'hidden',
-                      position: 'relative',
-                      padding: '16px',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      justifyContent: 'space-between',
-                      boxShadow: 'inset 0 0 20px rgba(0, 0, 0, 0.5)',
-                    }}
-                  >
-                    {/* Top Watermark & Seal */}
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <span style={{ fontSize: '0.68rem', fontFamily: 'var(--font-mono)', color: 'var(--text-muted)', letterSpacing: '0.08em' }}>
-                        ACCREDITED PDF
-                      </span>
-                      <div
-                        style={{
-                          background: 'rgba(255, 255, 255, 0.15)',
-                          border: '1px solid rgba(255, 255, 255, 0.3)',
-                          borderRadius: 'var(--radius-full)',
-                          padding: '2px 8px',
-                          fontSize: '0.65rem',
-                          color: '#ffffff',
-                          fontFamily: 'var(--font-mono)',
-                          fontWeight: 700,
-                        }}
-                      >
-                        ✓ VERIFIED
-                      </div>
-                    </div>
-
-                    {/* Certificate Graphic Icon & Title Emblem */}
-                    <div style={{ textAlign: 'center', margin: '8px 0' }}>
-                      <div style={{ fontSize: '1.8rem', marginBottom: '4px' }}>📜</div>
-                      <div
-                        style={{
-                          fontSize: '0.75rem',
-                          fontFamily: 'var(--font-mono)',
-                          color: '#ffffff',
-                          fontWeight: 700,
-                          letterSpacing: '0.05em',
-                          textTransform: 'uppercase',
-                        }}
-                      >
-                        LIFELONG CERTIFICATE
-                      </div>
-                    </div>
-
-                    {/* Bottom Document Bar */}
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: '6px' }}>
-                      <span style={{ fontSize: '0.65rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
-                        CMU • T.C.C.
-                      </span>
-                      <span style={{ fontSize: '0.65rem', color: '#ffffff', fontFamily: 'var(--font-mono)', fontWeight: 600 }}>
-                        VIEW PDF ↗
-                      </span>
-                    </div>
-                  </div>
-
+                  {/* Real PDF Canvas Thumbnail Renderer */}
+                  <PDFThumbnail url={filePath} title={cert} />
+                  
                   <h4
                     style={{
                       fontSize: '0.94rem',

@@ -86,20 +86,19 @@ export const profileDatabase: ProfileData = {
     "Creativity and Imagination (LIFELONG)",
     "Agile Thinking",
     "Logical Reasoning",
-    "Logical Resoning",
-    "Aapability",
-    "Active listening",
-    "Adopting different perspectives",
-    "Asink the right questions",
-    "Learning how to learn",
-    "Seeking relevant information",
-    "Storytelling and Pulblic Speaking",
-    "Structured Provlem Ssoving",
-    "Synthizing messages",
-    "Time Management and Priotization",
-    "Translatingg Knoeledge to different context",
+    "Capability",
+    "Active Listening",
+    "Adopting Different Perspectives",
+    "Asking the Right Questions",
+    "Learning How to Learn",
+    "Seeking Relevant Information",
+    "Storytelling and Public Speaking",
+    "Structured Problem Solving",
+    "Synthesizing Messages",
+    "Time Management and Prioritization",
+    "Translating Knowledge to Different Contexts",
     "Understanding Biases",
-    "Work-plan Development"
+    "Work-Plan Development"
   ]
 };
 
