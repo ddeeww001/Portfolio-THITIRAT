@@ -31,8 +31,8 @@ const navItems = [
   { id: 'home', label: 'Home' },
   { id: 'services', label: 'Services' },
   { id: 'experience', label: 'Work' },
-  { id: 'certificates', label: 'Certificates' },
   { id: 'profile', label: 'About' },
+  { id: 'certificates', label: 'Certificates' },
   { id: 'faq', label: 'FAQ' },
   { id: 'contact', label: 'Contact' },
 ];
@@ -442,13 +442,13 @@ function App() {
           <Experience />
         </section>
 
-        {/* Continuous Certificate Marquee Gallery */}
-        <Certificate />
-
-        {/* Profile & Live GitHub API Hub */}
+        {/* Profile & Live GitHub API Hub (About) */}
         <section id="profile" className="section profile-section">
           <Profile data={myDetailsData} />
         </section>
+
+        {/* Continuous Certificate Marquee Gallery */}
+        <Certificate />
 
         {/* Studio FAQ ("The Nosy Section") */}
         <StudioFAQ />
