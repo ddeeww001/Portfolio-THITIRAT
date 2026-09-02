@@ -31,14 +31,16 @@ export const GitHubSection: React.FC = () => {
     const fetchGitHubData = async () => {
       try {
         setLoading(true);
+        const githubUsername = import.meta.env.VITE_GITHUB_USERNAME || 'ddeeww001';
+
         // Fetch User Info
-        const userRes = await fetch('https://api.github.com/users/ddeeww001');
+        const userRes = await fetch(`https://api.github.com/users/${githubUsername}`);
         if (!userRes.ok) throw new Error('Failed to fetch GitHub profile');
         const userData = await userRes.json();
         setUser(userData);
 
         // Fetch Repositories
-        const reposRes = await fetch('https://api.github.com/users/ddeeww001/repos?sort=updated&per_page=6');
+        const reposRes = await fetch(`https://api.github.com/users/${githubUsername}/repos?sort=updated&per_page=6`);
         if (!reposRes.ok) throw new Error('Failed to fetch GitHub repositories');
         const reposData = await reposRes.json();
         setRepos(reposData);

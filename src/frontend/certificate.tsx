@@ -161,7 +161,7 @@ const Certificate = () => {
           </div>
           <h2
             style={{
-              fontSize: 'clamp(2.2rem, 5vw, 3.8rem)',
+              fontSize: 'clamp(1.75rem, 5vw, 3.8rem)',
               fontFamily: 'var(--font-display)',
               fontWeight: 800,
               lineHeight: 1.1,
@@ -170,6 +170,8 @@ const Certificate = () => {
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               marginBottom: '16px',
+              wordBreak: 'break-word',
+              overflowWrap: 'break-word',
             }}
           >
             CERTIFICATIONS & <br />
@@ -177,7 +179,7 @@ const Certificate = () => {
               CREDENTIALS
             </span>
           </h2>
-          <p style={{ color: 'var(--text-secondary)', maxWidth: '600px', margin: '0 auto 24px', fontSize: '1.05rem' }}>
+          <p style={{ color: 'var(--text-secondary)', maxWidth: '600px', margin: '0 auto 24px', fontSize: '1.05rem', wordBreak: 'break-word', overflowWrap: 'break-word' }}>
             Continuous infinite gallery of verified certificates from Lifelong Learning programs, design workshops, and agile technical domains.
           </p>
 

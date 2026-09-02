@@ -121,11 +121,18 @@ body {
   outline-offset: 4px;
 }
 
-/* Typography Defaults */
+/* Typography Defaults & Safe Overflow */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-display);
   font-weight: 700;
   letter-spacing: -0.02em;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+p, span, a, button, li, input, textarea {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
 }
 
 a {

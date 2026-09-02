@@ -336,8 +336,19 @@
 }
 
 @media (max-width: 600px) {
+  .profile-top-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+    width: 100% !important;
+  }
+
+  .profile-page-wrapper {
+    padding: 0 !important;
+    width: 100% !important;
+  }
+
   .profile-card-container {
-    width: 95%;
+    width: 100%;
   }
 
   .profile-name {

@@ -23,14 +23,17 @@
 /* ========================================= */
 
 .section {
-  min-height: 100vh;
+  min-height: auto;
   width: 100%;
+  max-width: 100vw;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: var(--spacing-2xl) var(--spacing-md);
+  padding: 100px 20px;
   position: relative;
+  box-sizing: border-box;
+  overflow-x: hidden;
 }
 
 /* Hero Section */
@@ -43,15 +46,14 @@
 /* Experience Section */
 .experience-section {
   background: var(--bg-secondary);
-  padding-top: 100px;
+  padding: 100px 20px;
   min-height: auto;
 }
 
 /* Profile Section */
 .profile-section {
   background: var(--bg-main);
-  padding-top: 100px;
-  padding-bottom: 100px;
+  padding: 100px 20px;
   min-height: auto;
 }
 
@@ -101,13 +103,16 @@
 /* ========================================= */
 
 @media (max-width: 768px) {
-  .section {
-    padding: var(--spacing-xl) var(--spacing-sm);
+  .section,
+  .experience-section,
+  .profile-section {
+    padding: 70px 16px;
     min-height: auto;
   }
 
   .hero-section {
-    min-height: 100vh;
+    min-height: 90vh;
+    padding: 110px 16px 50px !important;
   }
 
   .footer-content {
@@ -117,6 +122,18 @@
 
   .footer-links {
     justify-content: center;
+  }
+}
+
+@media (max-width: 420px) {
+  .section,
+  .experience-section,
+  .profile-section {
+    padding: 55px 12px;
+  }
+
+  .hero-section {
+    padding: 95px 12px 40px !important;
   }
 }
 

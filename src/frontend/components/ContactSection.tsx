@@ -11,8 +11,8 @@ export const ContactSection: React.FC = () => {
   };
 
   return (
-    <section id="contact" className="section" style={{ padding: '100px 20px 80px', position: 'relative' }}>
-      <div style={{ maxWidth: '900px', margin: '0 auto' }}>
+    <section id="contact" className="section contact-section" style={{ position: 'relative', width: '100%' }}>
+      <div style={{ maxWidth: '900px', margin: '0 auto', width: '100%' }}>
         <div style={{ textAlign: 'center', marginBottom: '50px' }}>
           <div className="availability-pill" style={{ display: 'inline-flex' }}>
             <span className="status-dot"></span>
@@ -20,7 +20,7 @@ export const ContactSection: React.FC = () => {
           </div>
           <h2
             style={{
-              fontSize: 'clamp(2.2rem, 5vw, 4rem)',
+              fontSize: 'clamp(1.75rem, 5vw, 4rem)',
               fontFamily: 'var(--font-display)',
               fontWeight: 800,
               lineHeight: 1.05,
@@ -28,26 +28,30 @@ export const ContactSection: React.FC = () => {
               marginBottom: '16px',
               color: '#ffffff',
               marginTop: '12px',
+              wordBreak: 'break-word',
+              overflowWrap: 'break-word',
             }}
           >
             GET IN TOUCH .
           </h2>
-          <p style={{ color: 'var(--text-secondary)', maxWidth: '620px', margin: '0 auto', fontSize: '1.1rem' }}>
+          <p style={{ color: 'var(--text-secondary)', maxWidth: '620px', margin: '0 auto', fontSize: '1.1rem', wordBreak: 'break-word', overflowWrap: 'break-word' }}>
             Skip the form. Reach out directly via email, phone, or any of my active social platforms.
           </p>
         </div>
 
         {/* Direct Personal Contact Card Container */}
         <div
+          className="contact-card-container"
           style={{
             background: 'var(--trionn-card)',
             border: '1px solid var(--border-medium)',
             borderRadius: 'var(--radius-xl)',
-            padding: '48px 40px',
+            padding: 'clamp(24px, 5vw, 48px) clamp(16px, 4vw, 40px)',
             boxShadow: 'var(--shadow-lg)',
             display: 'flex',
             flexDirection: 'column',
             gap: '36px',
+            overflow: 'hidden',
           }}
         >
           {/* Main Direct Channels */}

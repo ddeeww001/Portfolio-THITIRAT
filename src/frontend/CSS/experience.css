@@ -7,7 +7,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: var(--spacing-xl) var(--spacing-md);
+  padding: 0;
   font-family: var(--font-body);
 }
 
@@ -385,14 +385,55 @@
   }
 }
 
+/* Projects Grid & Cards Responsive Layout */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+  gap: 24px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.project-trionn-card {
+  background: var(--trionn-card);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-xl);
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  min-width: 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+
 @media (max-width: 600px) {
   .experience-presentation-wrapper {
-    padding-top: var(--spacing-lg);
+    padding: 0 !important;
+    width: 100% !important;
   }
 
   .experience-presentation-wrapper h1 {
-    font-size: 2rem;
-    margin-bottom: 40px;
+    font-size: 1.8rem;
+    margin-bottom: 30px;
+  }
+
+  .projects-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+    padding: 0 !important;
+    width: 100% !important;
+  }
+
+  .project-trionn-card {
+    padding: 20px 14px !important;
+    border-radius: var(--radius-lg) !important;
+    width: 100% !important;
   }
 
   .snap-section.project-slide {

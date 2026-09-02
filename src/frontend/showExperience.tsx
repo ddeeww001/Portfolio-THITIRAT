@@ -24,7 +24,7 @@ function ShowExperience() {
         </div>
         <h2
           style={{
-            fontSize: 'clamp(2.2rem, 5vw, 3.8rem)',
+            fontSize: 'clamp(1.75rem, 5vw, 3.8rem)',
             fontFamily: 'var(--font-display)',
             fontWeight: 800,
             lineHeight: 1.1,
@@ -33,6 +33,8 @@ function ShowExperience() {
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
             marginBottom: '16px',
+            wordBreak: 'break-word',
+            overflowWrap: 'break-word',
           }}
         >
           FEATURED PROJECTS & <br />
@@ -40,7 +42,7 @@ function ShowExperience() {
             EXPERIENCE
           </span>
         </h2>
-        <p style={{ color: 'var(--text-secondary)', maxWidth: '600px', margin: '0 auto', fontSize: '1.05rem' }}>
+        <p style={{ color: 'var(--text-secondary)', maxWidth: '600px', margin: '0 auto', fontSize: '1.05rem', wordBreak: 'break-word', overflowWrap: 'break-word' }}>
           Explore my latest hackathon wins, UI design work, frontend applications, and web development projects.
         </p>
       </div>
@@ -63,32 +65,10 @@ function ShowExperience() {
       </div>
 
       {/* Project Cards Grid */}
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))',
-          gap: '30px',
-          maxWidth: '1200px',
-          margin: '0 auto',
-          padding: '0 20px',
-        }}
-      >
+      <div className="projects-grid">
         {filteredProjects.map((project) => (
           <div
             key={project.id}
-            style={{
-              background: 'var(--trionn-card)',
-              border: '1px solid var(--border-medium)',
-              borderRadius: 'var(--radius-xl)',
-              padding: '30px',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between',
-              transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
-              position: 'relative',
-              overflow: 'hidden',
-              boxShadow: 'var(--shadow-lg)',
-            }}
             className="interactive-hover project-trionn-card"
           >
             <div>
@@ -204,11 +184,13 @@ function ShowExperience() {
 
               <h3
                 style={{
-                  fontSize: '1.45rem',
+                  fontSize: 'clamp(1.15rem, 3.5vw, 1.45rem)',
                   color: 'var(--text-primary)',
                   marginBottom: '12px',
                   fontFamily: 'var(--font-display)',
                   lineHeight: 1.3,
+                  wordBreak: 'break-word',
+                  overflowWrap: 'break-word',
                 }}
               >
                 {project.title}
@@ -273,7 +255,7 @@ function ShowExperience() {
               )}
 
               {/* Action Buttons */}
-              <div style={{ display: 'flex', gap: '10px' }}>
+              <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
                 <button
                   onClick={() => {
                     playClickSound();
@@ -281,16 +263,18 @@ function ShowExperience() {
                   }}
                   onMouseEnter={playHoverSound}
                   style={{
-                    flex: 1,
+                    flex: '1 1 120px',
                     background: 'var(--primary-gradient)',
                     color: '#0b0f19',
                     border: 'none',
-                    padding: '10px 16px',
+                    padding: '10px 14px',
                     borderRadius: 'var(--radius-full)',
                     fontWeight: 700,
-                    fontSize: '0.85rem',
+                    fontSize: '0.82rem',
                     cursor: 'pointer',
                     transition: 'all 0.3s ease',
+                    textAlign: 'center',
+                    whiteSpace: 'nowrap',
                   }}
                 >
                   QUICK VIEW ↗
@@ -304,16 +288,18 @@ function ShowExperience() {
                     onClick={playClickSound}
                     onMouseEnter={playHoverSound}
                     style={{
+                      flex: '0 0 auto',
                       background: 'rgba(255, 255, 255, 0.05)',
                       border: '1px solid var(--border-medium)',
                       color: 'var(--text-primary)',
                       padding: '10px 16px',
                       borderRadius: 'var(--radius-full)',
                       fontWeight: 600,
-                      fontSize: '0.85rem',
+                      fontSize: '0.82rem',
                       display: 'inline-flex',
                       alignItems: 'center',
                       justifyContent: 'center',
+                      whiteSpace: 'nowrap',
                     }}
                   >
                     LINK
