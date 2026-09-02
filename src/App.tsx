@@ -94,7 +94,7 @@ const getNavIcon = (id: string) => {
   }
 };
 
-const Navbar = () => {
+export const Navbar = () => {
   const [activeSection, setActiveSection] = useState('home');
   const [soundActive, setSoundActive] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
