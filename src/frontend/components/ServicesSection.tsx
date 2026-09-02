@@ -64,28 +64,11 @@ export const ServicesSection: React.FC = () => {
         </div>
 
         {/* 3-Column Services Grid */}
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-            gap: '24px',
-          }}
-        >
+        <div className="services-grid">
           {services.map((service) => (
             <div
               key={service.number}
-              style={{
-                background: 'var(--trionn-card)',
-                border: '1px solid var(--border-medium)',
-                borderRadius: 'var(--radius-xl)',
-                padding: '36px 30px',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-between',
-                transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
-                boxShadow: 'var(--shadow-lg)',
-              }}
-              className="interactive-hover"
+              className="service-card interactive-hover"
               onMouseEnter={playHoverSound}
             >
               <div>
@@ -97,6 +80,8 @@ export const ServicesSection: React.FC = () => {
                     marginBottom: '24px',
                     borderBottom: '1px solid var(--border-subtle)',
                     paddingBottom: '16px',
+                    gap: '10px',
+                    flexWrap: 'wrap',
                   }}
                 >
                   <span
@@ -118,22 +103,14 @@ export const ServicesSection: React.FC = () => {
                       padding: '4px 10px',
                       borderRadius: 'var(--radius-full)',
                       border: '1px solid var(--border-subtle)',
+                      maxWidth: '100%',
                     }}
                   >
                     {service.subtitle}
                   </span>
                 </div>
 
-                <h3
-                  style={{
-                    fontSize: '1.6rem',
-                    fontFamily: 'var(--font-display)',
-                    fontWeight: 800,
-                    marginBottom: '16px',
-                    color: '#ffffff',
-                    letterSpacing: '-0.02em',
-                  }}
-                >
+                <h3 className="service-card-title">
                   {service.title}
                 </h3>
 

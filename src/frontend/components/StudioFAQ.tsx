@@ -48,17 +48,19 @@ export const StudioFAQ: React.FC = () => {
           </div>
           <h2
             style={{
-              fontSize: 'clamp(2.2rem, 5vw, 3.8rem)',
+              fontSize: 'clamp(1.75rem, 5vw, 3.8rem)',
               fontFamily: 'var(--font-display)',
               fontWeight: 800,
               lineHeight: 1.1,
               letterSpacing: '-0.02em',
               marginBottom: '16px',
+              wordBreak: 'break-word',
+              overflowWrap: 'break-word',
             }}
           >
             THE NOSY SECTION .
           </h2>
-          <p style={{ color: 'var(--text-secondary)', maxWidth: '580px', margin: '0 auto', fontSize: '1.05rem' }}>
+          <p style={{ color: 'var(--text-secondary)', maxWidth: '580px', margin: '0 auto', fontSize: '1.05rem', wordBreak: 'break-word', overflowWrap: 'break-word' }}>
             Got questions about process, stack, or availability? Here are straight answers to common questions.
           </p>
         </div>
@@ -83,7 +85,7 @@ export const StudioFAQ: React.FC = () => {
                   onMouseEnter={playHoverSound}
                   style={{
                     width: '100%',
-                    padding: '24px 28px',
+                    padding: 'clamp(16px, 3vw, 24px) clamp(16px, 3vw, 28px)',
                     background: 'transparent',
                     border: 'none',
                     color: '#ffffff',
@@ -93,16 +95,20 @@ export const StudioFAQ: React.FC = () => {
                     cursor: 'pointer',
                     textAlign: 'left',
                     fontFamily: 'var(--font-heading)',
-                    fontSize: '1.15rem',
+                    fontSize: 'clamp(0.95rem, 2.5vw, 1.15rem)',
                     fontWeight: 700,
+                    gap: '12px',
+                    wordBreak: 'break-word',
+                    overflowWrap: 'break-word',
                   }}
                 >
-                  <span>{item.question}</span>
+                  <span style={{ flex: 1, wordBreak: 'break-word', overflowWrap: 'break-word' }}>{item.question}</span>
                   <span
                     style={{
                       fontSize: '1.4rem',
                       transform: isOpen ? 'rotate(45deg)' : 'rotate(0deg)',
                       transition: 'transform 0.3s ease',
+                      flexShrink: 0,
                     }}
                   >
                     +

@@ -24,7 +24,7 @@ function ShowExperience() {
         </div>
         <h2
           style={{
-            fontSize: 'clamp(2.2rem, 5vw, 3.8rem)',
+            fontSize: 'clamp(1.75rem, 5vw, 3.8rem)',
             fontFamily: 'var(--font-display)',
             fontWeight: 800,
             lineHeight: 1.1,
@@ -33,6 +33,8 @@ function ShowExperience() {
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
             marginBottom: '16px',
+            wordBreak: 'break-word',
+            overflowWrap: 'break-word',
           }}
         >
           FEATURED PROJECTS & <br />
@@ -40,7 +42,7 @@ function ShowExperience() {
             EXPERIENCE
           </span>
         </h2>
-        <p style={{ color: 'var(--text-secondary)', maxWidth: '600px', margin: '0 auto', fontSize: '1.05rem' }}>
+        <p style={{ color: 'var(--text-secondary)', maxWidth: '600px', margin: '0 auto', fontSize: '1.05rem', wordBreak: 'break-word', overflowWrap: 'break-word' }}>
           Explore my latest hackathon wins, UI design work, frontend applications, and web development projects.
         </p>
       </div>
@@ -66,8 +68,8 @@ function ShowExperience() {
       <div
         style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))',
-          gap: '30px',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 300px), 1fr))',
+          gap: '24px',
           maxWidth: '1200px',
           margin: '0 auto',
           padding: '0 20px',
@@ -204,11 +206,13 @@ function ShowExperience() {
 
               <h3
                 style={{
-                  fontSize: '1.45rem',
+                  fontSize: 'clamp(1.15rem, 3.5vw, 1.45rem)',
                   color: 'var(--text-primary)',
                   marginBottom: '12px',
                   fontFamily: 'var(--font-display)',
                   lineHeight: 1.3,
+                  wordBreak: 'break-word',
+                  overflowWrap: 'break-word',
                 }}
               >
                 {project.title}

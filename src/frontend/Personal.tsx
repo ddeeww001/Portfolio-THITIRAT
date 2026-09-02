@@ -33,13 +33,15 @@ export const Profile = ({ data }: { data: ProfileData }) => {
         </div>
         <h2
           style={{
-            fontSize: 'clamp(2.2rem, 5vw, 3.8rem)',
+            fontSize: 'clamp(1.75rem, 5vw, 3.8rem)',
             fontFamily: 'var(--font-display)',
             fontWeight: 800,
             lineHeight: 1.1,
             letterSpacing: '-0.02em',
             color: '#ffffff',
             marginTop: '12px',
+            wordBreak: 'break-word',
+            overflowWrap: 'break-word',
           }}
         >
           ABOUT ME & CAPABILITIES .
@@ -50,8 +52,8 @@ export const Profile = ({ data }: { data: ProfileData }) => {
       <div
         style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
-          gap: '30px',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 300px), 1fr))',
+          gap: '24px',
           alignItems: 'stretch',
           marginBottom: '30px',
         }}

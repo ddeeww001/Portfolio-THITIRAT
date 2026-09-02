@@ -294,10 +294,10 @@ const Navbar = () => {
 const HeroSection = () => {
   return (
     <section id="home" className="section hero-section" style={{ minHeight: '92vh', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', padding: '130px 20px 70px' }}>
-      <div style={{ maxWidth: '1080px', textAlign: 'center', zIndex: 1 }}>
+      <div style={{ maxWidth: '1080px', textAlign: 'center', zIndex: 1, width: '100%' }}>
         
         {/* Availability Badge */}
-        <div className="availability-pill animate-fade-in" style={{ display: 'inline-flex', marginBottom: '32px' }}>
+        <div className="availability-pill animate-fade-in" style={{ display: 'inline-flex', marginBottom: '28px' }}>
           <span className="status-dot"></span>
           <span>AVAILABLE FOR FREELANCE & FULL-TIME ROLES WORLDWIDE</span>
         </div>
@@ -306,13 +306,16 @@ const HeroSection = () => {
         <h1
           className="animate-slide-up"
           style={{
-            fontSize: 'clamp(2.8rem, 8vw, 6.2rem)',
+            fontSize: 'clamp(1.75rem, 7.5vw, 5.5rem)',
             fontFamily: 'var(--font-display)',
             fontWeight: 800,
-            lineHeight: 1.02,
-            letterSpacing: '-0.04em',
+            lineHeight: 1.05,
+            letterSpacing: '-0.03em',
             marginBottom: '24px',
             color: '#ffffff',
+            wordBreak: 'break-word',
+            overflowWrap: 'break-word',
+            maxWidth: '100%',
           }}
         >
           IMPOSSIBLE TO <br />
@@ -324,11 +327,13 @@ const HeroSection = () => {
         <p
           className="animate-fade-in-delay"
           style={{
-            fontSize: 'clamp(1.05rem, 2.2vw, 1.35rem)',
+            fontSize: 'clamp(0.92rem, 2.5vw, 1.3rem)',
             color: 'var(--text-secondary)',
             maxWidth: '760px',
             margin: '0 auto 40px',
             lineHeight: 1.6,
+            wordBreak: 'break-word',
+            overflowWrap: 'break-word',
           }}
         >
           Thitirat Sirisawad — Creative Frontend & UX/UI Designer crafting bold digital products, intuitive web applications, and interfaces that refuse to look ordinary.
@@ -384,25 +389,27 @@ const HeroSection = () => {
 const StudioStatementSection = () => {
   return (
     <section style={{ padding: '90px 20px', background: 'var(--trionn-bg-alt)', borderTop: '1px solid var(--border-subtle)', borderBottom: '1px solid var(--border-subtle)' }}>
-      <div style={{ maxWidth: '1000px', margin: '0 auto', textAlign: 'center' }}>
+      <div style={{ maxWidth: '1000px', margin: '0 auto', textAlign: 'center', width: '100%' }}>
         <div className="availability-pill" style={{ marginBottom: '20px', display: 'inline-flex' }}>
           <span className="status-dot"></span>
           <span>THE STUDIO PHILOSOPHY</span>
         </div>
         <h2
           style={{
-            fontSize: 'clamp(2rem, 4.5vw, 3.4rem)',
+            fontSize: 'clamp(1.45rem, 4.5vw, 3.2rem)',
             fontFamily: 'var(--font-display)',
             fontWeight: 800,
             lineHeight: 1.15,
             letterSpacing: '-0.03em',
             marginBottom: '20px',
             color: '#ffffff',
+            wordBreak: 'break-word',
+            overflowWrap: 'break-word',
           }}
         >
           We make people stop and ask, who made that?
         </h2>
-        <p style={{ color: 'var(--text-secondary)', fontSize: '1.15rem', maxWidth: '720px', margin: '0 auto', lineHeight: 1.65 }}>
+        <p style={{ color: 'var(--text-secondary)', fontSize: 'clamp(0.92rem, 2.2vw, 1.15rem)', maxWidth: '720px', margin: '0 auto', lineHeight: 1.65, wordBreak: 'break-word', overflowWrap: 'break-word' }}>
           That reaction is the whole job. Strategy, UI/UX design, and clean frontend code built for products that refuse to look ordinary. No templates, ever.
         </p>
       </div>

@@ -89,8 +89,13 @@
   width: 2.5px;
   background-color: var(--text-muted);
   border-radius: 2px;
-  transition: height 0.2s;
+  transition: height 0.2s, background-color 0.2s;
 }
+
+.sound-bar:nth-child(1) { height: 5px; }
+.sound-bar:nth-child(2) { height: 9px; }
+.sound-bar:nth-child(3) { height: 6px; }
+.sound-bar:nth-child(4) { height: 4px; }
 
 .sound-waves.active .sound-bar {
   background-color: #ffffff;
@@ -368,6 +373,7 @@
 .availability-pill {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 10px;
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid var(--border-glow);
@@ -378,6 +384,10 @@
   font-family: var(--font-mono);
   font-weight: 600;
   margin-bottom: 24px;
+  max-width: 100%;
+  text-align: center;
+  line-height: 1.35;
+  overflow-wrap: break-word;
 }
 
 .status-dot {
@@ -387,6 +397,7 @@
   border-radius: 50%;
   box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
   animation: pulseDot 1.8s infinite;
+  flex-shrink: 0;
 }
 
 @keyframes pulseDot {
@@ -403,6 +414,80 @@
 @keyframes scaleUp {
   from { transform: scale(0.9); opacity: 0; }
   to { transform: scale(1); opacity: 1; }
+}
+
+/* ========================================= */
+/* RESPONSIVE CARDS & MOBILE FIXES          */
+/* ========================================= */
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+  gap: 24px;
+  width: 100%;
+}
+
+.service-card {
+  background: var(--trionn-card);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-xl);
+  padding: 36px 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  width: 100%;
+}
+
+.service-card-title {
+  font-size: clamp(1.2rem, 3.8vw, 1.55rem);
+  font-family: var(--font-display);
+  font-weight: 800;
+  margin-bottom: 16px;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  line-height: 1.2;
+}
+
+@media (max-width: 850px), (pointer: coarse) {
+  .custom-cursor-dot,
+  .custom-cursor-ring,
+  .cursor-spotlight {
+    display: none !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .availability-pill {
+    font-size: clamp(0.68rem, 2.5vw, 0.78rem);
+    padding: 6px 14px;
+    gap: 6px;
+    margin-bottom: 20px;
+  }
+
+  .services-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .service-card {
+    padding: 24px 18px;
+    border-radius: var(--radius-lg);
+  }
+
+  .service-card-title {
+    font-size: clamp(1.15rem, 5.2vw, 1.35rem);
+    letter-spacing: -0.01em;
+  }
+
+  .project-trionn-card {
+    padding: 20px 16px !important;
+    border-radius: var(--radius-lg) !important;
+  }
 }
 
 
