@@ -1,5 +1,6 @@
 // src/data/projectsData.ts
 // Centralized database for all project information
+import { deepFreeze } from '../utils/security';
 
 export interface LinkItem {
   label: string;
@@ -16,7 +17,7 @@ export interface ProjectData {
   tags?: string[]; // Optional: for filtering/categorization
 }
 
-export const projectsDatabase: ProjectData[] = [
+export const projectsDatabase: ProjectData[] = deepFreeze([
  /* {
     id: 8,
     title: "MY PROJECT DESIGN WEBSITE",
@@ -151,7 +152,7 @@ export const projectsDatabase: ProjectData[] = [
     ],
     tags: ["Fullstack", "API Integration", "Business"]
   }
-];
+]) as unknown as ProjectData[];
 
 // Helper function to get all projects
 export const getAllProjects = (): ProjectData[] => {

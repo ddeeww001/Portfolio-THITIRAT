@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { projectsDatabase, type ProjectData } from '../data/projectsData';
 import { ProjectModal } from './components/ProjectModal';
 import { playClickSound, playHoverSound } from './components/SoundEffects';
+import { sanitizeInput } from '../utils/security';
 import './CSS/experience.css';
 
 const ProjectThumbnail: React.FC<{ url: string; title: string; label: string }> = ({ url, title, label }) => {
@@ -134,7 +135,7 @@ function ShowExperience() {
   const filters = ['ALL', 'Hackathon', 'Design', 'Frontend', 'UX/UI', 'API Integration'];
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const val = e.target.value;
+    const val = sanitizeInput(e.target.value);
     setSearchQuery(val);
     setIsSearching(true);
     setTimeout(() => {

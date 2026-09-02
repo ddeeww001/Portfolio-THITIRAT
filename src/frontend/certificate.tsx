@@ -3,6 +3,7 @@ import * as pdfjsLib from 'pdfjs-dist';
 import pdfWorker from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
 import { profileDatabase } from '../data/profileData';
 import { playClickSound, playHoverSound } from './components/SoundEffects';
+import { sanitizeInput } from '../utils/security';
 import './CSS/certificate.css';
 
 // Set bundled local worker source for pdfjs-dist
@@ -155,7 +156,8 @@ const Certificate = () => {
   const categories = ['ALL', 'UX/UI & Foundation', 'Lifelong Learning', 'Agile & Thinking', 'Communication'];
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(e.target.value);
+    const val = sanitizeInput(e.target.value);
+    setSearchTerm(val);
     setIsSearching(true);
     setTimeout(() => {
       setIsSearching(false);

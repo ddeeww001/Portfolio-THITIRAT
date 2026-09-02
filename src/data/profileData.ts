@@ -1,5 +1,6 @@
 // src/data/profileData.ts
 // Centralized database for personal profile information
+import { deepFreeze } from '../utils/security';
 
 export interface SocialLink {
   label: string;
@@ -29,7 +30,7 @@ export interface ProfileData {
 }
 
 // Centralized environment variables configuration with safe fallbacks
-export const ENV_CONFIG = {
+export const ENV_CONFIG = deepFreeze({
   name: import.meta.env.VITE_USER_NAME || "THITIRAT SIRISAWAD",
   email: import.meta.env.VITE_USER_EMAIL || "dewthitirat@gmail.com",
   phone: import.meta.env.VITE_USER_PHONE || "099-430-0222",
@@ -41,10 +42,10 @@ export const ENV_CONFIG = {
   instagramUrl: import.meta.env.VITE_INSTAGRAM_URL || "https://instagram.com/ddeeww_o_o",
   facebookName: import.meta.env.VITE_FACEBOOK_NAME || "Dew Chobkinkaitod",
   facebookUrl: import.meta.env.VITE_FACEBOOK_URL || "https://facebook.com/dew.chobkinkaitod",
-};
+});
 
 // Main profile database
-export const profileDatabase: ProfileData = {
+export const profileDatabase: ProfileData = deepFreeze({
   id: 1,
   name: ENV_CONFIG.name,
   role: ["UX/UI Designer", "Frontend Developer"],
@@ -115,7 +116,7 @@ export const profileDatabase: ProfileData = {
     "Understanding Biases",
     "Work-Plan Development"
   ]
-};
+});
 
 // Helper functions
 export const getProfileData = (): ProfileData => {
