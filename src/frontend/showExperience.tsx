@@ -8,15 +8,7 @@ import './CSS/experience.css';
 const ProjectThumbnail: React.FC<{ url: string; title: string; label: string }> = ({ url, title, label }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
-  const [retryKey, setRetryKey] = useState(0);
-  const imgUrl = `https://api.microlink.io/?url=${encodeURIComponent(url)}&screenshot=true&embed=screenshot.url&_k=${retryKey}`;
-
-  const handleRetry = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setImageError(false);
-    setImageLoaded(false);
-    setRetryKey((k) => k + 1);
-  };
+  const imgUrl = `https://api.microlink.io/?url=${encodeURIComponent(url)}&screenshot=true&embed=screenshot.url`;
 
   return (
     <div
@@ -26,67 +18,41 @@ const ProjectThumbnail: React.FC<{ url: string; title: string; label: string }> 
         overflow: 'hidden',
         marginBottom: '18px',
         position: 'relative',
-        background: 'linear-gradient(135deg, #14151c 0%, #232430 100%)',
+        background: 'linear-gradient(135deg, #0c0d12 0%, #15161f 100%)',
         border: '1px solid var(--border-subtle)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: '16px',
       }}
     >
-      {/* Loading Skeleton Shimmer */}
+      {/* 1. Clean Spinning Ring Loader while fetching */}
       {!imageLoaded && !imageError && (
-        <div className="skeleton-box" style={{ position: 'absolute', inset: 0, zIndex: 1 }} />
-      )}
-
-      {/* Live Status Badge */}
-      <div className="image-status-pill">
-        {!imageLoaded && !imageError ? (
-          <>
-            <span className="feedback-dot pulse" />
-            <span>FETCHING...</span>
-          </>
-        ) : imageError ? (
-          <>
-            <span className="feedback-dot" style={{ background: '#ff5555' }} />
-            <span>OFFLINE</span>
-            <button className="image-retry-btn" onClick={handleRetry} title="Retry image fetch">
-              ⟳ RETRY
-            </button>
-          </>
-        ) : (
-          <>
-            <span className="feedback-dot green" />
-            <span>LIVE PREVIEW</span>
-          </>
-        )}
-      </div>
-
-      {/* Fallback Graphic */}
-      <div style={{ textAlign: 'center', zIndex: 2, opacity: imageLoaded ? 0 : 1, transition: 'opacity 0.3s ease' }}>
-        <div style={{ marginBottom: '6px', display: 'flex', justifyContent: 'center' }}>
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-            <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
-            <line x1="8" y1="21" x2="16" y2="21" />
-            <line x1="12" y1="17" x2="12" y2="21" />
-          </svg>
-        </div>
         <div
           style={{
-            fontSize: '0.8rem',
-            fontFamily: 'var(--font-heading)',
-            fontWeight: 700,
-            color: '#ffffff',
-            letterSpacing: '-0.01em',
+            position: 'absolute',
+            inset: 0,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            background: 'linear-gradient(135deg, #0c0d12 0%, #15161f 100%)',
+            zIndex: 1,
           }}
         >
-          {title}
+          <div
+            className="spinner-ring"
+            style={{
+              width: '28px',
+              height: '28px',
+              borderWidth: '2.5px',
+              borderTopColor: 'var(--neon-cyan, #00f0ff)',
+            }}
+          />
         </div>
-      </div>
+      )}
 
+      {/* 2. Image: Smoothly fades in once loaded */}
       {!imageError && (
         <img
-          key={retryKey}
           src={imgUrl}
           alt={title}
           className={`img-fade-in ${imageLoaded ? 'is-loaded' : ''}`}
@@ -99,24 +65,26 @@ const ProjectThumbnail: React.FC<{ url: string; title: string; label: string }> 
             height: '100%',
             objectFit: 'cover',
             filter: 'contrast(1.05) brightness(0.95)',
-            zIndex: 3,
+            zIndex: 2,
           }}
         />
       )}
 
+      {/* 3. Clean Destination Label */}
       <div
         style={{
           position: 'absolute',
           bottom: '8px',
           right: '8px',
           background: 'rgba(10, 10, 12, 0.88)',
+          backdropFilter: 'blur(6px)',
           border: '1px solid var(--border-medium)',
           padding: '2px 8px',
           borderRadius: 'var(--radius-full)',
           fontSize: '0.68rem',
           fontFamily: 'var(--font-mono)',
           color: '#ffffff',
-          zIndex: 4,
+          zIndex: 3,
         }}
       >
         {label}
