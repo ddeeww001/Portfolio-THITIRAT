@@ -461,15 +461,15 @@ function App() {
         <div className="footer-content" style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '20px' }}>
           <div>
             <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
-              © 2026 THITIRAT SIRISAWAD.
+              © 2026 {myDetailsData.name}.
             </p>
           </div>
           <div className="footer-links" style={{ display: 'flex', gap: '20px' }}>
-            <a href="https://github.com/ddeeww001" target="_blank" rel="noopener noreferrer" style={{ color: '#ffffff', fontWeight: 600 }}>
+            <a href={myDetailsData.socials.find(s => s.label === 'GitHub')?.link || 'https://github.com/ddeeww001'} target="_blank" rel="noopener noreferrer" style={{ color: '#ffffff', fontWeight: 600 }}>
               GitHub ↗
             </a>
-            <a href="mailto:dewthitirat@gmail.com" style={{ color: 'var(--text-secondary)' }}>
-              dewthitirat@gmail.com
+            <a href={`mailto:${myDetailsData.email}`} style={{ color: 'var(--text-secondary)' }}>
+              {myDetailsData.email}
             </a>
           </div>
         </div>

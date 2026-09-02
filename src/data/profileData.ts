@@ -28,33 +28,48 @@ export interface ProfileData {
   profileImage?: string;
 }
 
+// Centralized environment variables configuration with safe fallbacks
+export const ENV_CONFIG = {
+  name: import.meta.env.VITE_USER_NAME || "THITIRAT SIRISAWAD",
+  email: import.meta.env.VITE_USER_EMAIL || "dewthitirat@gmail.com",
+  phone: import.meta.env.VITE_USER_PHONE || "099-430-0222",
+  birthday: import.meta.env.VITE_USER_BIRTHDAY || "14 June 2006",
+  githubUsername: import.meta.env.VITE_GITHUB_USERNAME || "ddeeww001",
+  githubUrl: import.meta.env.VITE_GITHUB_URL || "https://github.com/ddeeww001",
+  lineId: import.meta.env.VITE_LINE_ID || "t.s",
+  instagramUsername: import.meta.env.VITE_INSTAGRAM_USERNAME || "ddeeww_o_o",
+  instagramUrl: import.meta.env.VITE_INSTAGRAM_URL || "https://instagram.com/ddeeww_o_o",
+  facebookName: import.meta.env.VITE_FACEBOOK_NAME || "Dew Chobkinkaitod",
+  facebookUrl: import.meta.env.VITE_FACEBOOK_URL || "https://facebook.com/dew.chobkinkaitod",
+};
+
 // Main profile database
 export const profileDatabase: ProfileData = {
   id: 1,
-  name: "THITIRAT SIRISAWAD",
+  name: ENV_CONFIG.name,
   role: ["UX/UI Designer", "Frontend Developer"],
-  birthday: "14 June 2006",
-  email: "dewthitirat@gmail.com",
-  phone: "099-430-0222",
+  birthday: ENV_CONFIG.birthday,
+  email: ENV_CONFIG.email,
+  phone: ENV_CONFIG.phone,
   socials: [
     { 
       label: "GitHub", 
-      value: "ddeeww001", 
-      link: "https://github.com/ddeeww001" 
+      value: ENV_CONFIG.githubUsername, 
+      link: ENV_CONFIG.githubUrl 
     },
     { 
       label: "Line ID", 
-      value: "t.s" 
+      value: ENV_CONFIG.lineId 
     },
     { 
       label: "Instagram", 
-      value: "ddeeww_o_o",
-      link: "https://instagram.com/ddeeww_o_o"
+      value: ENV_CONFIG.instagramUsername,
+      link: ENV_CONFIG.instagramUrl
     },
     { 
       label: "Facebook", 
-      value: "Dew Chobkinkaitod",
-      link: "https://facebook.com/dew.chobkinkaitod"
+      value: ENV_CONFIG.facebookName,
+      link: ENV_CONFIG.facebookUrl
     }
   ],
   introduce: "I am a passionate UX/UI Designer and Frontend Developer dedicated to creating intuitive, user-centric digital experiences with modern design.",
