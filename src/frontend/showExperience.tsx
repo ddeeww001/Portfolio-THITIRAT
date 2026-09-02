@@ -65,32 +65,10 @@ function ShowExperience() {
       </div>
 
       {/* Project Cards Grid */}
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 300px), 1fr))',
-          gap: '24px',
-          maxWidth: '1200px',
-          margin: '0 auto',
-          padding: '0 20px',
-        }}
-      >
+      <div className="projects-grid">
         {filteredProjects.map((project) => (
           <div
             key={project.id}
-            style={{
-              background: 'var(--trionn-card)',
-              border: '1px solid var(--border-medium)',
-              borderRadius: 'var(--radius-xl)',
-              padding: '30px',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between',
-              transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
-              position: 'relative',
-              overflow: 'hidden',
-              boxShadow: 'var(--shadow-lg)',
-            }}
             className="interactive-hover project-trionn-card"
           >
             <div>
@@ -277,7 +255,7 @@ function ShowExperience() {
               )}
 
               {/* Action Buttons */}
-              <div style={{ display: 'flex', gap: '10px' }}>
+              <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
                 <button
                   onClick={() => {
                     playClickSound();
@@ -285,16 +263,18 @@ function ShowExperience() {
                   }}
                   onMouseEnter={playHoverSound}
                   style={{
-                    flex: 1,
+                    flex: '1 1 120px',
                     background: 'var(--primary-gradient)',
                     color: '#0b0f19',
                     border: 'none',
-                    padding: '10px 16px',
+                    padding: '10px 14px',
                     borderRadius: 'var(--radius-full)',
                     fontWeight: 700,
-                    fontSize: '0.85rem',
+                    fontSize: '0.82rem',
                     cursor: 'pointer',
                     transition: 'all 0.3s ease',
+                    textAlign: 'center',
+                    whiteSpace: 'nowrap',
                   }}
                 >
                   QUICK VIEW ↗
@@ -308,16 +288,18 @@ function ShowExperience() {
                     onClick={playClickSound}
                     onMouseEnter={playHoverSound}
                     style={{
+                      flex: '0 0 auto',
                       background: 'rgba(255, 255, 255, 0.05)',
                       border: '1px solid var(--border-medium)',
                       color: 'var(--text-primary)',
                       padding: '10px 16px',
                       borderRadius: 'var(--radius-full)',
                       fontWeight: 600,
-                      fontSize: '0.85rem',
+                      fontSize: '0.82rem',
                       display: 'inline-flex',
                       alignItems: 'center',
                       justifyContent: 'center',
+                      whiteSpace: 'nowrap',
                     }}
                   >
                     LINK

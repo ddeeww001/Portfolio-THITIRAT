@@ -24,7 +24,7 @@ const toolIcons: { [key: string]: string } = {
 
 export const Profile = ({ data }: { data: ProfileData }) => {
   return (
-    <div className="profile-page-wrapper" style={{ padding: '80px 20px 40px', maxWidth: '1200px', margin: '0 auto', position: 'relative', zIndex: 2 }}>
+    <div className="profile-page-wrapper" style={{ maxWidth: '1200px', margin: '0 auto', width: '100%', position: 'relative', zIndex: 2 }}>
       {/* Section Header */}
       <div style={{ textAlign: 'center', marginBottom: '50px', position: 'relative', zIndex: 3 }}>
         <div className="availability-pill" style={{ display: 'inline-flex' }}>
@@ -50,12 +50,14 @@ export const Profile = ({ data }: { data: ProfileData }) => {
 
       {/* Top Section: 2 Symmetrical Equal Columns */}
       <div
+        className="profile-top-grid"
         style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 300px), 1fr))',
           gap: '24px',
           alignItems: 'stretch',
           marginBottom: '30px',
+          width: '100%',
         }}
       >
         {/* Left Column: Profile Card */}

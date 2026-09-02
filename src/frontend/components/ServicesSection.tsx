@@ -38,7 +38,7 @@ const services: ServiceItem[] = [
 
 export const ServicesSection: React.FC = () => {
   return (
-    <section id="services" className="section" style={{ padding: '100px 20px', background: 'var(--trionn-bg-alt)' }}>
+    <section id="services" className="section services-section" style={{ background: 'var(--trionn-bg-alt)' }}>
       <div style={{ maxWidth: '1200px', margin: '0 auto', width: '100%' }}>
         {/* Section Header */}
         <div style={{ textAlign: 'left', marginBottom: '60px' }}>

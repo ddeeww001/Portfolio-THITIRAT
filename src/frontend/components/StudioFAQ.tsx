@@ -38,7 +38,7 @@ export const StudioFAQ: React.FC = () => {
   };
 
   return (
-    <section id="faq" className="section" style={{ padding: '100px 20px', background: 'var(--trionn-bg)' }}>
+    <section id="faq" className="section faq-section" style={{ background: 'var(--trionn-bg)', width: '100%' }}>
       <div style={{ maxWidth: '1000px', margin: '0 auto', width: '100%' }}>
         {/* Section Header */}
         <div style={{ textAlign: 'center', marginBottom: '60px' }}>

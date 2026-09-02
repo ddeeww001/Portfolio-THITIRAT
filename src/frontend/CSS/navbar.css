@@ -296,7 +296,7 @@
   .navbar-wrapper {
     width: calc(100% - 24px);
     max-width: 480px;
-    top: 16px;
+    top: 14px;
   }
 
   .navbar-desktop-menu {
@@ -305,12 +305,15 @@
 
   .navbar-mobile-controls {
     display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
   }
 
   .navbar-container {
     padding: 6px 10px 6px 8px;
     justify-content: space-between;
-    gap: 10px;
+    gap: 8px;
   }
 
   .mobile-sound-btn {
@@ -322,16 +325,31 @@
 @media (max-width: 420px) {
   .navbar-wrapper {
     width: calc(100% - 16px);
-    top: 12px;
+    top: 10px;
+  }
+
+  .navbar-container {
+    padding: 5px 8px 5px 6px;
+    gap: 6px;
+  }
+
+  .navbar-brand {
+    gap: 6px;
+    min-width: 0;
   }
 
   .navbar-logo-text {
-    font-size: 0.92rem;
+    font-size: 0.88rem;
+    white-space: nowrap;
   }
 
   .navbar-profile-pic {
-    width: 32px;
-    height: 32px;
+    width: 30px;
+    height: 30px;
+  }
+
+  .navbar-mobile-controls {
+    gap: 6px;
   }
 
   .mobile-sound-text {
@@ -344,12 +362,41 @@
 
   .navbar-mobile-dropdown-btn {
     padding: 6px 10px;
-    font-size: 0.78rem;
-    gap: 6px;
+    font-size: 0.76rem;
+    gap: 5px;
+  }
+
+  .navbar-dropdown-current-label {
+    font-size: 0.75rem;
   }
 
   .navbar-dropdown-item {
     padding: 9px 12px;
     font-size: 0.82rem;
+  }
+}
+
+@media (max-width: 340px) {
+  .navbar-wrapper {
+    width: calc(100% - 12px);
+  }
+
+  .navbar-container {
+    padding: 4px 6px;
+    gap: 4px;
+  }
+
+  .navbar-logo-text {
+    font-size: 0.8rem;
+  }
+
+  .navbar-profile-pic {
+    width: 26px;
+    height: 26px;
+  }
+
+  .navbar-mobile-dropdown-btn {
+    padding: 5px 8px;
+    font-size: 0.72rem;
   }
 }

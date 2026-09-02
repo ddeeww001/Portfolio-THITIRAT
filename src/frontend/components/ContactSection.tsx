@@ -11,8 +11,8 @@ export const ContactSection: React.FC = () => {
   };
 
   return (
-    <section id="contact" className="section" style={{ padding: '100px 20px 80px', position: 'relative' }}>
-      <div style={{ maxWidth: '900px', margin: '0 auto' }}>
+    <section id="contact" className="section contact-section" style={{ position: 'relative', width: '100%' }}>
+      <div style={{ maxWidth: '900px', margin: '0 auto', width: '100%' }}>
         <div style={{ textAlign: 'center', marginBottom: '50px' }}>
           <div className="availability-pill" style={{ display: 'inline-flex' }}>
             <span className="status-dot"></span>
