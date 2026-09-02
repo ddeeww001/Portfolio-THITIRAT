@@ -7,7 +7,15 @@ import './CSS/experience.css';
 const ProjectThumbnail: React.FC<{ url: string; title: string; label: string }> = ({ url, title, label }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
-  const imgUrl = `https://api.microlink.io/?url=${encodeURIComponent(url)}&screenshot=true&embed=screenshot.url`;
+  const [retryKey, setRetryKey] = useState(0);
+  const imgUrl = `https://api.microlink.io/?url=${encodeURIComponent(url)}&screenshot=true&embed=screenshot.url&_k=${retryKey}`;
+
+  const handleRetry = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setImageError(false);
+    setImageLoaded(false);
+    setRetryKey((k) => k + 1);
+  };
 
   return (
     <div
@@ -29,6 +37,29 @@ const ProjectThumbnail: React.FC<{ url: string; title: string; label: string }> 
       {!imageLoaded && !imageError && (
         <div className="skeleton-box" style={{ position: 'absolute', inset: 0, zIndex: 1 }} />
       )}
+
+      {/* Live Status Badge */}
+      <div className="image-status-pill">
+        {!imageLoaded && !imageError ? (
+          <>
+            <span className="feedback-dot pulse" />
+            <span>FETCHING...</span>
+          </>
+        ) : imageError ? (
+          <>
+            <span className="feedback-dot" style={{ background: '#ff5555' }} />
+            <span>OFFLINE</span>
+            <button className="image-retry-btn" onClick={handleRetry} title="Retry image fetch">
+              ⟳ RETRY
+            </button>
+          </>
+        ) : (
+          <>
+            <span className="feedback-dot green" />
+            <span>LIVE PREVIEW</span>
+          </>
+        )}
+      </div>
 
       {/* Fallback Graphic */}
       <div style={{ textAlign: 'center', zIndex: 2, opacity: imageLoaded ? 0 : 1, transition: 'opacity 0.3s ease' }}>
@@ -54,6 +85,7 @@ const ProjectThumbnail: React.FC<{ url: string; title: string; label: string }> 
 
       {!imageError && (
         <img
+          key={retryKey}
           src={imgUrl}
           alt={title}
           className={`img-fade-in ${imageLoaded ? 'is-loaded' : ''}`}
@@ -94,18 +126,55 @@ const ProjectThumbnail: React.FC<{ url: string; title: string; label: string }> 
 
 function ShowExperience() {
   const [activeFilter, setActiveFilter] = useState('ALL');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [isSearching, setIsSearching] = useState(false);
+  const [isFiltering, setIsFiltering] = useState(false);
   const [selectedProject, setSelectedProject] = useState<ProjectData | null>(null);
 
   const filters = ['ALL', 'Hackathon', 'Design', 'Frontend', 'UX/UI', 'API Integration'];
 
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value;
+    setSearchQuery(val);
+    setIsSearching(true);
+    setTimeout(() => {
+      setIsSearching(false);
+    }, 200);
+  };
+
+  const handleFilterChange = (filter: string) => {
+    playClickSound();
+    setIsFiltering(true);
+    setActiveFilter(filter);
+    setTimeout(() => {
+      setIsFiltering(false);
+    }, 180);
+  };
+
   const filteredProjects = projectsDatabase.filter((project) => {
-    if (activeFilter === 'ALL') return true;
-    return project.tags?.some((t) => t.toLowerCase() === activeFilter.toLowerCase());
+    const matchesFilter =
+      activeFilter === 'ALL' ||
+      project.tags?.some((t) => t.toLowerCase() === activeFilter.toLowerCase());
+
+    const matchesSearch =
+      searchQuery.trim() === '' ||
+      project.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      project.role.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
+      project.tags?.some((t) => t.toLowerCase().includes(searchQuery.toLowerCase())) ||
+      project.details.some((d) => d.toLowerCase().includes(searchQuery.toLowerCase()));
+
+    return matchesFilter && matchesSearch;
   });
+
+  const resetFilters = () => {
+    playClickSound();
+    setActiveFilter('ALL');
+    setSearchQuery('');
+  };
 
   return (
     <div className="experience-presentation-wrapper">
-      <div style={{ textAlign: 'center', marginBottom: '50px' }}>
+      <div style={{ textAlign: 'center', marginBottom: '40px' }}>
         <div className="availability-pill">
           <span className="status-dot"></span>
           <span>PORTFOLIO SHOWCASE • CRAFTED WITH PASSION</span>
@@ -117,9 +186,6 @@ function ShowExperience() {
             fontWeight: 800,
             lineHeight: 1.1,
             letterSpacing: '-0.02em',
-            background: 'var(--text-gradient)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
             marginBottom: '16px',
             wordBreak: 'break-word',
             overflowWrap: 'break-word',
@@ -127,9 +193,46 @@ function ShowExperience() {
         >
           FEATURED WORK .
         </h2>
-        <p style={{ color: 'var(--text-secondary)', maxWidth: '600px', margin: '0 auto', fontSize: '1.05rem', wordBreak: 'break-word', overflowWrap: 'break-word' }}>
+        <p style={{ color: 'var(--text-secondary)', maxWidth: '600px', margin: '0 auto 28px', fontSize: '1.05rem', wordBreak: 'break-word', overflowWrap: 'break-word' }}>
           Explore past projects, open-source works, design systems, and client interfaces built with precision.
         </p>
+
+        {/* Interactive Search Box with Real-time Loading Indicator */}
+        <div className="interactive-search-box">
+          <span className="search-icon-left">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="11" cy="11" r="8" />
+              <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg>
+          </span>
+
+          <input
+            type="text"
+            className="search-input-field"
+            placeholder="Search projects by title, stack, or tags..."
+            value={searchQuery}
+            onChange={handleSearchChange}
+          />
+
+          <div className="search-action-right">
+            {isSearching && <div className="search-loading-spinner" title="Searching..." />}
+            {searchQuery && (
+              <button className="search-clear-btn" onClick={() => setSearchQuery('')} title="Clear search">
+                ✕
+              </button>
+            )}
+          </div>
+        </div>
+
+        {/* Live Filter Counter & Status Badge */}
+        <div className={`feedback-counter-badge ${isFiltering || isSearching ? 'is-updating' : ''}`}>
+          <span className={`feedback-dot ${isFiltering || isSearching ? 'pulse' : 'green'}`} />
+          <span>
+            {isFiltering || isSearching
+              ? 'UPDATING RESULTS . . .'
+              : `SHOWING ${filteredProjects.length} OF ${projectsDatabase.length} PROJECTS`}
+          </span>
+        </div>
       </div>
 
       {/* Filter Tabs */}
@@ -138,10 +241,7 @@ function ShowExperience() {
           <button
             key={filter}
             className={`filter-btn ${activeFilter === filter ? 'active' : ''}`}
-            onClick={() => {
-              playClickSound();
-              setActiveFilter(filter);
-            }}
+            onClick={() => handleFilterChange(filter)}
             onMouseEnter={playHoverSound}
           >
             {filter}
@@ -149,70 +249,88 @@ function ShowExperience() {
         ))}
       </div>
 
-      {/* Project Cards Grid */}
-      <div className="projects-grid">
-        {filteredProjects.map((project) => (
-          <div
-            key={project.id}
-            className="interactive-hover project-trionn-card"
-          >
-            <div>
-              {/* Category / Date Header */}
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  marginBottom: '16px',
-                }}
-              >
-                <span
+      {/* Empty State Feedback when no results match */}
+      {filteredProjects.length === 0 ? (
+        <div className="empty-state-card">
+          <div className="empty-state-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="11" cy="11" r="8" />
+              <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg>
+          </div>
+          <h3 style={{ color: '#ffffff', fontSize: '1.2rem', margin: 0 }}>No matching projects found</h3>
+          <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', margin: 0, maxWidth: '380px' }}>
+            No projects matched your search query &quot;{searchQuery}&quot; under &quot;{activeFilter}&quot; filter.
+          </p>
+          <button className="empty-state-btn" onClick={resetFilters}>
+            Reset Filters ⟳
+          </button>
+        </div>
+      ) : (
+        /* Project Cards Grid */
+        <div className="projects-grid">
+          {filteredProjects.map((project) => (
+            <div
+              key={project.id}
+              className="interactive-hover project-trionn-card"
+            >
+              <div>
+                {/* Category / Date Header */}
+                <div
                   style={{
-                    background: 'rgba(255, 255, 255, 0.06)',
-                    color: '#ffffff',
-                    border: '1px solid var(--border-medium)',
-                    padding: '4px 12px',
-                    borderRadius: 'var(--radius-full)',
-                    fontSize: '0.75rem',
-                    fontFamily: 'var(--font-heading)',
-                    fontWeight: 700,
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    marginBottom: '16px',
                   }}
                 >
-                  {project.tags ? project.tags[0] : 'Project'}
-                </span>
-                <span
+                  <span
+                    style={{
+                      background: 'rgba(255, 255, 255, 0.06)',
+                      color: '#ffffff',
+                      border: '1px solid var(--border-medium)',
+                      padding: '4px 12px',
+                      borderRadius: 'var(--radius-full)',
+                      fontSize: '0.75rem',
+                      fontFamily: 'var(--font-heading)',
+                      fontWeight: 700,
+                    }}
+                  >
+                    {project.tags ? project.tags[0] : 'Project'}
+                  </span>
+                  <span
+                    style={{
+                      color: 'var(--text-muted)',
+                      fontSize: '0.8rem',
+                      fontFamily: 'var(--font-mono)',
+                    }}
+                  >
+                    {project.date}
+                  </span>
+                </div>
+
+                {/* Project Image Preview Box with Skeleton Loader & Feedback */}
+                {project.link && project.link.length > 0 && (
+                  <ProjectThumbnail
+                    url={project.link[0].url}
+                    title={project.title}
+                    label={project.link[0].label}
+                  />
+                )}
+
+                <h3
                   style={{
-                    color: 'var(--text-muted)',
-                    fontSize: '0.8rem',
-                    fontFamily: 'var(--font-mono)',
+                    fontSize: 'clamp(1.15rem, 3.5vw, 1.45rem)',
+                    color: 'var(--text-primary)',
+                    marginBottom: '12px',
+                    fontFamily: 'var(--font-display)',
+                    lineHeight: 1.3,
+                    wordBreak: 'break-word',
+                    overflowWrap: 'break-word',
                   }}
                 >
-                  {project.date}
-                </span>
-              </div>
-
-              {/* Project Image Preview Box with Skeleton Loader */}
-              {project.link && project.link.length > 0 && (
-                <ProjectThumbnail
-                  url={project.link[0].url}
-                  title={project.title}
-                  label={project.link[0].label}
-                />
-              )}
-
-              <h3
-                style={{
-                  fontSize: 'clamp(1.15rem, 3.5vw, 1.45rem)',
-                  color: 'var(--text-primary)',
-                  marginBottom: '12px',
-                  fontFamily: 'var(--font-display)',
-                  lineHeight: 1.3,
-                  wordBreak: 'break-word',
-                  overflowWrap: 'break-word',
-                }}
-              >
-                {project.title}
-              </h3>
+                  {project.title}
+                </h3>
 
               <p
                 style={{
@@ -328,6 +446,7 @@ function ShowExperience() {
           </div>
         ))}
       </div>
+      )}
 
       {/* Project Modal Drawer */}
       <ProjectModal project={selectedProject} onClose={() => setSelectedProject(null)} />

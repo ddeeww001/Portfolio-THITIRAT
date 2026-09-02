@@ -149,19 +149,56 @@ const Certificate = () => {
     "Work-Plan Development": "Work-plan Development.pdf",
   };
 
+  const [selectedCategory, setSelectedCategory] = useState('ALL');
+  const [isSearching, setIsSearching] = useState(false);
+
+  const categories = ['ALL', 'UX/UI & Foundation', 'Lifelong Learning', 'Agile & Thinking', 'Communication'];
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+    setIsSearching(true);
+    setTimeout(() => {
+      setIsSearching(false);
+    }, 200);
+  };
+
+  const handleCategoryChange = (cat: string) => {
+    playClickSound();
+    setIsSearching(true);
+    setSelectedCategory(cat);
+    setTimeout(() => {
+      setIsSearching(false);
+    }, 180);
+  };
+
   const certifications = profileDatabase.certifications;
 
-  const filteredCerts = certifications.filter((cert) =>
-    cert.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredCerts = certifications.filter((cert) => {
+    const matchesSearch = cert.toLowerCase().includes(searchTerm.toLowerCase());
+    if (!matchesSearch) return false;
+
+    if (selectedCategory === 'ALL') return true;
+    if (selectedCategory === 'UX/UI & Foundation') return cert.toLowerCase().includes('uxui') || cert.toLowerCase().includes('design');
+    if (selectedCategory === 'Lifelong Learning') return cert.toLowerCase().includes('lifelong') || cert.toLowerCase().includes('learning');
+    if (selectedCategory === 'Agile & Thinking') return cert.toLowerCase().includes('agile') || cert.toLowerCase().includes('reasoning') || cert.toLowerCase().includes('problem');
+    if (selectedCategory === 'Communication') return cert.toLowerCase().includes('speaking') || cert.toLowerCase().includes('listening') || cert.toLowerCase().includes('storytelling');
+
+    return true;
+  });
 
   // Duplicate list for continuous infinite marquee looping
   const marqueeList = [...filteredCerts, ...filteredCerts];
 
+  const resetCertFilters = () => {
+    playClickSound();
+    setSelectedCategory('ALL');
+    setSearchTerm('');
+  };
+
   return (
-    <section id="certificates" className="certificate-section" style={{ padding: '80px 0', overflow: 'hidden' }}>
-      <div className="cert-container" style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px' }}>
-        <div style={{ textAlign: 'center', marginBottom: '40px' }}>
+    <section id="certificates" className="certificate-section" style={{ padding: '80px 0', overflow: 'hidden', width: '100%' }}>
+      <div className="cert-container" style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px', width: '100%' }}>
+        <div style={{ textAlign: 'center', marginBottom: '36px', width: '100%' }}>
           <div className="availability-pill">
             <span className="status-dot"></span>
             <span>CONTINUOUS TICKER • VERIFIED ACCOMPLISHMENTS</span>
@@ -173,50 +210,95 @@ const Certificate = () => {
               fontWeight: 800,
               lineHeight: 1.1,
               letterSpacing: '-0.02em',
-              background: 'var(--text-gradient)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
               marginBottom: '16px',
               wordBreak: 'break-word',
               overflowWrap: 'break-word',
             }}
           >
-            CERTIFICATIONS & <br />
-            <span style={{ color: '#ffffff', WebkitTextFillColor: '#ffffff' }}>
-              CREDENTIALS
-            </span>
+            CERTIFICATIONS & CREDENTIALS .
           </h2>
-          <p style={{ color: 'var(--text-secondary)', maxWidth: '600px', margin: '0 auto 24px', fontSize: '1.05rem', wordBreak: 'break-word', overflowWrap: 'break-word' }}>
+          <p style={{ color: 'var(--text-secondary)', maxWidth: '600px', margin: '0 auto 28px', fontSize: '1.05rem', wordBreak: 'break-word', overflowWrap: 'break-word' }}>
             Continuous infinite gallery of verified certificates from Lifelong Learning programs, design workshops, and agile technical domains.
           </p>
 
-          {/* Search Filter Box */}
-          <div style={{ maxWidth: '400px', margin: '0 auto 30px' }}>
+          {/* Interactive Search Box with Real-time Loading Indicator */}
+          <div className="interactive-search-box">
+            <span className="search-icon-left">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+              </svg>
+            </span>
+
             <input
               type="text"
-              placeholder="Search certification title..."
+              className="search-input-field"
+              placeholder="Search certification title, topic, or domain..."
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              style={{
-                width: '100%',
-                background: 'rgba(255, 255, 255, 0.04)',
-                border: '1px solid var(--border-medium)',
-                borderRadius: 'var(--radius-full)',
-                padding: '10px 20px',
-                color: 'var(--text-primary)',
-                fontFamily: 'var(--font-body)',
-                fontSize: '0.9rem',
-                outline: 'none',
-              }}
+              onChange={handleSearchChange}
             />
+
+            <div className="search-action-right">
+              {isSearching && <div className="search-loading-spinner" title="Searching..." />}
+              {searchTerm && (
+                <button className="search-clear-btn" onClick={() => setSearchTerm('')} title="Clear search">
+                  ✕
+                </button>
+              )}
+            </div>
+          </div>
+
+          {/* Live Result Feedback Pill */}
+          <div className={`feedback-counter-badge ${isSearching ? 'is-updating' : ''}`}>
+            <span className={`feedback-dot ${isSearching ? 'pulse' : 'green'}`} />
+            <span>
+              {isSearching
+                ? 'SEARCHING CERTIFICATIONS . . .'
+                : `SHOWING ${filteredCerts.length} OF ${certifications.length} CERTIFICATES`}
+            </span>
+          </div>
+
+          {/* Category Filter Pills */}
+          <div className="filter-container" style={{ marginBottom: '24px' }}>
+            {categories.map((cat) => (
+              <button
+                key={cat}
+                className={`filter-btn ${selectedCategory === cat ? 'active' : ''}`}
+                onClick={() => handleCategoryChange(cat)}
+                onMouseEnter={playHoverSound}
+                style={{ fontSize: '0.82rem', padding: '7px 16px' }}
+              >
+                {cat}
+              </button>
+            ))}
           </div>
         </div>
-      </div>      {/* Continuous Infinite Marquee Track Container */}
-      <div className="cert-marquee-container" style={{ position: 'relative', zIndex: 1 }}>
-        <div className="cert-marquee-track">
-          {marqueeList.map((cert, index) => {
-            const fileName = certMapping[cert] || `${cert.toLowerCase().replace(/\s+/g, '_')}.pdf`;
-            const filePath = `/certify_LifeLongLearning/${fileName}`;
+      </div>
+
+      {/* Empty State when 0 certificates match */}
+      {filteredCerts.length === 0 ? (
+        <div className="empty-state-card">
+          <div className="empty-state-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="11" cy="11" r="8" />
+              <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg>
+          </div>
+          <h3 style={{ color: '#ffffff', fontSize: '1.2rem', margin: 0 }}>No certificates found</h3>
+          <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', margin: 0, maxWidth: '380px' }}>
+            No certificates matched &quot;{searchTerm}&quot; under &quot;{selectedCategory}&quot;.
+          </p>
+          <button className="empty-state-btn" onClick={resetCertFilters}>
+            Reset Search ⟳
+          </button>
+        </div>
+      ) : (
+        /* Continuous Infinite Marquee Track Container */
+        <div className="cert-marquee-container" style={{ position: 'relative', zIndex: 1, width: '100%' }}>
+          <div className="cert-marquee-track">
+            {marqueeList.map((cert, index) => {
+              const fileName = certMapping[cert] || `${cert.toLowerCase().replace(/\s+/g, '_')}.pdf`;
+              const filePath = `/certify_LifeLongLearning/${fileName}`;
 
             return (
               <div
@@ -292,6 +374,7 @@ const Certificate = () => {
           })}
         </div>
       </div>
+      )}
 
       {/* Certificate Lightbox Modal Viewer */}
       {selectedCert && (
