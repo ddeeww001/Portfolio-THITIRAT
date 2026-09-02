@@ -4,6 +4,94 @@ import { ProjectModal } from './components/ProjectModal';
 import { playClickSound, playHoverSound } from './components/SoundEffects';
 import './CSS/experience.css';
 
+const ProjectThumbnail: React.FC<{ url: string; title: string; label: string }> = ({ url, title, label }) => {
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageError, setImageError] = useState(false);
+  const imgUrl = `https://api.microlink.io/?url=${encodeURIComponent(url)}&screenshot=true&embed=screenshot.url`;
+
+  return (
+    <div
+      style={{
+        height: '165px',
+        borderRadius: 'var(--radius-md)',
+        overflow: 'hidden',
+        marginBottom: '18px',
+        position: 'relative',
+        background: 'linear-gradient(135deg, #14151c 0%, #232430 100%)',
+        border: '1px solid var(--border-subtle)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '16px',
+      }}
+    >
+      {/* Loading Skeleton Shimmer */}
+      {!imageLoaded && !imageError && (
+        <div className="skeleton-box" style={{ position: 'absolute', inset: 0, zIndex: 1 }} />
+      )}
+
+      {/* Fallback Graphic */}
+      <div style={{ textAlign: 'center', zIndex: 2, opacity: imageLoaded ? 0 : 1, transition: 'opacity 0.3s ease' }}>
+        <div style={{ marginBottom: '6px', display: 'flex', justifyContent: 'center' }}>
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+            <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+            <line x1="8" y1="21" x2="16" y2="21" />
+            <line x1="12" y1="17" x2="12" y2="21" />
+          </svg>
+        </div>
+        <div
+          style={{
+            fontSize: '0.8rem',
+            fontFamily: 'var(--font-heading)',
+            fontWeight: 700,
+            color: '#ffffff',
+            letterSpacing: '-0.01em',
+          }}
+        >
+          {title}
+        </div>
+      </div>
+
+      {!imageError && (
+        <img
+          src={imgUrl}
+          alt={title}
+          className={`img-fade-in ${imageLoaded ? 'is-loaded' : ''}`}
+          onLoad={() => setImageLoaded(true)}
+          onError={() => setImageError(true)}
+          style={{
+            position: 'absolute',
+            inset: 0,
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            filter: 'contrast(1.05) brightness(0.95)',
+            zIndex: 3,
+          }}
+        />
+      )}
+
+      <div
+        style={{
+          position: 'absolute',
+          bottom: '8px',
+          right: '8px',
+          background: 'rgba(10, 10, 12, 0.88)',
+          border: '1px solid var(--border-medium)',
+          padding: '2px 8px',
+          borderRadius: 'var(--radius-full)',
+          fontSize: '0.68rem',
+          fontFamily: 'var(--font-mono)',
+          color: '#ffffff',
+          zIndex: 4,
+        }}
+      >
+        {label}
+      </div>
+    </div>
+  );
+};
+
 function ShowExperience() {
   const [activeFilter, setActiveFilter] = useState('ALL');
   const [selectedProject, setSelectedProject] = useState<ProjectData | null>(null);
@@ -37,13 +125,10 @@ function ShowExperience() {
             overflowWrap: 'break-word',
           }}
         >
-          FEATURED PROJECTS & <br />
-          <span style={{ color: '#ffffff', WebkitTextFillColor: '#ffffff' }}>
-            EXPERIENCE
-          </span>
+          FEATURED WORK .
         </h2>
         <p style={{ color: 'var(--text-secondary)', maxWidth: '600px', margin: '0 auto', fontSize: '1.05rem', wordBreak: 'break-word', overflowWrap: 'break-word' }}>
-          Explore my latest hackathon wins, UI design work, frontend applications, and web development projects.
+          Explore past projects, open-source works, design systems, and client interfaces built with precision.
         </p>
       </div>
 
@@ -83,14 +168,14 @@ function ShowExperience() {
               >
                 <span
                   style={{
-                    background: 'rgba(255, 255, 255, 0.08)',
+                    background: 'rgba(255, 255, 255, 0.06)',
                     color: '#ffffff',
+                    border: '1px solid var(--border-medium)',
                     padding: '4px 12px',
                     borderRadius: 'var(--radius-full)',
                     fontSize: '0.75rem',
-                    fontFamily: 'var(--font-mono)',
-                    fontWeight: 600,
-                    border: '1px solid var(--border-glow)',
+                    fontFamily: 'var(--font-heading)',
+                    fontWeight: 700,
                   }}
                 >
                   {project.tags ? project.tags[0] : 'Project'}
@@ -106,80 +191,13 @@ function ShowExperience() {
                 </span>
               </div>
 
-              {/* Project Image Preview Box */}
+              {/* Project Image Preview Box with Skeleton Loader */}
               {project.link && project.link.length > 0 && (
-                <div
-                  style={{
-                    height: '165px',
-                    borderRadius: 'var(--radius-md)',
-                    overflow: 'hidden',
-                    marginBottom: '18px',
-                    position: 'relative',
-                    background: 'linear-gradient(135deg, #14151c 0%, #232430 100%)',
-                    border: '1px solid var(--border-subtle)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    padding: '16px',
-                  }}
-                >
-                  {/* Fallback Graphic */}
-                  <div style={{ textAlign: 'center', zIndex: 1 }}>
-                    <div style={{ marginBottom: '6px', display: 'flex', justifyContent: 'center' }}>
-                      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                        <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
-                        <line x1="8" y1="21" x2="16" y2="21" />
-                        <line x1="12" y1="17" x2="12" y2="21" />
-                      </svg>
-                    </div>
-                    <div
-                      style={{
-                        fontSize: '0.8rem',
-                        fontFamily: 'var(--font-heading)',
-                        fontWeight: 700,
-                        color: '#ffffff',
-                        letterSpacing: '-0.01em',
-                      }}
-                    >
-                      {project.title}
-                    </div>
-                  </div>
-
-                  <img
-                    src={`https://api.microlink.io/?url=${encodeURIComponent(project.link[0].url)}&screenshot=true&embed=screenshot.url`}
-                    alt={project.title}
-                    style={{
-                      position: 'absolute',
-                      inset: 0,
-                      width: '100%',
-                      height: '100%',
-                      objectFit: 'cover',
-                      filter: 'contrast(1.05) brightness(0.95)',
-                      transition: 'transform 0.4s ease',
-                      zIndex: 2,
-                    }}
-                    onError={(e) => {
-                      (e.target as HTMLElement).style.display = 'none';
-                    }}
-                  />
-                  <div
-                    style={{
-                      position: 'absolute',
-                      bottom: '8px',
-                      right: '8px',
-                      background: 'rgba(10, 10, 12, 0.88)',
-                      border: '1px solid var(--border-medium)',
-                      padding: '2px 8px',
-                      borderRadius: 'var(--radius-full)',
-                      fontSize: '0.68rem',
-                      fontFamily: 'var(--font-mono)',
-                      color: '#ffffff',
-                      zIndex: 3,
-                    }}
-                  >
-                    {project.link[0].label}
-                  </div>
-                </div>
+                <ProjectThumbnail
+                  url={project.link[0].url}
+                  title={project.title}
+                  label={project.link[0].label}
+                />
               )}
 
               <h3

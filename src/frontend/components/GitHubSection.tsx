@@ -131,11 +131,49 @@ export const GitHubSection: React.FC = () => {
       </div>
 
       {loading ? (
-        <div style={{ padding: '30px 0', textAlign: 'center', color: 'var(--text-secondary)', fontFamily: 'var(--font-mono)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
-          </svg>
-          Fetching live GitHub statistics for ddeeww001...
+        <div>
+          {/* Skeleton Stats Summary */}
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))',
+              gap: '16px',
+              marginBottom: '28px',
+            }}
+          >
+            {[1, 2, 3].map((i) => (
+              <div
+                key={i}
+                className="skeleton-box"
+                style={{
+                  height: '80px',
+                  borderRadius: 'var(--radius-md)',
+                  border: '1px solid var(--border-subtle)',
+                }}
+              />
+            ))}
+          </div>
+
+          {/* Skeleton Repositories Grid */}
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 260px), 1fr))',
+              gap: '16px',
+            }}
+          >
+            {[1, 2, 3, 4, 5, 6].map((i) => (
+              <div
+                key={i}
+                className="skeleton-box"
+                style={{
+                  height: '140px',
+                  borderRadius: 'var(--radius-md)',
+                  border: '1px solid var(--border-subtle)',
+                }}
+              />
+            ))}
+          </div>
         </div>
       ) : error ? (
         <div style={{ padding: '20px', background: 'rgba(255, 99, 99, 0.1)', border: '1px solid #ff6363', borderRadius: 'var(--radius-md)', color: '#ff8888', fontSize: '0.9rem' }}>

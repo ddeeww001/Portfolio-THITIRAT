@@ -66,20 +66,27 @@ const PDFThumbnail = ({ url, title }: { url: string; title: string }) => {
         boxShadow: 'inset 0 0 15px rgba(0,0,0,0.5)',
       }}
     >
-      {/* 1. Real Rendered Certificate Image */}
+      {/* 1. Shimmer Skeleton while rendering */}
+      {!rendered && (
+        <div className="skeleton-box" style={{ position: 'absolute', inset: 0, zIndex: 1 }} />
+      )}
+
+      {/* 2. Real Rendered Certificate Image */}
       {rendered && imgUrl ? (
         <img
           src={imgUrl}
           alt={title}
+          className="img-fade-in is-loaded"
           style={{
             width: '100%',
             height: '100%',
             objectFit: 'cover',
+            zIndex: 2,
           }}
         />
       ) : (
-        /* 2. High-Impact Visual Certificate Cover */
-        <div style={{ padding: '16px', textAlign: 'center', position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'linear-gradient(135deg, #14151c 0%, #232430 100%)' }}>
+        /* 3. High-Impact Visual Certificate Cover */
+        <div style={{ padding: '16px', textAlign: 'center', position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'linear-gradient(135deg, #14151c 0%, #232430 100%)', zIndex: 2 }}>
           <div style={{ marginBottom: '8px', opacity: 0.9 }}>
             <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
               <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />

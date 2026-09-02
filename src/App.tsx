@@ -16,6 +16,7 @@ import { MarqueeTicker } from './frontend/components/MarqueeTicker';
 import { ServicesSection } from './frontend/components/ServicesSection';
 import { StudioFAQ } from './frontend/components/StudioFAQ';
 import { ContactSection } from './frontend/components/ContactSection';
+import { Preloader } from './frontend/components/Preloader';
 import { playClickSound, playHoverSound, setSoundEnabled } from './frontend/components/SoundEffects';
 const profileImg = '/picture/profile.jpg';
 
@@ -418,8 +419,45 @@ const StudioStatementSection = () => {
 };
 
 function App() {
+  const [appReady, setAppReady] = useState(false);
+  const [isAssetsLoading, setIsAssetsLoading] = useState(true);
+
+  useEffect(() => {
+    // Orchestrate preloading of critical assets & fonts
+    const preloadAssets = async () => {
+      try {
+        const imagePromises = [
+          new Promise((resolve) => {
+            const img = new Image();
+            img.src = profileImg;
+            img.onload = resolve;
+            img.onerror = resolve;
+          }),
+        ];
+
+        // Wait for fonts to be ready if browser supports document.fonts
+        const fontPromise = document.fonts ? document.fonts.ready : Promise.resolve();
+
+        await Promise.all([...imagePromises, fontPromise]);
+      } catch {
+        // Fallback gracefully
+      } finally {
+        setIsAssetsLoading(false);
+      }
+    };
+
+    preloadAssets();
+  }, []);
+
   return (
-    <div className="app-container">
+    <div className={`app-container ${appReady ? 'is-loaded' : 'is-loading'}`}>
+      {/* High-End Splash Screen / Preloader with Loading State support */}
+      <Preloader
+        isLoading={isAssetsLoading}
+        minimumDuration={1500}
+        onComplete={() => setAppReady(true)}
+      />
+
       {/* Custom follower cursor & spotlight */}
       <CustomCursor />
 
