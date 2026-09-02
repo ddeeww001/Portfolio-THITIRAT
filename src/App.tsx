@@ -27,16 +27,83 @@ const scrollToSection = (sectionId: string) => {
   }
 };
 
+const navItems = [
+  { id: 'home', label: 'Home' },
+  { id: 'services', label: 'Services' },
+  { id: 'experience', label: 'Work' },
+  { id: 'certificates', label: 'Certificates' },
+  { id: 'profile', label: 'About' },
+  { id: 'faq', label: 'FAQ' },
+  { id: 'contact', label: 'Contact' },
+];
+
+const getNavIcon = (id: string) => {
+  switch (id) {
+    case 'home':
+      return (
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+          <polyline points="9 22 9 12 15 12 15 22" />
+        </svg>
+      );
+    case 'services':
+      return (
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+        </svg>
+      );
+    case 'experience':
+      return (
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <rect width="20" height="14" x="2" y="7" rx="2" ry="2" />
+          <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+        </svg>
+      );
+    case 'certificates':
+      return (
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="12" cy="8" r="6" />
+          <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11" />
+        </svg>
+      );
+    case 'profile':
+      return (
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+          <circle cx="12" cy="7" r="4" />
+        </svg>
+      );
+    case 'faq':
+      return (
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="12" cy="12" r="10" />
+          <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+          <path d="M12 17h.01" />
+        </svg>
+      );
+    case 'contact':
+      return (
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <rect width="20" height="16" x="2" y="4" rx="2" />
+          <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+        </svg>
+      );
+    default:
+      return null;
+  }
+};
+
 const Navbar = () => {
   const [activeSection, setActiveSection] = useState('home');
   const [soundActive, setSoundActive] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ['home', 'services', 'experience', 'certificates', 'profile', 'faq', 'contact'];
+      const sectionIds = navItems.map((item) => item.id);
       const scrollPosition = window.scrollY + 120;
 
-      for (const section of sections) {
+      for (const section of sectionIds) {
         const element = document.getElementById(section);
         if (element) {
           const { offsetTop, offsetHeight } = element;
@@ -52,6 +119,26 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth > 850) {
+        setMobileMenuOpen(false);
+      }
+    };
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setMobileMenuOpen(false);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
+
   const toggleSound = () => {
     const nextState = !soundActive;
     setSoundActive(nextState);
@@ -59,54 +146,147 @@ const Navbar = () => {
     if (nextState) playClickSound();
   };
 
+  const handleNavClick = (id: string) => {
+    scrollToSection(id);
+    setMobileMenuOpen(false);
+  };
+
+  const currentActiveItem = navItems.find((item) => item.id === activeSection) || navItems[0];
+
   return (
-    <div className="navbar" style={{ background: 'rgba(10, 10, 12, 0.88)', backdropFilter: 'blur(16px)', borderBottom: '1px solid var(--border-subtle)' }}>
-      <nav style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', maxWidth: '1200px', margin: '0 auto', padding: '0 20px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-          <button onClick={() => scrollToSection('home')} className="profile-btn" onMouseEnter={playHoverSound} style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
-            <img alt="Thitirat Sirisawad" src={profileImg} className="navbar-profile-pic" style={{ width: '38px', height: '38px', borderRadius: '50%', border: '2px solid #ffffff' }} />
-          </button>
-          <span style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: '1.1rem', letterSpacing: '-0.02em', color: 'var(--text-primary)' }}>
-            THITIRAT<span style={{ color: '#ffffff' }}>.</span>
-          </span>
-        </div>
+    <>
+      {mobileMenuOpen && (
+        <div
+          className="navbar-backdrop"
+          onClick={() => setMobileMenuOpen(false)}
+          aria-hidden="true"
+        />
+      )}
+      <header className="navbar-wrapper">
+        <nav className="navbar-container">
+          {/* Brand Logo & Profile Pic */}
+          <div className="navbar-brand">
+            <button
+              onClick={() => handleNavClick('home')}
+              className="navbar-profile-btn"
+              onMouseEnter={playHoverSound}
+              aria-label="Home"
+            >
+              <img
+                alt="Thitirat Sirisawad"
+                src={profileImg}
+                className="navbar-profile-pic"
+              />
+            </button>
+            <span
+              className="navbar-logo-text"
+              onClick={() => handleNavClick('home')}
+            >
+              THITIRAT<span className="navbar-logo-dot">.</span>
+            </span>
+          </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-          <button onClick={() => scrollToSection('home')} className={activeSection === 'home' ? 'active' : ''} onMouseEnter={playHoverSound}>
-            Home
-          </button>
-          <button onClick={() => scrollToSection('services')} className={activeSection === 'services' ? 'active' : ''} onMouseEnter={playHoverSound}>
-            Services
-          </button>
-          <button onClick={() => scrollToSection('experience')} className={activeSection === 'experience' ? 'active' : ''} onMouseEnter={playHoverSound}>
-            Work
-          </button>
-          <button onClick={() => scrollToSection('certificates')} className={activeSection === 'certificates' ? 'active' : ''} onMouseEnter={playHoverSound}>
-            Certificates
-          </button>
-          <button onClick={() => scrollToSection('profile')} className={activeSection === 'profile' ? 'active' : ''} onMouseEnter={playHoverSound}>
-            About
-          </button>
-          <button onClick={() => scrollToSection('faq')} className={activeSection === 'faq' ? 'active' : ''} onMouseEnter={playHoverSound}>
-            FAQ
-          </button>
-          <button onClick={() => scrollToSection('contact')} className={activeSection === 'contact' ? 'active' : ''} onMouseEnter={playHoverSound}>
-            Contact
-          </button>
+          {/* Desktop Nav Items */}
+          <div className="navbar-desktop-menu">
+            {navItems.map((item) => (
+              <button
+                key={item.id}
+                onClick={() => handleNavClick(item.id)}
+                className={`navbar-nav-btn ${activeSection === item.id ? 'active' : ''}`}
+                onMouseEnter={playHoverSound}
+              >
+                {item.label}
+              </button>
+            ))}
 
-          {/* Sound Toggle */}
-          <button className="sound-toggle-btn" onClick={toggleSound} title="Toggle UI sound feedback">
-            <div className={`sound-waves ${soundActive ? 'active' : ''}`}>
-              <div className="sound-bar" />
-              <div className="sound-bar" />
-              <div className="sound-bar" />
-              <div className="sound-bar" />
+            {/* Sound Toggle Button */}
+            <button
+              className="sound-toggle-btn"
+              onClick={toggleSound}
+              title="Toggle UI sound feedback"
+            >
+              <div className={`sound-waves ${soundActive ? 'active' : ''}`}>
+                <div className="sound-bar" />
+                <div className="sound-bar" />
+                <div className="sound-bar" />
+                <div className="sound-bar" />
+              </div>
+              <span>{soundActive ? 'AUDIO ON' : 'MUTED'}</span>
+            </button>
+          </div>
+
+          {/* Mobile Controls */}
+          <div className="navbar-mobile-controls">
+            <button
+              className="sound-toggle-btn mobile-sound-btn"
+              onClick={toggleSound}
+              title="Toggle UI sound feedback"
+            >
+              <div className={`sound-waves ${soundActive ? 'active' : ''}`}>
+                <div className="sound-bar" />
+                <div className="sound-bar" />
+                <div className="sound-bar" />
+                <div className="sound-bar" />
+              </div>
+              <span className="mobile-sound-text">{soundActive ? 'ON' : 'OFF'}</span>
+            </button>
+
+            {/* Mobile Dropdown Trigger */}
+            <button
+              className={`navbar-mobile-dropdown-btn ${mobileMenuOpen ? 'open' : ''}`}
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              onMouseEnter={playHoverSound}
+              aria-label="Toggle navigation menu"
+              aria-expanded={mobileMenuOpen}
+            >
+              <span className="navbar-dropdown-current-label">
+                {currentActiveItem.label}
+              </span>
+              <svg
+                className={`navbar-dropdown-chevron ${mobileMenuOpen ? 'rotated' : ''}`}
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <polyline points="6 9 12 15 18 9" />
+              </svg>
+            </button>
+          </div>
+        </nav>
+
+        {/* Mobile Dropdown Panel */}
+        {mobileMenuOpen && (
+          <div className="navbar-mobile-dropdown">
+            <div className="navbar-dropdown-list">
+              {navItems.map((item) => {
+                const isActive = activeSection === item.id;
+                return (
+                  <button
+                    key={item.id}
+                    className={`navbar-dropdown-item ${isActive ? 'active' : ''}`}
+                    onClick={() => handleNavClick(item.id)}
+                    onMouseEnter={playHoverSound}
+                  >
+                    <span className="navbar-dropdown-item-left">
+                      <span className="navbar-dropdown-item-icon">
+                        {getNavIcon(item.id)}
+                      </span>
+                      <span className="navbar-dropdown-item-text">{item.label}</span>
+                    </span>
+                    {isActive && <span className="navbar-dropdown-active-dot" />}
+                  </button>
+                );
+              })}
             </div>
-            <span>{soundActive ? 'AUDIO ON' : 'MUTED'}</span>
-          </button>
-        </div>
-      </nav>
-    </div>
+          </div>
+        )}
+      </header>
+    </>
   );
 };
 
