@@ -282,7 +282,7 @@ function App() {
               GitHub ↗
             </a>
             <a href="mailto:dewthitirat@gmail.com" style={{ color: 'var(--text-secondary)' }}>
-              hello@thitirat.dev
+              dewthitirat@gmail.com
             </a>
           </div>
         </div>
