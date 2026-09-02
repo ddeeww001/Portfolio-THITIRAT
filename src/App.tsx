@@ -1,4 +1,4 @@
-import { useEffect, useState, lazy, Suspense } from 'react';
+import { useEffect, useState } from 'react';
 import './frontend/CSS/variables.css';
 import './frontend/CSS/trionn-components.css';
 import './frontend/CSS/App.css';
@@ -8,26 +8,16 @@ import './frontend/CSS/profile.css';
 import './frontend/CSS/experience.css';
 import './frontend/CSS/certificate.css';
 
-import { profileDatabase } from './data/profileData';
+import Experience from './frontend/showExperience';
+import Certificate from './frontend/certificate';
+import { Profile, myDetailsData } from './frontend/Personal';
 import { CustomCursor } from './frontend/components/CustomCursor';
 import { MarqueeTicker } from './frontend/components/MarqueeTicker';
+import { ServicesSection } from './frontend/components/ServicesSection';
+import { StudioFAQ } from './frontend/components/StudioFAQ';
+import { ContactSection } from './frontend/components/ContactSection';
 import { Preloader } from './frontend/components/Preloader';
 import { playClickSound, playHoverSound, setSoundEnabled } from './frontend/components/SoundEffects';
-
-// Dynamic imports (Code-Splitting via React.lazy)
-const ServicesSection = lazy(() => import('./frontend/components/ServicesSection').then(m => ({ default: m.ServicesSection })));
-const Experience = lazy(() => import('./frontend/showExperience'));
-const Profile = lazy(() => import('./frontend/Personal').then(m => ({ default: m.Profile })));
-const Certificate = lazy(() => import('./frontend/certificate'));
-const StudioFAQ = lazy(() => import('./frontend/components/StudioFAQ').then(m => ({ default: m.StudioFAQ })));
-const ContactSection = lazy(() => import('./frontend/components/ContactSection').then(m => ({ default: m.ContactSection })));
-
-const SectionFallback = () => (
-  <div style={{ minHeight: '260px', display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', padding: '40px 0' }}>
-    <div className="spinner-ring" style={{ width: '32px', height: '32px' }} />
-  </div>
-);
-
 const profileImg = '/picture/profile.jpg';
 
 const scrollToSection = (sectionId: string) => {
@@ -483,53 +473,41 @@ function App() {
         <StudioStatementSection />
 
         {/* Services Grid Section ("What I Make") */}
-        <Suspense fallback={<SectionFallback />}>
-          <ServicesSection />
-        </Suspense>
+        <ServicesSection />
 
         {/* Featured Work Showcase Grid */}
         <section id="experience" className="section experience-section">
-          <Suspense fallback={<SectionFallback />}>
-            <Experience />
-          </Suspense>
+          <Experience />
         </section>
 
         {/* Profile & Live GitHub API Hub (About) */}
         <section id="profile" className="section profile-section">
-          <Suspense fallback={<SectionFallback />}>
-            <Profile data={profileDatabase} />
-          </Suspense>
+          <Profile data={myDetailsData} />
         </section>
 
         {/* Continuous Certificate Marquee Gallery */}
-        <Suspense fallback={<SectionFallback />}>
-          <Certificate />
-        </Suspense>
+        <Certificate />
 
         {/* Studio FAQ ("The Nosy Section") */}
-        <Suspense fallback={<SectionFallback />}>
-          <StudioFAQ />
-        </Suspense>
+        <StudioFAQ />
 
         {/* Contact Form & Studio Footer */}
-        <Suspense fallback={<SectionFallback />}>
-          <ContactSection />
-        </Suspense>
+        <ContactSection />
       </main>
 
       <footer className="footer" style={{ borderTop: '1px solid var(--border-subtle)', padding: '40px 20px', background: 'var(--trionn-bg-alt)' }}>
         <div className="footer-content" style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '20px' }}>
           <div>
             <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
-              © 2026 {profileDatabase.name}.
+              © 2026 {myDetailsData.name}.
             </p>
           </div>
           <div className="footer-links" style={{ display: 'flex', gap: '20px' }}>
-            <a href={profileDatabase.socials.find(s => s.label === 'GitHub')?.link || 'https://github.com/ddeeww001'} target="_blank" rel="noopener noreferrer" style={{ color: '#ffffff', fontWeight: 600 }}>
+            <a href={myDetailsData.socials.find(s => s.label === 'GitHub')?.link || 'https://github.com/ddeeww001'} target="_blank" rel="noopener noreferrer" style={{ color: '#ffffff', fontWeight: 600 }}>
               GitHub ↗
             </a>
-            <a href={`mailto:${profileDatabase.email}`} style={{ color: 'var(--text-secondary)' }}>
-              {profileDatabase.email}
+            <a href={`mailto:${myDetailsData.email}`} style={{ color: 'var(--text-secondary)' }}>
+              {myDetailsData.email}
             </a>
           </div>
         </div>

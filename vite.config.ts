@@ -14,19 +14,10 @@ export default defineConfig({
   },
   build: {
     sourcemap: false,
-    chunkSizeWarningLimit: 600,
     rollupOptions: {
       output: {
-        manualChunks(id) {
-          if (id.includes('node_modules')) {
-            if (id.includes('react') || id.includes('react-dom')) {
-              return 'vendor-react';
-            }
-            if (id.includes('pdfjs-dist')) {
-              return 'vendor-pdfjs';
-            }
-            return 'vendor-libs';
-          }
+        manualChunks: {
+          vendor: ['react', 'react-dom']
         }
       }
     }
