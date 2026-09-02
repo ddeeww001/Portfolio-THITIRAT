@@ -451,10 +451,10 @@ function App() {
 
   return (
     <div className={`app-container ${appReady ? 'is-loaded' : 'is-loading'}`}>
-      {/* High-End Splash Screen / Preloader with Loading State support */}
+      {/* Minimal Spinning Ring Loader & Progressive Page Entry */}
       <Preloader
         isLoading={isAssetsLoading}
-        minimumDuration={1500}
+        minimumDuration={300}
         onComplete={() => setAppReady(true)}
       />
 

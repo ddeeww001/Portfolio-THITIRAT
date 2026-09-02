@@ -1,8 +1,8 @@
 import { render, screen, act } from '@testing-library/react';
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { Preloader } from '../../src/frontend/components/Preloader';
 
-describe('Preloader Splash Screen (Frontend Test Suite)', () => {
+describe('Minimal Ring Preloader Component (Frontend Test Suite)', () => {
   beforeEach(() => {
     vi.useFakeTimers({ shouldAdvanceTime: true });
   });
@@ -11,34 +11,33 @@ describe('Preloader Splash Screen (Frontend Test Suite)', () => {
     vi.useRealTimers();
   });
 
-  it('renders preloader brand and tech stack badges', () => {
-    render(<Preloader minimumDuration={1000} />);
-    expect(screen.getByText(/THITIRAT SIRISAWAD/i)).toBeInTheDocument();
-    expect(screen.getByText(/REACT 19/i)).toBeInTheDocument();
-    expect(screen.getByText(/TYPESCRIPT/i)).toBeInTheDocument();
+  it('renders minimal spinning ring loader with accessible status role', () => {
+    const { container } = render(<Preloader minimumDuration={300} />);
+    expect(screen.getByRole('status', { name: /Loading Page/i })).toBeInTheDocument();
+    expect(container.querySelector('.minimal-spinner-ring')).toBeInTheDocument();
+    expect(container.querySelector('.minimal-spinner-ring-inner')).toBeInTheDocument();
   });
 
-  it('increments progress and calls onComplete after completion', async () => {
+  it('fades out and calls onComplete when minimumDuration passes and isLoading is false', async () => {
     const onCompleteMock = vi.fn();
-    render(<Preloader minimumDuration={500} onComplete={onCompleteMock} isLoading={false} />);
+    render(<Preloader minimumDuration={300} onComplete={onCompleteMock} isLoading={false} />);
 
-    // Fast-forward timers
     act(() => {
-      vi.advanceTimersByTime(2000);
+      vi.advanceTimersByTime(800);
     });
 
     expect(onCompleteMock).toHaveBeenCalled();
   });
 
-  it('holds progress at intermediate percentage if isLoading is true', () => {
+  it('keeps spinning ring active while isLoading is true', () => {
     const onCompleteMock = vi.fn();
-    render(<Preloader minimumDuration={500} onComplete={onCompleteMock} isLoading={true} />);
+    render(<Preloader minimumDuration={300} onComplete={onCompleteMock} isLoading={true} />);
 
     act(() => {
-      vi.advanceTimersByTime(1200);
+      vi.advanceTimersByTime(800);
     });
 
-    // onComplete should NOT be called yet because isLoading is still true
     expect(onCompleteMock).not.toHaveBeenCalled();
+    expect(screen.getByRole('status', { name: /Loading Page/i })).toBeInTheDocument();
   });
 });
