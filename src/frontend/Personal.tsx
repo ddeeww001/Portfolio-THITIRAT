@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { profileDatabase, type ProfileData } from '../data/profileData';
 const profileImg = '/picture/profile.jpg';
 import { playHoverSound } from './components/SoundEffects';
@@ -23,6 +24,7 @@ const toolIcons: { [key: string]: string } = {
 };
 
 export const Profile = ({ data }: { data: ProfileData }) => {
+  const [avatarLoaded, setAvatarLoaded] = useState(false);
   return (
     <div className="profile-page-wrapper" style={{ maxWidth: '1200px', margin: '0 auto', width: '100%', position: 'relative', zIndex: 2 }}>
       {/* Section Header */}
@@ -86,9 +88,19 @@ export const Profile = ({ data }: { data: ProfileData }) => {
                 border: '3px solid #ffffff',
                 boxShadow: '0 0 25px rgba(255, 255, 255, 0.2)',
                 margin: '0 auto 20px',
+                position: 'relative',
               }}
             >
-              <img src={profileImg} alt={data.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              {!avatarLoaded && (
+                <div className="skeleton-box" style={{ position: 'absolute', inset: 0, borderRadius: '50%', zIndex: 1 }} />
+              )}
+              <img
+                src={profileImg}
+                alt={data.name}
+                className={`img-fade-in ${avatarLoaded ? 'is-loaded' : ''}`}
+                onLoad={() => setAvatarLoaded(true)}
+                style={{ width: '100%', height: '100%', objectFit: 'cover', position: 'relative', zIndex: 2 }}
+              />
             </div>
 
             <h3 style={{ fontSize: '1.6rem', color: 'var(--text-primary)', fontFamily: 'var(--font-display)', marginBottom: '8px' }}>

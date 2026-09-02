@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { playClickSound, playHoverSound } from './SoundEffects';
 
 interface GitHubUser {
   login: string;
@@ -25,38 +26,51 @@ export const GitHubSection: React.FC = () => {
   const [user, setUser] = useState<GitHubUser | null>(null);
   const [repos, setRepos] = useState<GitHubRepo[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [justRefreshed, setJustRefreshed] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchGitHubData = async () => {
-      try {
-        setLoading(true);
-        const githubUsername = import.meta.env.VITE_GITHUB_USERNAME || 'ddeeww001';
+  const fetchGitHubData = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const githubUsername = import.meta.env.VITE_GITHUB_USERNAME || 'ddeeww001';
 
-        // Fetch User Info
-        const userRes = await fetch(`https://api.github.com/users/${githubUsername}`);
-        if (!userRes.ok) throw new Error('Failed to fetch GitHub profile');
-        const userData = await userRes.json();
-        setUser(userData);
+      // Fetch User Info
+      const userRes = await fetch(`https://api.github.com/users/${githubUsername}`);
+      if (!userRes.ok) throw new Error('Failed to fetch GitHub profile');
+      const userData = await userRes.json();
+      setUser(userData);
 
-        // Fetch Repositories
-        const reposRes = await fetch(`https://api.github.com/users/${githubUsername}/repos?sort=updated&per_page=6`);
-        if (!reposRes.ok) throw new Error('Failed to fetch GitHub repositories');
-        const reposData = await reposRes.json();
-        setRepos(reposData);
-      } catch (err: unknown) {
-        if (err instanceof Error) {
-          setError(err.message);
-        } else {
-          setError('An unknown error occurred');
-        }
-      } finally {
-        setLoading(false);
+      // Fetch Repositories
+      const reposRes = await fetch(`https://api.github.com/users/${githubUsername}/repos?sort=updated&per_page=6`);
+      if (!reposRes.ok) throw new Error('Failed to fetch GitHub repositories');
+      const reposData = await reposRes.json();
+      setRepos(reposData);
+
+      setJustRefreshed(true);
+      setTimeout(() => setJustRefreshed(false), 2500);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError('An unknown error occurred');
       }
-    };
+    } finally {
+      setLoading(false);
+      setIsRefreshing(false);
+    }
+  };
 
+  useEffect(() => {
     fetchGitHubData();
   }, []);
+
+  const handleManualRefresh = () => {
+    playClickSound();
+    setIsRefreshing(true);
+    fetchGitHubData();
+  };
 
   return (
     <div
@@ -101,41 +115,116 @@ export const GitHubSection: React.FC = () => {
             </svg>
           </div>
           <div>
-            <h3 style={{ fontSize: '1.4rem', color: 'var(--text-primary)', fontFamily: 'var(--font-display)' }}>
-              Live GitHub Activity & Repos
-            </h3>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <h3 style={{ fontSize: '1.4rem', color: 'var(--text-primary)', fontFamily: 'var(--font-display)', margin: 0 }}>
+                Live GitHub Activity & Repos
+              </h3>
+              {justRefreshed && (
+                <span style={{ fontSize: '0.72rem', color: '#00ff88', fontFamily: 'var(--font-mono)', fontWeight: 700 }}>
+                  ✓ UPDATED
+                </span>
+              )}
+            </div>
             <span style={{ fontSize: '0.82rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
               AUTHENTIC CODE DATA • GITHUB.COM/DDEEWW001
             </span>
           </div>
         </div>
 
-        <a
-          href="https://github.com/ddeeww001"
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{
-            background: 'rgba(255, 255, 255, 0.08)',
-            color: '#ffffff',
-            border: '1px solid var(--border-glow)',
-            padding: '8px 18px',
-            borderRadius: 'var(--radius-full)',
-            fontSize: '0.85rem',
-            fontWeight: 600,
-            transition: 'all 0.3s ease',
-          }}
-          className="interactive-hover"
-        >
-          VIEW GITHUB PROFILE ↗
-        </a>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
+          <button
+            onClick={handleManualRefresh}
+            onMouseEnter={playHoverSound}
+            disabled={loading}
+            style={{
+              background: 'rgba(255, 255, 255, 0.04)',
+              color: 'var(--text-secondary)',
+              border: '1px solid var(--border-subtle)',
+              padding: '8px 14px',
+              borderRadius: 'var(--radius-full)',
+              fontSize: '0.82rem',
+              fontWeight: 600,
+              cursor: loading ? 'not-allowed' : 'pointer',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              transition: 'all 0.3s ease',
+            }}
+            title="Refresh latest GitHub data"
+          >
+            <span style={{ display: 'inline-block', transform: isRefreshing ? 'rotate(360deg)' : 'none', transition: 'transform 0.6s ease' }}>
+              ⟳
+            </span>
+            <span>{isRefreshing ? 'REFRESHING...' : 'REFRESH'}</span>
+          </button>
+
+          <a
+            href="https://github.com/ddeeww001"
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={playClickSound}
+            onMouseEnter={playHoverSound}
+            style={{
+              background: 'rgba(255, 255, 255, 0.08)',
+              color: '#ffffff',
+              border: '1px solid var(--border-glow)',
+              padding: '8px 18px',
+              borderRadius: 'var(--radius-full)',
+              fontSize: '0.85rem',
+              fontWeight: 600,
+              transition: 'all 0.3s ease',
+            }}
+            className="interactive-hover"
+          >
+            VIEW GITHUB PROFILE ↗
+          </a>
+        </div>
       </div>
 
       {loading ? (
-        <div style={{ padding: '30px 0', textAlign: 'center', color: 'var(--text-secondary)', fontFamily: 'var(--font-mono)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
-          </svg>
-          Fetching live GitHub statistics for ddeeww001...
+        <div>
+          {/* Skeleton Stats Summary */}
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))',
+              gap: '16px',
+              marginBottom: '28px',
+            }}
+          >
+            {[1, 2, 3].map((i) => (
+              <div
+                key={i}
+                className="skeleton-box"
+                style={{
+                  height: '80px',
+                  borderRadius: 'var(--radius-md)',
+                  border: '1px solid var(--border-subtle)',
+                }}
+              />
+            ))}
+          </div>
+
+          {/* Skeleton Repositories Grid */}
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 260px), 1fr))',
+              gap: '16px',
+            }}
+          >
+            {[1, 2, 3, 4, 5, 6].map((i) => (
+              <div
+                key={i}
+                className="skeleton-box"
+                style={{
+                  height: '140px',
+                  borderRadius: 'var(--radius-md)',
+                  border: '1px solid var(--border-subtle)',
+                }}
+              />
+            ))}
+          </div>
         </div>
       ) : error ? (
         <div style={{ padding: '20px', background: 'rgba(255, 99, 99, 0.1)', border: '1px solid #ff6363', borderRadius: 'var(--radius-md)', color: '#ff8888', fontSize: '0.9rem' }}>
