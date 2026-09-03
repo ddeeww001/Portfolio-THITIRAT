@@ -1,5 +1,4 @@
-import { describe, it, expect } from 'vitest';
-import { sanitizeInput, deepFreeze } from '../../src/utils/security';
+import { sanitizeInput, deepFreeze, escapeHtml, sanitizeUrl } from '../../src/utils/security';
 
 describe('Security & Anti-Tampering Guards (Backend/Security Test Suite)', () => {
   describe('Input Sanitization (XSS Prevention)', () => {
@@ -21,6 +20,46 @@ describe('Security & Anti-Tampering Guards (Backend/Security Test Suite)', () =>
     it('handles empty and whitespace-only strings safely', () => {
       expect(sanitizeInput('')).toBe('');
       expect(sanitizeInput('   ')).toBe('');
+    });
+  });
+
+  describe('HTML Character Escaping (XSS Output Encoding)', () => {
+    it('escapes dangerous HTML special characters', () => {
+      const input = '<div class="test" onclick=\'alert(1)\'>Hello & Welcome</div>';
+      const escaped = escapeHtml(input);
+      expect(escaped).not.toContain('<');
+      expect(escaped).not.toContain('>');
+      expect(escaped).not.toContain('"');
+      expect(escaped).not.toContain("'");
+      expect(escaped).toContain('&amp;');
+      expect(escaped).toContain('&lt;');
+      expect(escaped).toContain('&gt;');
+    });
+
+    it('handles empty string gracefully', () => {
+      expect(escapeHtml('')).toBe('');
+    });
+  });
+
+  describe('URL Sanitization (Link Injection / Protocol XSS)', () => {
+    it('blocks javascript: URLs', () => {
+      expect(sanitizeUrl('javascript:alert(1)')).toBe('#');
+      expect(sanitizeUrl('JAVASCRIPT:void(0)')).toBe('#');
+    });
+
+    it('blocks data: and vbscript: URLs', () => {
+      expect(sanitizeUrl('data:text/html,<script>alert(1)</script>')).toBe('#');
+      expect(sanitizeUrl('vbscript:msgbox(1)')).toBe('#');
+    });
+
+    it('allows valid HTTPS and HTTP URLs', () => {
+      expect(sanitizeUrl('https://github.com')).toBe('https://github.com');
+      expect(sanitizeUrl('http://localhost:3000')).toBe('http://localhost:3000');
+    });
+
+    it('allows valid relative and anchor paths', () => {
+      expect(sanitizeUrl('/projects')).toBe('/projects');
+      expect(sanitizeUrl('#contact')).toBe('#contact');
     });
   });
 

@@ -7,6 +7,7 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Dependencies & Build output
 node_modules
 dist
 dist-ssr
@@ -23,9 +24,24 @@ dist-ssr
 *.sln
 *.sw?
 
-# Environment files
+# 🔒 Environment & Secret Files (Keep Private & Do Not Commit)
 .env
 .env.local
+.env.development.local
+.env.test.local
+.env.production.local
 .env.*.local
+.env.test
+.env.production
 !.env.example
 
+# 🔒 SSL/TLS Private Keys & Certificates
+certs/
+*.pem
+*.key
+*.crt
+*.csr
+
+# 🧪 Test Coverage & Test Output
+coverage/
+.nyc_output/

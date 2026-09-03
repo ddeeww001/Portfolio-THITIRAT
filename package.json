@@ -9,6 +9,8 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest run",
+    "test:xss": "vitest run tests/security/xss.test.ts",
+    "test:security": "vitest run tests/security tests/backend/securityGuards.test.ts",
     "test:frontend": "vitest run tests/frontend",
     "test:backend": "vitest run tests/backend",
     "test:watch": "vitest",

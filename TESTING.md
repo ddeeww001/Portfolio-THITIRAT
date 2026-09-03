@@ -22,6 +22,9 @@ d:\Portfolio\
 ├── tests\
 │   ├── setup.ts                      # ⚙️ Global Test Setup (JSDOM, Canvas, Audio, PDF.js Mocks)
 │   │
+│   ├── security\                     # 🛡️ SECURITY & XSS ISOLATED TEST SUITE
+│   │   └── xss.test.ts               # ทดสอบ XSS Payloads, Script Stripping, URL Sanitization, CSP & Escaping
+│   │
 │   ├── frontend\                     # 🖥️ FRONTEND TEST SUITE (UI, Components & User Interactions)
 │   │   ├── Navbar.test.tsx           # ทดสอบ Desktop/Mobile Dropdown, Sound Toggle, Escape key
 │   │   ├── Preloader.test.tsx        # ทดสอบ Splash Screen progress, minimumDuration, onComplete
@@ -78,7 +81,19 @@ d:\Portfolio\
 ```bash
 npm run test
 ```
-*รันการทดสอบทั้ง 11 Test Files รวม 39 Test Cases พร้อมรายงานผลลัพธ์แบบสรุป*
+*รันการทดสอบทั้งหมด (Frontend, Backend, Services และ XSS Security)*
+
+### 🛡️ รันเฉพาะทดสอบระบบความปลอดภัย XSS (Isolated XSS Tests)
+```bash
+npm run test:xss
+```
+*รันเฉพาะการตรวจสอบการป้องกันช่องโหว่ Cross-Site Scripting (XSS), Script Stripping, HTML Escaping, URL Protocol Injection และ CSP Meta Tags ช่วยให้เช็คจุดผิดพลาดด้าน Security ได้อย่างรวดเร็วและตรงจุด*
+
+### 🔒 รันชุดทดสอบความปลอดภัยทั้งหมด (Full Security Suite)
+```bash
+npm run test:security
+```
+*รันทั้ง XSS Isolated Tests (`tests/security/`) และ Security Guards / Deep Freeze Tests (`tests/backend/`)*
 
 ### 🔹 รันเฉพาะฝั่ง Frontend (UI & Component Tests)
 ```bash
