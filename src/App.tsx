@@ -94,7 +94,7 @@ const getNavIcon = (id: string) => {
   }
 };
 
-const Navbar = () => {
+export const Navbar = () => {
   const [activeSection, setActiveSection] = useState('home');
   const [soundActive, setSoundActive] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -451,10 +451,10 @@ function App() {
 
   return (
     <div className={`app-container ${appReady ? 'is-loaded' : 'is-loading'}`}>
-      {/* High-End Splash Screen / Preloader with Loading State support */}
+      {/* Minimal Spinning Ring Loader & Progressive Page Entry */}
       <Preloader
         isLoading={isAssetsLoading}
-        minimumDuration={1500}
+        minimumDuration={300}
         onComplete={() => setAppReady(true)}
       />
 

@@ -20,7 +20,9 @@ export function deepFreeze<T extends object>(obj: T): Readonly<T> {
 export function sanitizeInput(input: string): string {
   if (!input) return '';
   return input
-    .replace(/<[^>]*>/g, '') // Strip HTML/Script tags
+    .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '') // Remove <script>...</script> and contents
+    .replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, '') // Remove <style>...</style> and contents
+    .replace(/<[^>]*>/g, '') // Strip remaining HTML tags
     .replace(/javascript:/gi, '') // Remove javascript: pseudo-protocols
     .replace(/data:/gi, '') // Remove data: URIs
     .replace(/vbscript:/gi, '') // Remove vbscript:
