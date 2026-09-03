@@ -31,6 +31,45 @@ export function sanitizeInput(input: string): string {
 }
 
 /**
+ * Escapes unsafe HTML characters to prevent XSS injection.
+ */
+export function escapeHtml(str: string): string {
+  if (!str) return '';
+  const htmlEntities: Record<string, string> = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#x27;',
+    '/': '&#x2F;',
+    '`': '&#x60;',
+    '=': '&#x3D;',
+  };
+  return str.replace(/[&<>"'`=/]/g, (char) => htmlEntities[char] || char);
+}
+
+/**
+ * Validates and sanitizes URLs to prevent javascript: or data: XSS in href/src attributes.
+ */
+export function sanitizeUrl(url: string, defaultUrl: string = '#'): string {
+  if (!url || typeof url !== 'string') return defaultUrl;
+  const trimmed = url.trim();
+  // Disallow javascript:, vbscript:, and data: protocols
+  if (/^(javascript|vbscript|data):/i.test(trimmed)) {
+    return defaultUrl;
+  }
+  // Allow safe protocols: http, https, mailto, tel, relative links, anchors
+  if (
+    /^(https?:\/\/|mailto:|tel:|\/|#)/i.test(trimmed) ||
+    trimmed.startsWith('./') ||
+    trimmed.startsWith('../')
+  ) {
+    return trimmed;
+  }
+  return defaultUrl;
+}
+
+/**
  * Initializes client-side security guards and self-XSS warning.
  */
 export function initSecurityGuards(): void {
