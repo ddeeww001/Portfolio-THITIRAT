@@ -42,6 +42,10 @@ export const ENV_CONFIG = deepFreeze({
   instagramUrl: import.meta.env.VITE_INSTAGRAM_URL || "https://instagram.com/ddeeww_o_o",
   facebookName: import.meta.env.VITE_FACEBOOK_NAME || "Dew Chobkinkaitod",
   facebookUrl: import.meta.env.VITE_FACEBOOK_URL || "https://facebook.com/dew.chobkinkaitod",
+  securityMode: import.meta.env.VITE_SECURITY_MODE || "strict",
+  enableSelfXssWarning: import.meta.env.VITE_ENABLE_SELF_XSS_WARNING !== "false",
+  enableSecurityLogs: import.meta.env.VITE_ENABLE_SECURITY_LOGS !== "false",
+  testCspEnforce: import.meta.env.VITE_TEST_CSP_ENFORCE === "true",
 });
 
 // Main profile database

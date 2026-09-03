@@ -27,4 +27,10 @@ describe('Environment Configuration & Data Integrity Tests (Backend/Data Test Su
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     expect(emailRegex.test(ENV_CONFIG.email)).toBe(true);
   });
+
+  it('validates security environment settings and fallbacks', () => {
+    expect(['strict', 'standard']).toContain(ENV_CONFIG.securityMode);
+    expect(typeof ENV_CONFIG.enableSelfXssWarning).toBe('boolean');
+    expect(typeof ENV_CONFIG.enableSecurityLogs).toBe('boolean');
+  });
 });
