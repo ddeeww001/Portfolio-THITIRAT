@@ -106,6 +106,20 @@ describe('initSecurityGuards respects the Self-XSS flag', () => {
     expect(String(log.mock.calls[0][0])).toContain('STOP');
   });
 
+  it('never reveals which defences are active (no headers / CSP / anti-tamper hints)', async () => {
+    const log = vi.spyOn(console, 'log').mockImplementation(() => {});
+    const { initSecurityGuards } = await import('../../src/shared/lib/security');
+    initSecurityGuards();
+    const printed = log.mock.calls.map((c) => String(c[0])).join('\n');
+    expect(printed).not.toMatch(/header|csp|content-security|anti-tamper|\[system\]/i);
+  });
+
+  it.each(['.env', '.env.example'])('%s does not set NODE_ENV (it would make `vite build` a dev build)', (file) => {
+    const path = join(ROOT, file);
+    if (!existsSync(path)) return;
+    expect(readFileSync(path, 'utf8')).not.toMatch(/^\s*NODE_ENV\s*=/m);
+  });
+
   it('prints nothing when selfXssWarning is false', async () => {
     const log = vi.spyOn(console, 'log').mockImplementation(() => {});
     const { initSecurityGuards } = await import('../../src/shared/lib/security');
