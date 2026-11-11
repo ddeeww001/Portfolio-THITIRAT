@@ -175,38 +175,6 @@ tests/                    # โครงเดียวกับ src/ (app, conf
 
 ---
 
-## 🗺️ แผนพัฒนาต่อ (Roadmap)
-
-### 🔴 ระยะที่ 1: ความปลอดภัย (ควรทำก่อน)
-- [ ] เขียน `sanitizeUrl` ใหม่ด้วย `new URL()` ตอนนี้ลิงก์ที่ขึ้นต้นด้วย `//evil.example` ยังผ่านการตรวจได้
-- [ ] ส่งลิงก์ทุกตัวที่มาจาก `.env` และ `projectsData` ผ่าน `sanitizeUrl` ก่อนนำไปใส่ใน `href`
-- [ ] เปลี่ยนการกรองข้อความค้นหา: แทน `sanitizeInput` ด้วยการ trim และจำกัดความยาว (React escape ให้อยู่แล้ว และวิธีปัจจุบันข้ามได้ด้วย `javajavascript:script:`)
-- [ ] `escapeHtml` ตรวจว่า input เป็น string ก่อนใช้งาน
-- [ ] จำกัด `frame-src` และ `connect-src` ใน CSP (`index.html`) ให้เหลือเฉพาะ host ที่ใช้จริง
-
-### 🟠 ระยะที่ 2: ข้อมูลและการตั้งค่า
-- [ ] ลบข้อมูลที่ซ้ำกัน: `src/features/projects/projects.json` (ซ้ำกับ `projectsData.ts`) และ `src/picture/profile.jpg` (ซ้ำกับ `public/picture`)
-- [ ] นำ flag ที่ยังไม่มีโค้ดใช้ (`securityMode`, `enableSecurityLogs`, `testCspEnforce`) ไปใช้งานจริง หรือลบออก
-- [ ] (ทางเลือก) แสดงอายุที่คำนวณจาก `VITE_USER_BIRTHDAY`
-
-### 🟡 ระยะที่ 3: ประสิทธิภาพและประสบการณ์นักพัฒนา
-- [ ] โหลด `pdfjs-dist` แบบ lazy (`React.lazy`) เฉพาะเมื่อเลื่อนถึงส่วน Certificates เพื่อลดขนาด bundle แรก
-- [ ] เพิ่ม path alias `@/` เพื่อเลิกใช้ `../../..`
-- [ ] ย้าย inline style ซ้ำ ๆ ไปเป็น CSS class
-- [ ] แก้ lint error ที่ค้างอยู่ (`any` ใน `security.ts`/tests, `setState` ใน effect ของ `CustomCursor`)
-
-### 🔵 ระยะที่ 4: Backend (`src/backend/services/server.js`)
-ตอนนี้ server รันไม่ได้ เพราะใช้ `require()` ในโปรเจกต์ที่เป็น ES module และยังไม่ได้ติดตั้ง `express`, `jsonwebtoken`, `cookie-parser`
-- [ ] **ถ้ายังต้องการ backend:** แยกเป็นโฟลเดอร์ `server/` ที่มี `package.json` ของตัวเอง, ให้ server ไม่ยอม start ใน production ถ้าไม่มี `JWT_SECRET` และใช้ `helmet` ตั้งค่า security headers
-- [ ] **ถ้าไม่ต้องการ:** ลบ server และตัวแปรฝั่ง backend ใน `.env.example` แล้วให้ host เป็นผู้ส่ง CSP header
-
-### 🟢 ระยะที่ 5: CI/CD
-- [ ] ตั้ง GitHub Actions ให้ทุก PR รัน `tsc -b`, `eslint`, `vitest --coverage` (ตัวอย่างอยู่ใน [TESTING.md](TESTING.md#7-ตัวอย่าง-cicd-automation-github-actions))
-- [ ] กำหนด coverage ขั้นต่ำสำหรับ `src/shared` และ `src/config`
-- [ ] เปิด Dependabot หรือเพิ่ม `npm audit` ใน CI
-
----
-
 ## 📚 เอกสารอื่น
 
 - [src/README.md](src/README.md) — โครงสร้างโค้ดและกฎการวางไฟล์
