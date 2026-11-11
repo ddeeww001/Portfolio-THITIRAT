@@ -14,7 +14,11 @@ const listFrontendFiles = (dir: string): string[] =>
     return /\.(ts|tsx|js|jsx)$/.test(name) ? [full] : [];
   });
 
+/** Tests about *missing* data must also switch off the fallback values in profileDefaults.ts. */
+const withoutDefaults = () => vi.doMock('../../src/config/profileDefaults', () => ({ PROFILE_DEFAULTS: {} }));
+
 afterEach(() => {
+  vi.doUnmock('../../src/config/profileDefaults');
   vi.unstubAllEnvs();
   vi.resetModules();
   vi.restoreAllMocks();
@@ -23,7 +27,7 @@ afterEach(() => {
 // ─────────────────────────────────────────────────────────────
 // 1. No personal data hardcoded in source code
 // ─────────────────────────────────────────────────────────────
-describe('Privacy guard: personal values live only in .env', () => {
+describe('Privacy guard: personal values live only in .env and src/config/profileDefaults.ts', () => {
   const PERSONAL_KEYS = [
     'VITE_USER_NAME', 'VITE_USER_EMAIL', 'VITE_USER_PHONE', 'VITE_USER_BIRTHDAY',
     'VITE_GITHUB_USERNAME', 'VITE_LINE_ID', 'VITE_INSTAGRAM_USERNAME',
@@ -50,12 +54,15 @@ describe('Privacy guard: personal values live only in .env', () => {
   const hasRealEnv = existsSync(join(ROOT, '.env'));
 
   // Skipped in CI (no .env there); runs on the developer machine where the real values exist.
-  it.skipIf(!hasRealEnv)('src/ and index.html contain none of the real .env values', () => {
+  // The fallback file is the ONE allowed place in the source; nothing else may copy those values.
+  const DEFAULTS_FILE = join(ROOT, 'src', 'config', 'profileDefaults.ts');
+
+  it.skipIf(!hasRealEnv)('no source file except profileDefaults.ts contains the real .env values', () => {
     const env = readDotEnv(join(ROOT, '.env'));
     const secrets = PERSONAL_KEYS
       .map((key) => [key, env[key]?.trim()] as const)
       .filter((e): e is readonly [string, string] => !!e[1] && e[1].length >= 4);
-    const files = [...listSourceFiles(join(ROOT, 'src')), join(ROOT, 'index.html')];
+    const files = [...listSourceFiles(join(ROOT, 'src')), join(ROOT, 'index.html')].filter((f) => f !== DEFAULTS_FILE);
 
     // Report only file + key name, never the value itself.
     const leaks: string[] = [];
@@ -74,6 +81,7 @@ describe('Privacy guard: personal values live only in .env', () => {
 // ─────────────────────────────────────────────────────────────
 describe('Missing .env values are hidden in the UI', () => {
   it('profileDatabase.socials drops entries whose value is missing', async () => {
+    withoutDefaults();
     vi.stubEnv('VITE_INSTAGRAM_USERNAME', '');
     vi.stubEnv('VITE_LINE_ID', '');
     const { profileDatabase } = await import('../../src/features/profile/profileData');
@@ -84,6 +92,7 @@ describe('Missing .env values are hidden in the UI', () => {
   });
 
   it('ContactSection renders no email/phone icons when they are not set', async () => {
+    withoutDefaults();
     vi.stubEnv('VITE_USER_EMAIL', '');
     vi.stubEnv('VITE_USER_PHONE', '');
     const { ContactSection } = await import('../../src/features/contact/ContactSection');
@@ -168,6 +177,7 @@ describe('GitHubSection reads the username from env', () => {
   });
 
   it('does not call the API at all when the username is missing', async () => {
+    withoutDefaults();
     vi.stubEnv('VITE_GITHUB_USERNAME', '');
     const fetchMock = vi.fn();
     vi.stubGlobal('fetch', fetchMock);
@@ -184,12 +194,25 @@ describe('GitHubSection reads the username from env', () => {
 // 5. Production build with missing .env values (e.g. host env vars not set)
 //    → hide empty sections, never show configuration hints to visitors
 // ─────────────────────────────────────────────────────────────
-describe('Production build without .env values', () => {
+describe('Production build without .env values (and without fallback defaults)', () => {
+  it('a deploy with NO env vars still shows the profile from profileDefaults.ts', async () => {
+    vi.stubEnv('DEV', false);
+    for (const k of CONTACT_KEYS) vi.stubEnv(k, '');
+    vi.stubEnv('VITE_USER_NAME', '');
+    const { ENV_CONFIG } = await import('../../src/config/env');
+    const { PROFILE_DEFAULTS } = await import('../../src/config/profileDefaults');
+    const { navItems } = await import('../../src/app/navigation');
+    expect(ENV_CONFIG.name).toBe(PROFILE_DEFAULTS.VITE_USER_NAME?.trim());
+    expect(ENV_CONFIG.githubUsername).toBe(PROFILE_DEFAULTS.VITE_GITHUB_USERNAME?.trim());
+    expect(navItems.map((i) => i.id)).toContain('contact');
+  });
+
   const CONTACT_KEYS = [
     'VITE_USER_EMAIL', 'VITE_USER_PHONE', 'VITE_GITHUB_USERNAME', 'VITE_GITHUB_URL', 'VITE_LINE_ID',
     'VITE_INSTAGRAM_USERNAME', 'VITE_INSTAGRAM_URL', 'VITE_FACEBOOK_NAME', 'VITE_FACEBOOK_URL',
   ];
   const stubProductionWithoutContacts = () => {
+    withoutDefaults();
     vi.stubEnv('DEV', false);
     vi.stubEnv('PROD', true);
     for (const k of CONTACT_KEYS) vi.stubEnv(k, '');

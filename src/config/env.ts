@@ -1,8 +1,9 @@
 // src/config/env.ts
 // Single place that reads and validates every VITE_* setting.
-// Personal data lives ONLY in .env — no personal values are hardcoded here.
-// A missing value becomes '' and the UI hides whatever depends on it.
+// Profile values: .env (or the host's env vars) first, then PROFILE_DEFAULTS (profileDefaults.ts).
+// If both are empty the value becomes '' and the UI hides whatever depends on it.
 import { deepFreeze } from '../shared/lib/security';
+import { PROFILE_DEFAULTS } from './profileDefaults';
 
 export const SECURITY_MODES = ['strict', 'standard'] as const;
 export type SecurityMode = (typeof SECURITY_MODES)[number];
@@ -25,21 +26,23 @@ function parseSecurityMode(value: string | undefined): SecurityMode {
 
 /**
  * Pure function: builds the app config from an env object.
- * Kept separate from import.meta.env so tests can pass any env they need.
+ * Kept separate from import.meta.env so tests can pass any env (and defaults) they need.
+ * A profile value missing or empty in `env` falls back to `defaults`.
  */
-export function parseEnvConfig(env: Partial<ImportMetaEnv>) {
+export function parseEnvConfig(env: Partial<ImportMetaEnv>, defaults: Partial<ImportMetaEnv> = PROFILE_DEFAULTS) {
+  const profile = (key: keyof ImportMetaEnv): string => str(env[key] as string | undefined) || str(defaults[key] as string | undefined);
   return {
-    name: str(env.VITE_USER_NAME),
-    email: str(env.VITE_USER_EMAIL),
-    phone: str(env.VITE_USER_PHONE),
-    birthday: str(env.VITE_USER_BIRTHDAY),
-    githubUsername: str(env.VITE_GITHUB_USERNAME),
-    githubUrl: str(env.VITE_GITHUB_URL),
-    lineId: str(env.VITE_LINE_ID),
-    instagramUsername: str(env.VITE_INSTAGRAM_USERNAME),
-    instagramUrl: str(env.VITE_INSTAGRAM_URL),
-    facebookName: str(env.VITE_FACEBOOK_NAME),
-    facebookUrl: str(env.VITE_FACEBOOK_URL),
+    name: profile('VITE_USER_NAME'),
+    email: profile('VITE_USER_EMAIL'),
+    phone: profile('VITE_USER_PHONE'),
+    birthday: profile('VITE_USER_BIRTHDAY'),
+    githubUsername: profile('VITE_GITHUB_USERNAME'),
+    githubUrl: profile('VITE_GITHUB_URL'),
+    lineId: profile('VITE_LINE_ID'),
+    instagramUsername: profile('VITE_INSTAGRAM_USERNAME'),
+    instagramUrl: profile('VITE_INSTAGRAM_URL'),
+    facebookName: profile('VITE_FACEBOOK_NAME'),
+    facebookUrl: profile('VITE_FACEBOOK_URL'),
     // NOT YET USED: no code reads securityMode yet. Validated so a typo can't slip through.
     securityMode: parseSecurityMode(env.VITE_SECURITY_MODE),
     // Used by initSecurityGuards() in main.tsx.
