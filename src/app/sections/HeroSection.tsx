@@ -1,6 +1,6 @@
 import { profileDatabase } from '../../features/profile/profileData';
 import { playHoverSound } from '../../shared/lib/SoundEffects';
-import { scrollToSection } from '../navigation';
+import { contactAvailable, scrollToSection } from '../navigation';
 
 export const HeroSection = () => (
   <section id="home" className="section hero-section" style={{ minHeight: '92vh', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', padding: '130px 20px 70px' }}>
@@ -40,7 +40,7 @@ export const HeroSection = () => (
           overflowWrap: 'break-word',
         }}
       >
-        {profileDatabase.name} — Creative Frontend & UX/UI Designer crafting bold digital products, intuitive web applications, and interfaces that refuse to look ordinary.
+        {profileDatabase.name && `${profileDatabase.name} — `}Creative Frontend & UX/UI Designer crafting bold digital products, intuitive web applications, and interfaces that refuse to look ordinary.
       </p>
 
       {/* Action Buttons */}
@@ -49,9 +49,11 @@ export const HeroSection = () => (
             LET'S SEE<span aria-hidden="true"></span>
         </button>
 
-        <button onClick={() => scrollToSection('contact')} className="btn btn--glass" onMouseEnter={playHoverSound}>
-          MY CONTACT<span aria-hidden="true"></span>
-        </button>
+        {contactAvailable && (
+          <button onClick={() => scrollToSection('contact')} className="btn btn--glass" onMouseEnter={playHoverSound}>
+            MY CONTACT<span aria-hidden="true"></span>
+          </button>
+        )}
       </div>
     </div>
   </section>

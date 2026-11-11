@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { playClickSound, playHoverSound } from '../../shared/lib/SoundEffects';
 import { ENV_CONFIG } from '../../config/env';
+import { DevConfigNotice } from '../../shared/components/DevConfigNotice';
 
 const githubUsername = ENV_CONFIG.githubUsername;
 const githubProfileUrl = ENV_CONFIG.githubUrl || `https://github.com/${encodeURIComponent(githubUsername)}`;
@@ -26,7 +27,20 @@ interface GitHubRepo {
   fork: boolean;
 }
 
+/**
+ * Without VITE_GITHUB_USERNAME there is nothing to load: the live site hides the panel,
+ * development shows which .env key is missing.
+ */
 export const GitHubSection: React.FC = () => {
+  if (githubUsername) return <GitHubPanel />;
+  return import.meta.env.DEV ? (
+    <div className="card-outline" style={{ padding: '24px' }}>
+      <DevConfigNotice keys={['VITE_GITHUB_USERNAME']} />
+    </div>
+  ) : null;
+};
+
+const GitHubPanel: React.FC = () => {
   const [user, setUser] = useState<GitHubUser | null>(null);
   const [repos, setRepos] = useState<GitHubRepo[]>([]);
   const [loading, setLoading] = useState(true);
@@ -38,8 +52,6 @@ export const GitHubSection: React.FC = () => {
     try {
       setLoading(true);
       setError(null);
-      if (!githubUsername) throw new Error('VITE_GITHUB_USERNAME is not set');
-
       // Fetch User Info
       const userRes = await fetch(`https://api.github.com/users/${githubUsername}`);
       if (!userRes.ok) throw new Error('Failed to fetch GitHub profile');
@@ -229,7 +241,9 @@ export const GitHubSection: React.FC = () => {
         </div>
       ) : error ? (
         <div style={{ padding: '20px', background: 'rgba(255, 99, 99, 0.1)', border: '1px solid #ff6363', borderRadius: 'var(--radius-md)', color: '#ff8888', fontSize: '0.9rem' }}>
-          Unable to load live GitHub data: {error}. You can view the profile directly at{' '}
+          {/* Technical error details only in development; visitors get a plain message */}
+          {import.meta.env.DEV ? `Unable to load live GitHub data: ${error}.` : 'Live GitHub data is unavailable right now.'}{' '}
+          You can view the profile directly at{' '}
           <a href={githubProfileUrl} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'underline' }}>
             github.com/{githubUsername}
           </a>.

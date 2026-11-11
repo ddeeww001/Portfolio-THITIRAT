@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { profileDatabase } from '../profile/profileData';
+import { hasContactChannels, profileDatabase } from '../profile/profileData';
+import { DevConfigNotice } from '../../shared/components/DevConfigNotice';
 import { CheckIcon, CopyIcon, MailIcon, PhoneIcon } from '../../shared/components/ContactIcons';
 import { socialIcons } from './socialIcons';
 
@@ -26,6 +27,10 @@ export const ContactSection: React.FC = () => {
     setCopied(true);
     setTimeout(() => setCopied(false), 2500);
   };
+
+  // Nothing to contact through: hide the whole section on the live site (no empty card);
+  // in development keep it and say which .env keys are missing.
+  if (!hasContactChannels && !import.meta.env.DEV) return null;
 
   return (
     <section id="contact" className="section contact-section" style={{ position: 'relative', width: '100%' }}>
@@ -63,6 +68,9 @@ export const ContactSection: React.FC = () => {
             overflow: 'hidden',
           }}
         >
+          {!hasContactChannels && (
+            <DevConfigNotice keys={['VITE_USER_EMAIL', 'VITE_USER_PHONE', 'VITE_GITHUB_USERNAME', 'VITE_LINE_ID', 'VITE_INSTAGRAM_URL', 'VITE_FACEBOOK_URL']} />
+          )}
           {/* Contact channels — icons only; values from .env are never printed on the page */}
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', justifyContent: 'center' }}>
             {email && (

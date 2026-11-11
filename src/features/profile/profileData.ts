@@ -109,6 +109,10 @@ export const profileDatabase: ProfileData = deepFreeze({
   ]
 });
 
+/** True when .env provides at least one way to reach the owner (email, phone or a social link). */
+export const hasContactChannels =
+  !!profileDatabase.email || !!profileDatabase.phone || profileDatabase.socials.length > 0;
+
 // Helper functions
 export const getProfileData = (): ProfileData => {
   return profileDatabase;

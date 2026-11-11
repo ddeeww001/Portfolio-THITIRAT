@@ -154,8 +154,57 @@ describe('GitHubSection reads the username from env', () => {
     vi.stubGlobal('fetch', fetchMock);
     const { GitHubSection } = await import('../../src/features/github/GitHubSection');
     render(createElement(GitHubSection));
-    await screen.findByText(/VITE_GITHUB_USERNAME is not set/);
+    // dev build: shows which key is missing (production renders nothing — see test below)
+    await screen.findByText(/Missing in \.env: VITE_GITHUB_USERNAME/);
     expect(fetchMock).not.toHaveBeenCalled();
     vi.unstubAllGlobals();
+  });
+});
+
+// ─────────────────────────────────────────────────────────────
+// 5. Production build with missing .env values (e.g. host env vars not set)
+//    → hide empty sections, never show configuration hints to visitors
+// ─────────────────────────────────────────────────────────────
+describe('Production build without .env values', () => {
+  const CONTACT_KEYS = [
+    'VITE_USER_EMAIL', 'VITE_USER_PHONE', 'VITE_GITHUB_USERNAME', 'VITE_GITHUB_URL', 'VITE_LINE_ID',
+    'VITE_INSTAGRAM_USERNAME', 'VITE_INSTAGRAM_URL', 'VITE_FACEBOOK_NAME', 'VITE_FACEBOOK_URL',
+  ];
+  const stubProductionWithoutContacts = () => {
+    vi.stubEnv('DEV', false);
+    vi.stubEnv('PROD', true);
+    for (const k of CONTACT_KEYS) vi.stubEnv(k, '');
+  };
+
+  it('GitHubSection renders nothing and calls no API', async () => {
+    stubProductionWithoutContacts();
+    const fetchMock = vi.fn();
+    vi.stubGlobal('fetch', fetchMock);
+    const { GitHubSection } = await import('../../src/features/github/GitHubSection');
+    const { container } = render(createElement(GitHubSection));
+    expect(container).toBeEmptyDOMElement();
+    expect(fetchMock).not.toHaveBeenCalled();
+    vi.unstubAllGlobals();
+  });
+
+  it('ContactSection is hidden instead of showing an empty card', async () => {
+    stubProductionWithoutContacts();
+    const { ContactSection } = await import('../../src/features/contact/ContactSection');
+    const { container } = render(createElement(ContactSection));
+    expect(container).toBeEmptyDOMElement();
+  });
+
+  it('navbar drops the Contact link when there is no Contact section', async () => {
+    stubProductionWithoutContacts();
+    const { navItems, contactAvailable } = await import('../../src/app/navigation');
+    expect(contactAvailable).toBe(false);
+    expect(navItems.map((i) => i.id)).not.toContain('contact');
+  });
+
+  it('keeps Contact when at least one channel is configured', async () => {
+    stubProductionWithoutContacts();
+    vi.stubEnv('VITE_USER_EMAIL', 'someone@example.com');
+    const { navItems } = await import('../../src/app/navigation');
+    expect(navItems.map((i) => i.id)).toContain('contact');
   });
 });
