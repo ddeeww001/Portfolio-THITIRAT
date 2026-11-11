@@ -72,10 +72,30 @@ export function sanitizeUrl(url: string, defaultUrl: string = '#'): string {
 /**
  * Initializes client-side security guards and self-XSS warning.
  */
-export function initSecurityGuards(): void {
+export interface SecurityGuardOptions {
+  /** Show the Self-XSS warning in the DevTools console. Defaults to true. */
+  selfXssWarning?: boolean;
+}
+
+export function initSecurityGuards({ selfXssWarning = true }: SecurityGuardOptions = {}): void {
   if (typeof window === 'undefined') return;
 
-  // 1. Self-XSS Warning in DevTools Console
+  // 1. Self-XSS Warning in DevTools Console (toggle: VITE_ENABLE_SELF_XSS_WARNING)
+  if (selfXssWarning) {
+    showSelfXssWarning();
+  }
+
+  // 2. Prevent clickjacking if embedded in unauthorized iframe
+  try {
+    if (window.top && window.top !== window.self) {
+      window.top.location.href = window.self.location.href;
+    }
+  } catch {
+    // In case cross-origin iframe blocks top access
+  }
+}
+
+function showSelfXssWarning(): void {
   try {
     const titleStyle = [
       'color: #ff3344',
@@ -112,14 +132,5 @@ export function initSecurityGuards(): void {
     );
   } catch {
     // Ignore console styling errors on older browsers
-  }
-
-  // 2. Prevent clickjacking if embedded in unauthorized iframe
-  try {
-    if (window.top && window.top !== window.self) {
-      window.top.location.href = window.self.location.href;
-    }
-  } catch {
-    // In case cross-origin iframe blocks top access
   }
 }

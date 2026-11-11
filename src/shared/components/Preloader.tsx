@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import '../CSS/preloader.css';
+import './preloader.css';
 
 export interface PreloaderProps {
   /**

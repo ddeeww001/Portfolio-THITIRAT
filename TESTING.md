@@ -19,28 +19,28 @@
 
 ```
 d:\Portfolio\
-├── tests\
+├── tests\                            # โครงสร้างเดียวกับ src\ (ดู src/README.md)
 │   ├── setup.ts                      # ⚙️ Global Test Setup (JSDOM, Canvas, Audio, PDF.js Mocks)
 │   │
-│   ├── security\                     # 🛡️ SECURITY & XSS ISOLATED TEST SUITE
-│   │   └── xss.test.ts               # ทดสอบ XSS Payloads, Script Stripping, URL Sanitization, CSP & Escaping
-│   │
-│   ├── frontend\                     # 🖥️ FRONTEND TEST SUITE (UI, Components & User Interactions)
-│   │   ├── Navbar.test.tsx           # ทดสอบ Desktop/Mobile Dropdown, Sound Toggle, Escape key
-│   │   ├── Preloader.test.tsx        # ทดสอบ Splash Screen progress, minimumDuration, onComplete
-│   │   ├── showExperience.test.tsx   # ทดสอบ Project filters, Debounced search, Empty state, Modal
-│   │   ├── certificate.test.tsx      # ทดสอบ Certificate search, Category filter, Lightbox viewer
-│   │   ├── GitHubSection.test.tsx    # ทดสอบ Live API fetch, Skeleton state, Refresh button, Error fallback
-│   │   ├── Personal.test.tsx         # ทดสอบ Profile info, Avatar skeleton, Tech stack, Languages
-│   │   └── ContactSection.test.tsx   # ทดสอบ Contact channels, Copy email clipboard & toast feedback
-│   │
-│   └── backend\                      # ⚙️ BACKEND / SERVICES & SECURITY TEST SUITE
-│       ├── githubService.test.ts     # ทดสอบ 200 OK contract, 404 User Not Found, 403 Rate Limit, 500 Network error
-│       ├── microlinkService.test.ts  # ทดสอบ URL Encoding, Parameter screenshot, Fallback URLs
-│       ├── securityGuards.test.ts    # ทดสอบ XSS Sanitization (<script>, onerror=, javascript:), deepFreeze
-│       └── envConfig.test.ts         # ทดสอบ Env fallback defaults, Schema integrity, Email regex
+│   ├── app\
+│   │   └── Navbar.test.tsx           # Desktop/Mobile Dropdown, Sound Toggle, Escape key
+│   ├── config\
+│   │   ├── envConfig.test.ts         # parseEnvConfig: ค่าว่างเมื่อไม่มี .env, securityMode, boolean flags
+│   │   └── envPrivacy.test.ts        # ห้ามมีข้อมูลส่วนตัวใน src/, ซ่อน UI เมื่อไม่มีค่า, Self-XSS flag
+│   ├── features\
+│   │   ├── certificates\             # certificate.test.tsx, certificatesData.test.ts (PDF ทุกไฟล์มีจริง)
+│   │   ├── contact\                  # ContactSection: แสดงเป็นไอคอนเท่านั้น, คัดลอกอีเมล
+│   │   ├── github\                   # GitHubSection UI + githubService (200/404/403/network)
+│   │   ├── profile\                  # Personal: ชื่อ, ทักษะ, ภาษา, เครื่องมือ
+│   │   └── projects\                 # showExperience (filter/search/modal), microlink URL
+│   ├── shared\
+│   │   ├── Preloader.test.tsx        # Splash progress, minimumDuration, onComplete
+│   │   ├── securityGuards.test.ts    # sanitizeInput, deepFreeze
+│   │   └── useFilteredList.test.ts   # hook ค้นหา + filter ที่ใช้ร่วมกัน
+│   └── security\
+│       └── xss.test.ts               # XSS Payloads, URL Sanitization, CSP & Escaping
 │
-├── vitest.config.ts                  # 🛠️ Vitest Configuration (JSDOM, Coverage, Globals)
+├── vitest.config.ts                  # 🛠️ Vitest Config + env ปลอมสำหรับเทส (ไม่ใช้ .env จริง)
 └── package.json                      # 📦 Test Scripts
 ```
 
@@ -93,19 +93,18 @@ npm run test:xss
 ```bash
 npm run test:security
 ```
-*รันทั้ง XSS Isolated Tests (`tests/security/`) และ Security Guards / Deep Freeze Tests (`tests/backend/`)*
+*รัน XSS (`tests/security/`), Security Guards (`tests/shared/securityGuards.test.ts`) และ Privacy guard (`tests/config/envPrivacy.test.ts`)*
 
-### 🔹 รันเฉพาะฝั่ง Frontend (UI & Component Tests)
+### 🔹 รันตามส่วนของโปรเจกต์
 ```bash
-npm run test:frontend
+npm run test:app        # tests/app       — Navbar / layout
+npm run test:features   # tests/features  — ทุก feature
+npm run test:shared     # tests/shared    — hooks, components และ lib ที่ใช้ร่วมกัน
+npm run test:config     # tests/config    — env และ privacy
+npm run test:frontend   # app + features  (UI)
+npm run test:backend    # config + shared + security (logic)
 ```
-*รันเฉพาะไฟล์ใน `tests/frontend/` เพื่อความรวดเร็วในการพัฒนาหน้าบ้าน*
-
-### 🔹 รันเฉพาะฝั่ง Backend & Services (API & Security Tests)
-```bash
-npm run test:backend
-```
-*รันเฉพาะไฟล์ใน `tests/backend/` เพื่อทดสอบ Logic, ความปลอดภัย และ Data Contracts*
+*รันเฉพาะ feature เดียว: `npx vitest run tests/features/projects`*
 
 ### 🔹 รันแบบ Real-time Watch Mode (ระหว่างเขียนโค้ด)
 ```bash
@@ -138,11 +137,11 @@ npm run test:coverage
 ## 6. แนวทางการเขียนเทสเพิ่ม (How to Add New Tests)
 
 ### การเพิ่มเทสสำหรับ Component ใหม่ใน Frontend:
-สร้างไฟล์ `tests/frontend/NewComponent.test.tsx`:
+สร้างไฟล์ `tests/features/<feature>/NewComponent.test.tsx`:
 ```tsx
 import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
-import { NewComponent } from '../../src/frontend/components/NewComponent';
+import { NewComponent } from '../../../src/features/<feature>/NewComponent';
 
 describe('NewComponent (Frontend Test)', () => {
   it('renders correctly with initial state', () => {
@@ -160,10 +159,10 @@ describe('NewComponent (Frontend Test)', () => {
 ```
 
 ### การเพิ่มเทสสำหรับ Service หรือฟังก์ชัน Utility ใน Backend:
-สร้างไฟล์ `tests/backend/newService.test.ts`:
+สร้างไฟล์ `tests/shared/newUtility.test.ts`:
 ```ts
 import { describe, it, expect, vi } from 'vitest';
-import { newUtilityFunction } from '../../src/utils/newUtility';
+import { newUtilityFunction } from '../../src/shared/lib/newUtility';
 
 describe('New Utility Service (Backend Test)', () => {
   it('transforms data correctly', () => {

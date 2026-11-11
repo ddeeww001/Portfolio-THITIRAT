@@ -1,6 +1,6 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { GitHubSection } from '../../src/frontend/components/GitHubSection';
+import { GitHubSection } from '../../../src/features/github/GitHubSection';
 
 describe('GitHubSection Component (Frontend Test Suite)', () => {
   const mockUser = {

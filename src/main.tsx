@@ -1,16 +1,17 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import './frontend/CSS/App.css';
-import './frontend/CSS/variables.css';
-import './frontend/CSS/navbar.css';
-import './frontend/CSS/home.css';
-import './frontend/CSS/profile.css';
-import './frontend/CSS/experience.css';
-import App from './App.tsx'
-import { initSecurityGuards } from './utils/security.ts';
+import './shared/styles/App.css';
+import './shared/styles/variables.css';
+import './app/styles/navbar.css';
+import './app/styles/home.css';
+import './features/profile/profile.css';
+import './features/projects/experience.css';
+import App from './app/App.tsx'
+import { initSecurityGuards } from './shared/lib/security.ts';
+import { ENV_CONFIG } from './config/env.ts';
 
 // Initialize Client Security & Console Warnings
-initSecurityGuards();
+initSecurityGuards({ selfXssWarning: ENV_CONFIG.enableSelfXssWarning });
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

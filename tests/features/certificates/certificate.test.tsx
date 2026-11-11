@@ -1,6 +1,6 @@
 import { render, screen, fireEvent, act } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import Certificate from '../../src/frontend/certificate';
+import Certificate from '../../../src/features/certificates/certificate';
 
 describe('Certificate Component (Frontend Test Suite)', () => {
   beforeEach(() => {

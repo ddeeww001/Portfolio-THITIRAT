@@ -1,10 +1,9 @@
 import { useState } from 'react';
-import { profileDatabase, type ProfileData } from '../data/profileData';
-const profileImg = '/picture/profile.jpg';
-import { playHoverSound } from './components/SoundEffects';
-import { GitHubSection } from './components/GitHubSection';
-
-export const myDetailsData = profileDatabase;
+import type { ProfileData } from './profileData';
+import { PROFILE_IMAGE as profileImg } from '../../shared/constants';
+import { playHoverSound } from '../../shared/lib/SoundEffects';
+import { GitHubSection } from '../github/GitHubSection';
+import './profile.css';
 
 const techIcons: { [key: string]: string } = {
   HTML: '/icons/html.svg',
@@ -31,7 +30,7 @@ export const Profile = ({ data }: { data: ProfileData }) => {
       <div style={{ textAlign: 'center', marginBottom: '50px', position: 'relative', zIndex: 3 }}>
         <div className="availability-pill" style={{ display: 'inline-flex' }}>
           <span className="status-dot"></span>
-          <span>PROFILE & TECH STACK • THITIRAT SIRISAWAD</span>
+          <span>PROFILE & TECH STACK • {data.name.toUpperCase()}</span>
         </div>
         <h2
           style={{

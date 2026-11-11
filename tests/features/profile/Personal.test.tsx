@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
-import { Profile } from '../../src/frontend/Personal';
-import { profileDatabase } from '../../src/data/profileData';
+import { Profile } from '../../../src/features/profile/Personal';
+import { profileDatabase } from '../../../src/features/profile/profileData';
 
 describe('Personal Profile Component (Frontend Test Suite)', () => {
   it('renders user name, roles, and introduce paragraph', () => {

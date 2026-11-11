@@ -1,4 +1,4 @@
-import { sanitizeInput, deepFreeze, escapeHtml, sanitizeUrl } from '../../src/utils/security';
+import { sanitizeInput, deepFreeze, escapeHtml, sanitizeUrl } from '../../src/shared/lib/security';
 
 describe('Security & Anti-Tampering Guards (Backend/Security Test Suite)', () => {
   describe('Input Sanitization (XSS Prevention)', () => {

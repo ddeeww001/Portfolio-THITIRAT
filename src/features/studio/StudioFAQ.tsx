@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { playClickSound, playHoverSound } from './SoundEffects';
+import { playClickSound, playHoverSound } from '../../shared/lib/SoundEffects';
 
 interface FAQItem {
   question: string;

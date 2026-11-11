@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { playClickSound, playHoverSound } from './SoundEffects';
+import { playClickSound, playHoverSound } from '../../shared/lib/SoundEffects';
+import { ENV_CONFIG } from '../../config/env';
+
+const githubUsername = ENV_CONFIG.githubUsername;
+const githubProfileUrl = ENV_CONFIG.githubUrl || `https://github.com/${encodeURIComponent(githubUsername)}`;
 
 interface GitHubUser {
   login: string;
@@ -34,7 +38,7 @@ export const GitHubSection: React.FC = () => {
     try {
       setLoading(true);
       setError(null);
-      const githubUsername = import.meta.env.VITE_GITHUB_USERNAME || 'ddeeww001';
+      if (!githubUsername) throw new Error('VITE_GITHUB_USERNAME is not set');
 
       // Fetch User Info
       const userRes = await fetch(`https://api.github.com/users/${githubUsername}`);
@@ -126,7 +130,7 @@ export const GitHubSection: React.FC = () => {
               )}
             </div>
             <span style={{ fontSize: '0.82rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
-              AUTHENTIC CODE DATA • GITHUB.COM/DDEEWW001
+              AUTHENTIC CODE DATA • GITHUB.COM/{githubUsername.toUpperCase()}
             </span>
           </div>
         </div>
@@ -159,7 +163,7 @@ export const GitHubSection: React.FC = () => {
           </button>
 
           <a
-            href="https://github.com/ddeeww001"
+            href={githubProfileUrl}
             target="_blank"
             rel="noopener noreferrer"
             onClick={playClickSound}
@@ -229,8 +233,8 @@ export const GitHubSection: React.FC = () => {
       ) : error ? (
         <div style={{ padding: '20px', background: 'rgba(255, 99, 99, 0.1)', border: '1px solid #ff6363', borderRadius: 'var(--radius-md)', color: '#ff8888', fontSize: '0.9rem' }}>
           Unable to load live GitHub data: {error}. You can view the profile directly at{' '}
-          <a href="https://github.com/ddeeww001" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'underline' }}>
-            github.com/ddeeww001
+          <a href={githubProfileUrl} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'underline' }}>
+            github.com/{githubUsername}
           </a>.
         </div>
       ) : (

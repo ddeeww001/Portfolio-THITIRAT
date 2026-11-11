@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { Navbar } from '../../src/App';
+import { Navbar } from '../../src/app/layout/Navbar';
 
 describe('Navbar Component (Frontend Test Suite)', () => {
   beforeEach(() => {
@@ -9,7 +9,8 @@ describe('Navbar Component (Frontend Test Suite)', () => {
 
   it('renders brand logo and navigation buttons', () => {
     render(<Navbar />);
-    expect(screen.getByText(/THITIRAT/i)).toBeInTheDocument();
+    // Name comes from the fake env in vitest.config.ts ("TEST USER" → "TEST")
+    expect(screen.getByText(/^TEST/)).toBeInTheDocument();
     expect(screen.getAllByRole('button', { name: /Home/i }).length).toBeGreaterThan(0);
     expect(screen.getByRole('button', { name: 'Services' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Work' })).toBeInTheDocument();

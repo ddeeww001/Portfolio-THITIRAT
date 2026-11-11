@@ -1,6 +1,6 @@
 import { render, screen, act } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { Preloader } from '../../src/frontend/components/Preloader';
+import { Preloader } from '../../src/shared/components/Preloader';
 
 describe('Minimal Ring Preloader Component (Frontend Test Suite)', () => {
   beforeEach(() => {

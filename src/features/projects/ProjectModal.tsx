@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import type { ProjectData } from '../../data/projectsData';
+import type { ProjectData } from './projectsData';
 
 interface ProjectModalProps {
   project: ProjectData | null;

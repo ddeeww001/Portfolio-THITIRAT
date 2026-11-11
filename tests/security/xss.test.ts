@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { sanitizeInput, escapeHtml, sanitizeUrl, deepFreeze } from '../../src/utils/security';
+import { sanitizeInput, escapeHtml, sanitizeUrl, deepFreeze } from '../../src/shared/lib/security';
 import fs from 'fs';
 import path from 'path';
 

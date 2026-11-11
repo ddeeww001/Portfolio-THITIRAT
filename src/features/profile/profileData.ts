@@ -1,6 +1,6 @@
 // src/data/profileData.ts
 // Centralized database for personal profile information
-import { deepFreeze } from '../utils/security';
+import { deepFreeze } from '../../shared/lib/security';
 
 export interface SocialLink {
   label: string;
@@ -29,24 +29,9 @@ export interface ProfileData {
   profileImage?: string;
 }
 
-// Centralized environment variables configuration with safe fallbacks
-export const ENV_CONFIG = deepFreeze({
-  name: import.meta.env.VITE_USER_NAME || "THITIRAT SIRISAWAD",
-  email: import.meta.env.VITE_USER_EMAIL || "dewthitirat@gmail.com",
-  phone: import.meta.env.VITE_USER_PHONE || "099-430-0222",
-  birthday: import.meta.env.VITE_USER_BIRTHDAY || "14 June 2006",
-  githubUsername: import.meta.env.VITE_GITHUB_USERNAME || "ddeeww001",
-  githubUrl: import.meta.env.VITE_GITHUB_URL || "https://github.com/ddeeww001",
-  lineId: import.meta.env.VITE_LINE_ID || "t.s",
-  instagramUsername: import.meta.env.VITE_INSTAGRAM_USERNAME || "ddeeww_o_o",
-  instagramUrl: import.meta.env.VITE_INSTAGRAM_URL || "https://instagram.com/ddeeww_o_o",
-  facebookName: import.meta.env.VITE_FACEBOOK_NAME || "Dew Chobkinkaitod",
-  facebookUrl: import.meta.env.VITE_FACEBOOK_URL || "https://facebook.com/dew.chobkinkaitod",
-  securityMode: import.meta.env.VITE_SECURITY_MODE || "strict",
-  enableSelfXssWarning: import.meta.env.VITE_ENABLE_SELF_XSS_WARNING !== "false",
-  enableSecurityLogs: import.meta.env.VITE_ENABLE_SECURITY_LOGS !== "false",
-  testCspEnforce: import.meta.env.VITE_TEST_CSP_ENFORCE === "true",
-});
+// Environment config now lives in src/config/env.ts; re-exported here for existing imports.
+import { ENV_CONFIG } from '../../config/env';
+export { ENV_CONFIG };
 
 // Main profile database
 export const profileDatabase: ProfileData = deepFreeze({
@@ -56,27 +41,29 @@ export const profileDatabase: ProfileData = deepFreeze({
   birthday: ENV_CONFIG.birthday,
   email: ENV_CONFIG.email,
   phone: ENV_CONFIG.phone,
+  // Entries whose value is missing from .env are dropped, so the UI never shows an empty icon.
   socials: [
-    { 
-      label: "GitHub", 
-      value: ENV_CONFIG.githubUsername, 
-      link: ENV_CONFIG.githubUrl 
+    {
+      label: "GitHub",
+      value: ENV_CONFIG.githubUsername,
+      link: ENV_CONFIG.githubUrl
     },
-    { 
-      label: "Line ID", 
-      value: ENV_CONFIG.lineId 
+    {
+      label: "Line",
+      value: ENV_CONFIG.lineId,
+      link: ENV_CONFIG.lineId ? `https://line.me/ti/p/~${encodeURIComponent(ENV_CONFIG.lineId)}` : ''
     },
-    { 
-      label: "Instagram", 
+    {
+      label: "Instagram",
       value: ENV_CONFIG.instagramUsername,
       link: ENV_CONFIG.instagramUrl
     },
-    { 
-      label: "Facebook", 
+    {
+      label: "Facebook",
       value: ENV_CONFIG.facebookName,
       link: ENV_CONFIG.facebookUrl
     }
-  ],
+  ].filter((s) => s.value && s.link),
   introduce: "I am a passionate UX/UI Designer and Frontend Developer dedicated to creating intuitive, user-centric digital experiences with modern design.",
   
   technicalSkills: [

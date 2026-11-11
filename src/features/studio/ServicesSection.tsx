@@ -1,5 +1,5 @@
 import React from 'react';
-import { playHoverSound } from './SoundEffects';
+import { playHoverSound } from '../../shared/lib/SoundEffects';
 
 interface ServiceItem {
   number: string;

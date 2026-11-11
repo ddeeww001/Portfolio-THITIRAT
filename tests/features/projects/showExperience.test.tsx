@@ -1,6 +1,6 @@
 import { render, screen, fireEvent, act } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import ShowExperience from '../../src/frontend/showExperience';
+import ShowExperience from '../../../src/features/projects/showExperience';
 
 describe('ShowExperience Component (Frontend Test Suite)', () => {
   beforeEach(() => {

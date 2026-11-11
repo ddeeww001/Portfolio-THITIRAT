@@ -1,6 +1,6 @@
 // src/data/projectsData.ts
 // Centralized database for all project information
-import { deepFreeze } from '../utils/security';
+import { deepFreeze } from '../../shared/lib/security';
 
 export interface LinkItem {
   label: string;
