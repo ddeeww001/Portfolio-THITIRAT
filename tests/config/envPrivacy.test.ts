@@ -6,6 +6,14 @@ import { render, screen } from '@testing-library/react';
 
 const ROOT = resolve(__dirname, '../..');
 
+/** Browser code only: src/backend runs on the server, its logs never reach visitors. */
+const listFrontendFiles = (dir: string): string[] =>
+  readdirSync(dir).flatMap((name) => {
+    const full = join(dir, name);
+    if (statSync(full).isDirectory()) return name === 'backend' ? [] : listFrontendFiles(full);
+    return /\.(ts|tsx|js|jsx)$/.test(name) ? [full] : [];
+  });
+
 afterEach(() => {
   vi.unstubAllEnvs();
   vi.resetModules();
@@ -112,6 +120,17 @@ describe('initSecurityGuards respects the Self-XSS flag', () => {
     initSecurityGuards();
     const printed = log.mock.calls.map((c) => String(c[0])).join('\n');
     expect(printed).not.toMatch(/header|csp|content-security|anti-tamper|\[system\]/i);
+  });
+
+  it('frontend code has no console output except the Self-XSS warning and dev-only logs', () => {
+    const files = listFrontendFiles(join(ROOT, 'src'));
+    const offenders = files.flatMap((file) =>
+      readFileSync(file, 'utf8').split('\n')
+        .map((line, i) => ({ line: line.trim(), at: `${file.slice(ROOT.length + 1)}:${i + 1}` }))
+        .filter(({ line }) => /(^|[^.\w])console\.\w+\(/.test(line) && !line.includes('import.meta.env.DEV'))
+        .map(({ at }) => at),
+    );
+    expect(offenders).toEqual([]);
   });
 
   it.each(['.env', '.env.example'])('%s does not set NODE_ENV (it would make `vite build` a dev build)', (file) => {

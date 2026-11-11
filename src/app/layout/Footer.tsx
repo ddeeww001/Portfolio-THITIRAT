@@ -7,7 +7,7 @@ export const Footer = () => (
   <footer className="footer" style={{ borderTop: '1px solid var(--border-subtle)', padding: '40px 20px', background: 'transparent' }}>
     <div className="footer-content" style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '20px' }}>
       <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
-        © {new Date().getFullYear()} {profileDatabase.name}.
+        © {new Date().getFullYear()}{profileDatabase.name && ` ${profileDatabase.name}.`}
       </p>
       <div className="footer-links" style={{ display: 'flex', gap: '20px' }}>
         {githubLink && (
