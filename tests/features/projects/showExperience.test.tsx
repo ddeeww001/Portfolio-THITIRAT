@@ -62,12 +62,13 @@ describe('ShowExperience Component (Frontend Test Suite)', () => {
     vi.useRealTimers();
   });
 
-  it('shows the newest project as the Featured card, the rest as grid cards', () => {
+  it('shows every project as a wide card (image left, details right), newest first', () => {
     const { container } = render(<ShowExperience />);
-    const featured = container.querySelectorAll('.project-card--featured');
-    expect(featured).toHaveLength(1);
-    expect(featured[0].textContent).toMatch(/CM CRAFT MAP/);
-    expect(container.querySelectorAll('.project-card--vertical').length).toBeGreaterThan(0);
+    const cards = container.querySelectorAll('.project-card');
+    expect(cards.length).toBeGreaterThan(1);
+    cards.forEach((card) => expect(card).toHaveClass('project-card--featured'));
+    expect(container.querySelectorAll('.project-card--vertical')).toHaveLength(0);
+    expect(cards[0].textContent).toMatch(/FRESHMEN GAMES 2026/); // newest: 20 Sep 2026
   });
 
   it('lists the CM Craft Map project with its UX/UI role and live link', () => {
@@ -114,5 +115,15 @@ describe('ShowExperience Component (Frontend Test Suite)', () => {
     const shot = dialog.querySelector('.modal-gallery img');
     expect(shot).toHaveAttribute('src', '/projects/young-dev-hackathon.webp');
     expect(dialog.querySelector('figcaption')?.textContent).toMatch(/team photo/i);
+  });
+
+  it('lists the AI Agent TA role and the Esports end game design with their links', () => {
+    render(<ShowExperience />);
+    expect(screen.getByText(/CAMT Digital Contest 2026 : AI Agent Workshop/)).toBeInTheDocument();
+    expect(screen.getByText('Teaching Assistant (TA)')).toBeInTheDocument();
+    expect(screen.getByText(/End Game Design/)).toBeInTheDocument();
+    const hrefs = screen.getAllByRole('link', { name: 'LIVE' }).map((a) => a.getAttribute('href'));
+    expect(hrefs).toContain('https://www.youtube.com/live/skfuqIVAbzE');
+    expect(hrefs.some((h) => h?.startsWith('https://camt.cmu.ac.th/'))).toBe(true);
   });
 });

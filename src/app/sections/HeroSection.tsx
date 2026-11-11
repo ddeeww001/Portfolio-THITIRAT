@@ -22,9 +22,9 @@ export const HeroSection = () => (
           maxWidth: '100%',
         }}
       >
-        IMPOSSIBLE TO <br />
+        UX/UI<br />
         <span style={{ color: '#ffffff', WebkitTextFillColor: '#ffffff', borderBottom: '3px solid #ffffff' }}>
-          IGNORE .
+          DESIGNER .
         </span>
       </h1>
 
@@ -46,11 +46,11 @@ export const HeroSection = () => (
       {/* Action Buttons */}
       <div className="animate-fade-in-delay-2" style={{ display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap' }}>
         <button onClick={() => scrollToSection('experience')} className="btn btn--primary" onMouseEnter={playHoverSound}>
-          SEE THE WORK <span aria-hidden="true"></span>
+            LET'S SEE<span aria-hidden="true"></span>
         </button>
 
         <button onClick={() => scrollToSection('contact')} className="btn btn--glass" onMouseEnter={playHoverSound}>
-          TALK WITH ME <span aria-hidden="true"></span>
+          MY CONTACT<span aria-hidden="true"></span>
         </button>
       </div>
     </div>

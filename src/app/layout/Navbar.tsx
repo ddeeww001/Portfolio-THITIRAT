@@ -85,9 +85,9 @@ export const Navbar = () => {
           {/* Desktop actions: sound toggle + primary CTA (Figma: LET'S TALK →) */}
           <div className="navbar-actions">
             <SoundToggle active={soundActive} onToggle={toggleSound} />
-            <button className="btn btn--primary navbar-cta" onClick={() => handleNavClick('contact')} onMouseEnter={playHoverSound}>
+            {/* <button className="btn btn--primary navbar-cta" onClick={() => handleNavClick('contact')} onMouseEnter={playHoverSound}>
               LET&apos;S TALK <span aria-hidden="true">→</span>
-            </button>
+            </button> */}
           </div>
 
           {/* Mobile Controls */}

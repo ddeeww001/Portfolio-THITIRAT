@@ -42,6 +42,46 @@ export const projectsDatabase: ProjectData[] = deepFreeze([
     tags: ["Design", "Frontend", "UX/UI"]
   },*/
   {
+    id: 11,
+    title: "CMU E-SPORTS FRESHMEN GAMES 2026 : End Game Design",
+    date: "20 / 09 / 2026",
+    role: "Graphic Designer (End game screens)",
+    image: "/projects/cmu-esports-endgame-design.webp",
+    gallery: [
+      { src: "/projects/cmu-esports-endgame-design.webp", caption: "End game design board — Victory / Defeat overlays, results screen, match VS screen and player bracket" },
+      { src: "/projects/cmu-esports-grand-finals.webp", caption: "CMU E-SPORTS FRESHMEN GAMES 2026 | GRAND FINALS — live stream (CMU ESPORTS, YouTube)" },
+    ],
+    details: [
+      "Designed the end game screens for the CMU Esports club's FRESHMEN GAMES 2026: Victory / Defeat score overlays, the results table, the match VS screen and the player bracket.",
+      "Refined the design over several feedback rounds, from the first draft to the final edit.",
+      "The designs were shown on the live broadcast of the CMU E-SPORTS FRESHMEN GAMES 2026 Grand Finals."
+    ],
+    link: [
+      { label: "Grand Finals live stream", url: "https://www.youtube.com/live/skfuqIVAbzE" }
+    ],
+    tags: ["Design", "Esports", "Broadcast"]
+  },
+  {
+    id: 10,
+    title: "CAMT Digital Contest 2026 : AI Agent Workshop",
+    date: "8 / 08 / 2026",
+    role: "Teaching Assistant (TA)",
+    image: "/projects/camt-digital-contest-stage.webp",
+    gallery: [
+      { src: "/projects/camt-digital-contest-stage.webp", caption: "CAMT Digital Contest 2026 (photo: CAMT CMU news)" },
+      { src: "/projects/camt-digital-contest-workshop.webp", caption: "Hands-on activities at CAMT Digital Contest 2026 (photo: CAMT CMU news)" },
+      { src: "/projects/camt-digital-contest-ai-workshops.webp", caption: "AI Revolution Workshops at CAMT Digital Contest 2026 (photo: CAMT CMU news)" },
+    ],
+    details: [
+      "Served as a TA (mentor) in the AI Agent activity, part of CAMT Digital Contest 2026 at the College of Arts, Media and Technology, Chiang Mai University.",
+      "Taught participants how to install and set up the programs needed to use AI Agents."
+    ],
+    link: [
+      { label: "CAMT news", url: "https://camt.cmu.ac.th/camt-%E0%B9%80%E0%B8%94%E0%B8%B4%E0%B8%99%E0%B8%AB%E0%B8%99%E0%B9%89%E0%B8%B2%E0%B8%AA%E0%B8%A3%E0%B9%89%E0%B8%B2%E0%B8%87%E0%B9%81%E0%B8%A3%E0%B8%87%E0%B8%9A%E0%B8%B1%E0%B8%99%E0%B8%94%E0%B8%B2/" }
+    ],
+    tags: ["Teaching", "Workshop", "AI"]
+  },
+  {
     id: 9,
     image: "/projects/cm-craft-map-hero.webp",
     gallery: [
@@ -85,7 +125,7 @@ export const projectsDatabase: ProjectData[] = deepFreeze([
         url: "https://www.canva.com/design/DAHAEBR-F5o/kU3WI2J8YAblFhI51HkCuA/view?utm_content=DAHAEBR-F5o&utm_campaign=designshare&utm_medium=link&utm_source=viewer" 
       }
     ],
-    tags: ["Hackathon", "Frontend", "API Integration"]
+    tags: ["Hackathon", "Frontend"]
   },
   {
     id: 6,

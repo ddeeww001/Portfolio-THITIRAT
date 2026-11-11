@@ -6,7 +6,7 @@ import { ALL_FILTER, useFilteredList } from '../../shared/hooks/useFilteredList'
 import { EmptyState, FilterTabs, SearchBox } from '../../shared/components/ListControls';
 import './experience.css';
 
-const FILTERS = [ALL_FILTER, 'Hackathon', 'Design', 'Frontend', 'UX/UI', 'API Integration'];
+const FILTERS = [ALL_FILTER, 'Hackathon', 'Design', 'Frontend', 'UX/UI'];
 
 const matchesFilter = (project: ProjectData, filter: string) =>
   !!project.tags?.some((t) => t.toLowerCase() === filter.toLowerCase());
@@ -62,17 +62,12 @@ function ShowExperience() {
           onReset={list.reset}
         />
       ) : (
-        <>
-          {/* First result = Featured card (full width), the rest = vertical grid */}
-          <ProjectCard project={list.filtered[0]} onQuickView={setSelectedProject} layout="featured" />
-          {list.filtered.length > 1 && (
-            <div className="projects-grid">
-              {list.filtered.slice(1).map((project) => (
-                <ProjectCard key={project.id} project={project} onQuickView={setSelectedProject} />
-              ))}
-            </div>
-          )}
-        </>
+        /* Every project uses the wide layout: image left, details right (stacks on narrow screens) */
+        <div className="projects-list">
+          {list.filtered.map((project) => (
+            <ProjectCard key={project.id} project={project} onQuickView={setSelectedProject} layout="featured" />
+          ))}
+        </div>
       )}
 
       <ProjectModal project={selectedProject} onClose={() => setSelectedProject(null)} />
