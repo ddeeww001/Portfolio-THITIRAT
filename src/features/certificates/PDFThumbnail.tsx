@@ -33,7 +33,9 @@ export const PDFThumbnail = ({ url, title }: { url: string; title: string }) => 
           if (isMounted) setImgUrl(canvas.toDataURL('image/png'));
         }
       } catch (err) {
-        console.log('PDF canvas fallback active for:', url, err);
+        // Dev-only diagnostics: file paths and stack traces must not reach visitors' consoles.
+        // import.meta.env.DEV is false in `vite build`, so this whole branch is removed.
+        if (import.meta.env.DEV) console.warn('PDF thumbnail fallback for:', url, err);
       }
     };
 
