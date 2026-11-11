@@ -200,6 +200,7 @@ export const projectsDatabase: ProjectData[] = deepFreeze([
     date: "27 / 8 / 2025",
     role: "Frontend developer, UX/UI Designer",
     details: [
+      "Created the design for students of Mae Hoi Ngoen School (โรงเรียนแม่ฮ้อยเงิน), the end users of this accounting and management system.",
       "Designed the user interface for product selection and customized dashboards to track sales and restock activities."
     ],
     link: [
