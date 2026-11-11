@@ -1,0 +1,421 @@
+/* ======================================================== */
+/* UNIFIED THEME NAVBAR - RESPONSIVE & MOBILE DROPDOWN     */
+/* ======================================================== */
+
+.navbar-wrapper {
+  position: fixed;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  width: min(1120px, calc(100vw - 32px)); /* Figma Glass Nav: 1120 wide */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: all var(--transition-base);
+}
+
+.navbar-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  /* Same height on desktop as on a narrowed window (~50px): 36px avatar + 6px padding top/bottom */
+  padding: 6px 10px 6px 8px;
+  border-radius: var(--radius-full);
+  /* surface comes from the shared .glass class */
+  width: 100%;
+  transition: all var(--transition-base);
+}
+
+/* Brand Section */
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.navbar-profile-btn {
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  outline: none;
+}
+
+.navbar-profile-pic {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--glass-border);
+  object-fit: cover;
+  object-position: center 5%; /* portrait photo: keep the face in the circle */
+  display: block;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.navbar-profile-btn:hover .navbar-profile-pic {
+  transform: scale(1.06);
+  box-shadow: var(--shadow-glow);
+}
+
+.navbar-logo-text {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 1.25;
+  color: var(--text-primary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  user-select: none;
+  transition: opacity var(--transition-fast);
+}
+
+.navbar-logo-text:hover {
+  opacity: 0.88;
+}
+
+.navbar-logo-dot {
+  color: #ffffff;
+}
+
+/* Desktop Navigation Menu */
+.navbar-desktop-menu {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.navbar-links {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Compact CTA so it never makes the bar taller than the avatar */
+.navbar-cta.btn {
+  min-height: 36px;
+  padding: 8px 18px;
+  font-size: 13px;
+}
+
+.navbar-nav-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.6;
+  padding: 4px 0;
+  cursor: pointer;
+  transition: color var(--transition-fast);
+}
+
+.navbar-nav-btn:hover,
+.navbar-nav-btn.active {
+  color: var(--text-primary);
+}
+
+/* Mobile Controls */
+.navbar-mobile-controls {
+  display: none;
+  align-items: center;
+  gap: 8px;
+}
+
+.navbar-mobile-dropdown-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--glass-border);
+  color: #ffffff;
+  padding: 7px 14px;
+  border-radius: var(--radius-full);
+  font-size: 0.82rem;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.navbar-mobile-dropdown-btn:hover,
+.navbar-mobile-dropdown-btn.open {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: #ffffff;
+  box-shadow: 0 0 14px rgba(255, 255, 255, 0.2);
+}
+
+.navbar-dropdown-current-label {
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.navbar-dropdown-chevron {
+  transition: transform var(--transition-fast);
+  display: block;
+}
+
+.navbar-dropdown-chevron.rotated {
+  transform: rotate(180deg);
+}
+
+/* Mobile Dropdown Backdrop */
+.navbar-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 998;
+  animation: navbarBackdropFade 0.2s ease-out;
+}
+
+/* Mobile Dropdown Panel */
+.navbar-mobile-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  width: 100%;
+  min-width: 220px;
+  background: var(--glass-shine), rgba(20, 20, 26, 0.92);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  padding: 8px;
+  box-shadow: var(--glass-shadow);
+  z-index: 1001;
+  animation: navbarDropdownSlide 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  transform-origin: top center;
+}
+
+.navbar-dropdown-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+}
+
+.navbar-dropdown-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 10px 14px;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.navbar-dropdown-item:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.navbar-dropdown-item.active {
+  color: #0a0a0c;
+  background: #ffffff;
+  font-weight: 700;
+  box-shadow: 0 0 16px rgba(255, 255, 255, 0.25);
+}
+
+.navbar-dropdown-item.active .navbar-dropdown-item-icon {
+  color: #0a0a0c;
+}
+
+.navbar-dropdown-item-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.navbar-dropdown-item-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  transition: color var(--transition-fast);
+}
+
+.navbar-dropdown-item:hover .navbar-dropdown-item-icon {
+  color: #ffffff;
+}
+
+.navbar-dropdown-active-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #0a0a0c;
+  display: inline-block;
+}
+
+/* Animations */
+@keyframes navbarBackdropFade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes navbarDropdownSlide {
+  from {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ========================================= */
+/* RESPONSIVE BREAKPOINTS                    */
+/* ========================================= */
+
+@media (max-width: 1100px) {
+  .navbar-links {
+    gap: 18px;
+  }
+  .navbar-desktop-menu {
+    gap: 18px;
+  }
+  .navbar-cta.btn {
+    padding: 8px 14px;
+  }
+}
+
+@media (max-width: 850px) {
+  .navbar-wrapper {
+    width: calc(100% - 24px);
+    max-width: 480px;
+    top: 14px;
+  }
+
+  .navbar-desktop-menu,
+  .navbar-actions {
+    display: none;
+  }
+
+  .navbar-mobile-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+
+  .navbar-container {
+    padding: 6px 10px 6px 8px;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .mobile-sound-btn {
+    padding: 6px 10px;
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 420px) {
+  .navbar-wrapper {
+    width: calc(100% - 16px);
+    top: 10px;
+  }
+
+  .navbar-container {
+    padding: 5px 8px 5px 6px;
+    gap: 6px;
+  }
+
+  .navbar-brand {
+    gap: 6px;
+    min-width: 0;
+  }
+
+  .navbar-logo-text {
+    font-size: 0.88rem;
+    white-space: nowrap;
+  }
+
+  .navbar-profile-pic {
+    width: 30px;
+    height: 30px;
+  }
+
+  .navbar-mobile-controls {
+    gap: 6px;
+  }
+
+  .mobile-sound-text {
+    display: none;
+  }
+
+  .mobile-sound-btn {
+    padding: 6px 8px;
+  }
+
+  .navbar-mobile-dropdown-btn {
+    padding: 6px 10px;
+    font-size: 0.76rem;
+    gap: 5px;
+  }
+
+  .navbar-dropdown-current-label {
+    font-size: 0.75rem;
+  }
+
+  .navbar-dropdown-item {
+    padding: 9px 12px;
+    font-size: 0.82rem;
+  }
+}
+
+@media (max-width: 340px) {
+  .navbar-wrapper {
+    width: calc(100% - 12px);
+  }
+
+  .navbar-container {
+    padding: 4px 6px;
+    gap: 4px;
+  }
+
+  .navbar-logo-text {
+    font-size: 0.8rem;
+  }
+
+  .navbar-profile-pic {
+    width: 26px;
+    height: 26px;
+  }
+
+  .navbar-mobile-dropdown-btn {
+    padding: 5px 8px;
+    font-size: 0.72rem;
+  }
+}

@@ -19,28 +19,27 @@
 
 ```
 d:\Portfolio\
-├── tests\
+├── tests\                            # โครงสร้างเดียวกับ src\ (ดู src/README.md)
 │   ├── setup.ts                      # ⚙️ Global Test Setup (JSDOM, Canvas, Audio, PDF.js Mocks)
 │   │
-│   ├── security\                     # 🛡️ SECURITY & XSS ISOLATED TEST SUITE
-│   │   └── xss.test.ts               # ทดสอบ XSS Payloads, Script Stripping, URL Sanitization, CSP & Escaping
-│   │
-│   ├── frontend\                     # 🖥️ FRONTEND TEST SUITE (UI, Components & User Interactions)
-│   │   ├── Navbar.test.tsx           # ทดสอบ Desktop/Mobile Dropdown, Sound Toggle, Escape key
-│   │   ├── Preloader.test.tsx        # ทดสอบ Splash Screen progress, minimumDuration, onComplete
-│   │   ├── showExperience.test.tsx   # ทดสอบ Project filters, Debounced search, Empty state, Modal
-│   │   ├── certificate.test.tsx      # ทดสอบ Certificate search, Category filter, Lightbox viewer
-│   │   ├── GitHubSection.test.tsx    # ทดสอบ Live API fetch, Skeleton state, Refresh button, Error fallback
-│   │   ├── Personal.test.tsx         # ทดสอบ Profile info, Avatar skeleton, Tech stack, Languages
-│   │   └── ContactSection.test.tsx   # ทดสอบ Contact channels, Copy email clipboard & toast feedback
-│   │
-│   └── backend\                      # ⚙️ BACKEND / SERVICES & SECURITY TEST SUITE
-│       ├── githubService.test.ts     # ทดสอบ 200 OK contract, 404 User Not Found, 403 Rate Limit, 500 Network error
-│       ├── microlinkService.test.ts  # ทดสอบ URL Encoding, Parameter screenshot, Fallback URLs
-│       ├── securityGuards.test.ts    # ทดสอบ XSS Sanitization (<script>, onerror=, javascript:), deepFreeze
-│       └── envConfig.test.ts         # ทดสอบ Env fallback defaults, Schema integrity, Email regex
+│   ├── app\
+│   │   └── Navbar.test.tsx           # Desktop/Mobile Dropdown, Sound Toggle, Escape key
+│   ├── config\
+│   │   ├── envConfig.test.ts         # parseEnvConfig: ค่าว่างเมื่อไม่มี .env, securityMode, boolean flags
+│   │   └── envPrivacy.test.ts        # ห้ามมีข้อมูลส่วนตัวใน src/, ซ่อน UI เมื่อไม่มีค่า, Self-XSS flag
+│   ├── features\
+│   │   ├── certificates\             # certificate.test.tsx, certificatesData.test.ts (PDF ทุกไฟล์มีจริง)
+│   │   ├── contact\                  # ContactSection: แสดงเป็นไอคอนเท่านั้น, คัดลอกอีเมล
+│   │   ├── github\                   # GitHubSection UI + githubService (200/404/403/network)
+│   │   ├── profile\                  # Personal: ชื่อ, ทักษะ, ภาษา, เครื่องมือ
+│   │   └── projects\                 # showExperience (filter/search/modal), microlink URL
+│   ├── shared\
+│   │   ├── securityGuards.test.ts    # sanitizeInput, deepFreeze
+│   │   └── useFilteredList.test.ts   # hook ค้นหา + filter ที่ใช้ร่วมกัน
+│   └── security\
+│       └── xss.test.ts               # XSS Payloads, URL Sanitization, CSP & Escaping
 │
-├── vitest.config.ts                  # 🛠️ Vitest Configuration (JSDOM, Coverage, Globals)
+├── vitest.config.ts                  # 🛠️ Vitest Config + env ปลอมสำหรับเทส (ไม่ใช้ .env จริง)
 └── package.json                      # 📦 Test Scripts
 ```
 
@@ -53,7 +52,6 @@ d:\Portfolio\
 | ไฟล์ทดสอบ | กรณีทดสอบที่ครอบคลุม (Test Cases Covered) |
 |---|---|
 | **`Navbar.test.tsx`** | 1. ตรวจสอบการแสดงผลโลโก้และปุ่มเมนูหลัก (Home, Services, Work, About, Certificates, Contact)<br>2. ทดสอบปุ่มเปิด/ปิดเสียง (Sound Toggle) และสถานะ `AUDIO ON` / `MUTED`<br>3. ทดสอบการเปิด/ปิด Dropdown Menu บนหน้าจอมือถือ พร้อมการเลือก Section<br>4. ทดสอบการกดปุ่ม `Escape` หรือคลิก Backdrop เพื่อปิดเมนู |
-| **`Preloader.test.tsx`** | 1. ตรวจสอบการแสดงผล Brand Title และ Tech Stack Badges (React 19, TypeScript)<br>2. ทดสอบการนับ Progress และการเรียก Callback `onComplete` หลังโหลดเสร็จ<br>3. ทดสอบการค้างสถานะ (Hold Progress ~88%) เมื่อ `isLoading === true` |
 | **`showExperience.test.tsx`** | 1. ตรวจสอบการแสดงผลหัวข้อและปุ่ม Filter Tabs ทั้งหมด<br>2. ทดสอบการคลิก Filter หมวดหมู่ (`Hackathon`, `Design`, `Frontend`) และการสลับสถานะ `.active`<br>3. ทดสอบการค้นหาแบบ Debounced Search พร้อมการอัปเดตป้ายสถานะแบบเรียลไทม์<br>4. ทดสอบ Empty State เมื่อค้นหาไม่พบข้อมูล พร้อมการกดปุ่ม `Reset Filters ⟳`<br>5. ทดสอบการเปิดและปิด Project Quick View Modal Drawer |
 | **`certificate.test.tsx`** | 1. ตรวจสอบช่องค้นหาและปุ่มเลือกหมวดหมู่ใบประกาศนียบัตร<br>2. ทดสอบการกรองใบประกาศตามคำค้นหา (เช่น `Agile`)<br>3. ทดสอบ Empty State เมื่อค้นหาไม่พบ และการกดปุ่ม `Reset Search ⟳`<br>4. ทดสอบการเปิดดูเอกสาร PDF Lightbox Viewer และการปิดหน้าต่าง |
 | **`GitHubSection.test.tsx`** | 1. ตรวจสอบการแสดงสถิติและ Repositories เมื่อเรียก API สำเร็จ (Status 200 OK)<br>2. ทดสอบปุ่ม `⟳ REFRESH` สำหรับดึงข้อมูลสดใหม่ และการแสดงป้าย `✓ UPDATED`<br>3. ทดสอบ Error Fallback State เมื่อ GitHub API ล่มหรือไม่สามารถเชื่อมต่อได้ |
@@ -93,19 +91,18 @@ npm run test:xss
 ```bash
 npm run test:security
 ```
-*รันทั้ง XSS Isolated Tests (`tests/security/`) และ Security Guards / Deep Freeze Tests (`tests/backend/`)*
+*รัน XSS (`tests/security/`), Security Guards (`tests/shared/securityGuards.test.ts`) และ Privacy guard (`tests/config/envPrivacy.test.ts`)*
 
-### 🔹 รันเฉพาะฝั่ง Frontend (UI & Component Tests)
+### 🔹 รันตามส่วนของโปรเจกต์
 ```bash
-npm run test:frontend
+npm run test:app        # tests/app       — Navbar / layout
+npm run test:features   # tests/features  — ทุก feature
+npm run test:shared     # tests/shared    — hooks, components และ lib ที่ใช้ร่วมกัน
+npm run test:config     # tests/config    — env และ privacy
+npm run test:frontend   # app + features  (UI)
+npm run test:backend    # config + shared + security (logic)
 ```
-*รันเฉพาะไฟล์ใน `tests/frontend/` เพื่อความรวดเร็วในการพัฒนาหน้าบ้าน*
-
-### 🔹 รันเฉพาะฝั่ง Backend & Services (API & Security Tests)
-```bash
-npm run test:backend
-```
-*รันเฉพาะไฟล์ใน `tests/backend/` เพื่อทดสอบ Logic, ความปลอดภัย และ Data Contracts*
+*รันเฉพาะ feature เดียว: `npx vitest run tests/features/projects`*
 
 ### 🔹 รันแบบ Real-time Watch Mode (ระหว่างเขียนโค้ด)
 ```bash
@@ -131,18 +128,18 @@ npm run test:coverage
 4. **`AudioContext` & `webkitAudioContext`**: จำลอง Web Audio Oscillator และ Gain Nodes สำหรับ Sound Effects
 5. **`HTMLCanvasElement` & 2D Context**: จำลอง Canvas API (`fillRect`, `drawImage`, `toDataURL`)
 6. **`pdfjs-dist`**: Mocking API ของ PDF.js ไม่ให้เกิดการเรียก Web Worker จริงขณะรัน Unit Test
-7. **`document.fonts`**: จำลอง `document.fonts.ready` สำหรับ Asset Preloader
+7. **`document.fonts`**: จำลอง `document.fonts.ready`
 
 ---
 
 ## 6. แนวทางการเขียนเทสเพิ่ม (How to Add New Tests)
 
 ### การเพิ่มเทสสำหรับ Component ใหม่ใน Frontend:
-สร้างไฟล์ `tests/frontend/NewComponent.test.tsx`:
+สร้างไฟล์ `tests/features/<feature>/NewComponent.test.tsx`:
 ```tsx
 import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
-import { NewComponent } from '../../src/frontend/components/NewComponent';
+import { NewComponent } from '../../../src/features/<feature>/NewComponent';
 
 describe('NewComponent (Frontend Test)', () => {
   it('renders correctly with initial state', () => {
@@ -160,10 +157,10 @@ describe('NewComponent (Frontend Test)', () => {
 ```
 
 ### การเพิ่มเทสสำหรับ Service หรือฟังก์ชัน Utility ใน Backend:
-สร้างไฟล์ `tests/backend/newService.test.ts`:
+สร้างไฟล์ `tests/shared/newUtility.test.ts`:
 ```ts
 import { describe, it, expect, vi } from 'vitest';
-import { newUtilityFunction } from '../../src/utils/newUtility';
+import { newUtilityFunction } from '../../src/shared/lib/newUtility';
 
 describe('New Utility Service (Backend Test)', () => {
   it('transforms data correctly', () => {

@@ -12,6 +12,10 @@ interface ImportMetaEnv {
   readonly VITE_INSTAGRAM_URL?: string;
   readonly VITE_FACEBOOK_NAME?: string;
   readonly VITE_FACEBOOK_URL?: string;
+  readonly VITE_SECURITY_MODE?: string;
+  readonly VITE_ENABLE_SELF_XSS_WARNING?: string;
+  readonly VITE_ENABLE_SECURITY_LOGS?: string;
+  readonly VITE_TEST_CSP_ENFORCE?: string;
 }
 
 interface ImportMeta {

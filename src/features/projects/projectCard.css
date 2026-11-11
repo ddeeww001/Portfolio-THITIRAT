@@ -1,0 +1,201 @@
+/* Figma "Project Card / Glass" (17:42 Vertical, 17:66 Featured) */
+
+.project-card {
+  display: flex;
+  gap: 16px;
+  padding: 16px;
+  border-radius: 10px;
+  min-width: 0;
+}
+
+.project-card--vertical {
+  flex-direction: column;
+}
+
+/* Stacked list of wide cards */
+.projects-list {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.project-card--featured {
+  gap: 32px;
+  width: 100%;
+}
+
+/* Thumbnail: purple→teal gradient placeholder until the screenshot loads */
+.project-card__thumb {
+  position: relative;
+  flex-shrink: 0;
+  overflow: hidden;
+  border-radius: 6px;
+  background: linear-gradient(90deg, rgba(153, 102, 204, 0.5), rgba(94, 199, 232, 0.25));
+}
+
+.project-card--vertical .project-card__thumb {
+  width: 100%;
+  height: 200px;
+}
+
+.project-card--featured .project-card__thumb {
+  width: 50%;
+  max-width: 560px;
+  aspect-ratio: 14 / 9;
+}
+
+.project-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+}
+
+.project-card--vertical .project-card__body {
+  flex: 1;
+  justify-content: space-between;
+  padding: 0 8px 8px;
+}
+
+.project-card--featured .project-card__body {
+  flex: 1;
+  justify-content: space-between;
+  padding: 16px 16px 16px 0;
+}
+
+.project-card__image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.project-card__top {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.project-card__meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.project-card__date {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.project-card__title {
+  font-family: var(--font-display);
+  font-size: 22px;
+  line-height: 1.25;
+  letter-spacing: 0;
+  color: var(--text-primary);
+}
+
+.project-card--featured .project-card__title {
+  font-size: clamp(24px, 3vw, 32px);
+  line-height: 1.15;
+}
+
+.project-card__role {
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+.project-card__desc {
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.7;
+  color: var(--text-muted);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.project-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  list-style: none;
+}
+
+.project-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+@media (max-width: 860px) {
+  .project-card--featured {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .project-card--featured .project-card__thumb {
+    width: 100%;
+    max-width: none;
+  }
+
+  .project-card--featured .project-card__body {
+    padding: 0 8px 8px;
+  }
+}
+
+/* SEE MORE modal: screenshots from the project's own links / Drive files */
+.modal-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+  gap: 14px;
+  margin: 18px 0 24px;
+}
+
+.modal-gallery__item {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.modal-gallery__item a {
+  display: block;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--glass-border);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.modal-gallery__item img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  object-position: top center;
+  transition: transform var(--transition-fast);
+}
+
+.modal-gallery__item a:hover img {
+  transform: scale(1.03);
+}
+
+.modal-gallery__item figcaption {
+  font-family: var(--font-body);
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--text-muted);
+}
