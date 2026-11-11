@@ -114,8 +114,10 @@ function showSelfXssWarning(): void {
 
     // Only the user-facing warning is printed. Never log which defences are active
     // (headers, CSP, anti-tamper…): that tells an attacker what to work around.
-    console.log('%c⚠️ STOP / คำเตือนความปลอดภัย!', titleStyle);
-    console.log(
+    // `window.console` on purpose: the production build drops every plain `console.*` call
+    // (vite.config.ts → esbuild.drop), and this static warning is the one message we keep.
+    window.console.log('%c⚠️ STOP / คำเตือนความปลอดภัย!', titleStyle);
+    window.console.log(
       '%cหน้านี้คือเครื่องมือสำหรับนักพัฒนาเบราว์เซอร์ (Developer Console)\n' +
       'หากมีผู้ใดบอกให้คุณคัดลอกโค้ด JavaScript มาวางที่นี่เพื่อ "แก้ไขหน้าเว็บ" หรือเข้าถึงข้อมูล นั่นเป็นการหลอกลวง (Self-XSS Attack)\n' +
       'การรันโค้ดที่ไม่ทราบแหล่งที่มาอาจส่งผลต่อความปลอดภัยของเครื่องคุณ',

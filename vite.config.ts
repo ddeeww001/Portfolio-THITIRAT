@@ -15,9 +15,10 @@ export default defineConfig(({ mode }) => ({
   server: { headers: SECURITY_HEADERS },
   preview: { headers: SECURITY_HEADERS },
   esbuild: {
-    // Production: strip `debugger` and stray debug/info logs (console.log stays for the Self-XSS warning).
-    drop: mode === 'production' ? ['debugger'] : [],
-    pure: mode === 'production' ? ['console.debug', 'console.info', 'console.trace'] : [],
+    // Production: remove EVERY `console.*` call and `debugger` (our code and bundled libraries),
+    // so no paths, errors or data can leak to visitors' DevTools.
+    // The only exception is the Self-XSS warning, which deliberately calls `window.console`.
+    drop: mode === 'production' ? ['console', 'debugger'] : [],
     legalComments: 'none',
   },
   build: {

@@ -17,7 +17,8 @@ export const PDFThumbnail = ({ url, title }: { url: string; title: string }) => 
 
     const renderPDF = async () => {
       try {
-        const pdf = await pdfjsLib.getDocument({ url }).promise;
+        // verbosity ERRORS: pdf.js (incl. its separate worker file) prints no warnings/info to the console
+        const pdf = await pdfjsLib.getDocument({ url, verbosity: pdfjsLib.VerbosityLevel.ERRORS }).promise;
         const page = await pdf.getPage(1);
         if (!isMounted) return;
 
