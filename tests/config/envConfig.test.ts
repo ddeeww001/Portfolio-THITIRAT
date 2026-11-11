@@ -1,11 +1,26 @@
 import { describe, it, expect } from 'vitest';
 import { parseEnvConfig, ENV_CONFIG } from '../../src/config/env';
+import { PROFILE_DEFAULTS } from '../../src/config/profileDefaults';
 import { profileDatabase } from '../../src/features/profile/profileData';
 
 // parseEnvConfig is pure, so every case passes its own env and never depends on the real .env.
 describe('Environment Configuration (parseEnvConfig)', () => {
-  it('returns empty strings (no hardcoded personal data) when env is empty', () => {
+  it('falls back to PROFILE_DEFAULTS when env has no profile values', () => {
     const cfg = parseEnvConfig({});
+    expect(cfg.name).toBe(PROFILE_DEFAULTS.VITE_USER_NAME?.trim() ?? '');
+    expect(cfg.githubUsername).toBe(PROFILE_DEFAULTS.VITE_GITHUB_USERNAME?.trim() ?? '');
+    expect(cfg.name).not.toBe('');
+  });
+
+  it('env wins over defaults; an empty env value still falls back', () => {
+    const defaults = { VITE_USER_NAME: 'Default Name', VITE_USER_EMAIL: 'default@example.com' };
+    const cfg = parseEnvConfig({ VITE_USER_NAME: 'From Env', VITE_USER_EMAIL: '  ' }, defaults);
+    expect(cfg.name).toBe('From Env');
+    expect(cfg.email).toBe('default@example.com');
+  });
+
+  it('returns empty strings when both env and defaults are empty', () => {
+    const cfg = parseEnvConfig({}, {});
     for (const key of [
       'name', 'email', 'phone', 'birthday', 'githubUsername', 'githubUrl',
       'lineId', 'instagramUsername', 'instagramUrl', 'facebookName', 'facebookUrl',
