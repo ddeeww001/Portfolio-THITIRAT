@@ -179,3 +179,138 @@
     padding: 0 12px;
   }
 }
+
+/* ========================================= */
+/* v2 GLASS ROWS in a ticker (Figma "Certificate Row / Glass" 17:91) */
+/* ========================================= */
+/* Slow auto-scroll ticker you can also scroll by hand (useAutoScroll) */
+.cert-ticker {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.cert-ticker__viewport {
+  width: 100%;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(196, 165, 240, 0.45) transparent;
+  cursor: grab;
+  padding: 8px 0 14px;
+  /* soft fade at both edges */
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+}
+
+.cert-ticker__viewport.is-dragging {
+  cursor: grabbing;
+  user-select: none;
+}
+
+.cert-ticker__viewport:focus-visible {
+  outline: 2px solid var(--accent-purple-soft);
+  outline-offset: 2px;
+}
+
+.cert-ticker__track {
+  list-style: none;
+  display: flex;
+  gap: 16px;
+  width: max-content;
+  padding: 0 16px;
+}
+
+.cert-ticker__track > li {
+  width: min(420px, 82vw);
+  flex-shrink: 0;
+}
+
+.cert-ticker__controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+.cert-ticker__hint {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.cert-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: transform var(--transition-fast), border-color var(--transition-fast);
+}
+
+.cert-row {
+  height: 100%;
+}
+
+.cert-row:hover {
+  transform: translateY(-2px);
+  border-color: rgba(196, 165, 240, 0.5);
+}
+
+.cert-row__thumb {
+  position: relative;
+  flex-shrink: 0;
+  width: 96px;
+  height: 68px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.cert-row__text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+  min-width: 0;
+}
+
+.cert-row__title {
+  font-family: var(--font-display);
+  font-size: clamp(17px, 2vw, 22px);
+  line-height: 1.25;
+  color: var(--text-primary);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.cert-row__meta {
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+
+.cert-row__cta {
+  flex-shrink: 0;
+}
+
+@media (max-width: 480px) {
+  .cert-row__thumb {
+    width: 72px;
+    height: 52px;
+  }
+
+  .cert-row__cta {
+    display: none;
+  }
+}

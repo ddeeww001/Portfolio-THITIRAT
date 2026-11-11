@@ -5,11 +5,6 @@ import { scrollToSection } from '../navigation';
 export const HeroSection = () => (
   <section id="home" className="section hero-section" style={{ minHeight: '92vh', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', padding: '130px 20px 70px' }}>
     <div style={{ maxWidth: '1080px', textAlign: 'center', zIndex: 1, width: '100%' }}>
-      {/* Availability Badge */}
-      <div className="availability-pill animate-fade-in" style={{ display: 'inline-flex', marginBottom: '28px' }}>
-        <span className="status-dot"></span>
-        <span>AVAILABLE FOR FREELANCE & FULL-TIME ROLES WORLDWIDE</span>
-      </div>
 
       {/* Hero Title */}
       <h1
@@ -50,43 +45,12 @@ export const HeroSection = () => (
 
       {/* Action Buttons */}
       <div className="animate-fade-in-delay-2" style={{ display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap' }}>
-        <button
-          onClick={() => scrollToSection('experience')}
-          style={{
-            background: '#ffffff',
-            color: '#0a0a0c',
-            border: 'none',
-            padding: '16px 36px',
-            borderRadius: 'var(--radius-full)',
-            fontWeight: 800,
-            fontSize: '0.95rem',
-            cursor: 'pointer',
-            boxShadow: '0 0 25px rgba(255, 255, 255, 0.25)',
-            transition: 'all 0.3s ease',
-          }}
-          className="interactive-hover"
-          onMouseEnter={playHoverSound}
-        >
-          SEE THE WORK ↗
+        <button onClick={() => scrollToSection('experience')} className="btn btn--primary" onMouseEnter={playHoverSound}>
+          SEE THE WORK <span aria-hidden="true"></span>
         </button>
 
-        <button
-          onClick={() => scrollToSection('contact')}
-          style={{
-            background: 'rgba(255, 255, 255, 0.05)',
-            border: '1px solid var(--border-medium)',
-            color: 'var(--text-primary)',
-            padding: '16px 36px',
-            borderRadius: 'var(--radius-full)',
-            fontWeight: 600,
-            fontSize: '0.95rem',
-            cursor: 'pointer',
-            transition: 'all 0.3s ease',
-          }}
-          className="interactive-hover"
-          onMouseEnter={playHoverSound}
-        >
-          TALK WITH ME
+        <button onClick={() => scrollToSection('contact')} className="btn btn--glass" onMouseEnter={playHoverSound}>
+          TALK WITH ME <span aria-hidden="true"></span>
         </button>
       </div>
     </div>

@@ -26,7 +26,7 @@
 
 | ส่วน | รายละเอียด |
 |---|---|
-| **Hero / Studio** | หน้าแรก, ข้อความ Studio, Marquee, Services และ FAQ |
+| **Hero / Studio** | หน้าแรก, ข้อความ Studio, Services และ FAQ |
 | **Work** | ผลงานพร้อมค้นหา, กรองตามหมวด และ Quick View (ภาพตัวอย่างจาก microlink) |
 | **About** | โปรไฟล์, ทักษะ, เครื่องมือ, ภาษา และสถิติ GitHub แบบ live |
 | **Certificates** | ใบประกาศแบบ marquee พร้อมค้นหา/กรอง และเปิดดู PDF ได้ |
@@ -113,7 +113,7 @@ src/
 │   ├── certificates/     # Certificates + certificatesData.ts (ไฟล์ PDF, หมวดหมู่)
 │   ├── contact/          # Contact (ไอคอน)
 │   ├── github/           # สถิติ GitHub แบบ live
-│   └── studio/           # Services, FAQ, Marquee, Statement
+│   └── studio/           # Services, FAQ, Statement
 ├── shared/               # ใช้ร่วมกันหลาย feature: components, hooks, lib, styles
 └── backend/services/     # Express server (แยกจากแอป Vite)
 
@@ -162,7 +162,7 @@ tests/                    # โครงเดียวกับ src/ (app, conf
 3. **`app/` ทำหน้าที่ประกอบหน้าเว็บเท่านั้น** เนื้อหาใหม่ให้สร้างเป็น feature แล้วนำมาวางใน `App.tsx`
 4. **ไฟล์ component export เฉพาะ component** ส่วนค่าคงที่และ helper ให้แยกเป็นไฟล์ `.ts` เพื่อให้ Fast Refresh ทำงาน
 5. **แต่ละ feature import CSS ของตัวเอง**
-6. **รายการที่ค้นหา/กรองได้** ให้ใช้ `useFilteredList` คู่กับ `SearchBox`, `FilterTabs`, `ResultCounter` และ `EmptyState` จาก `shared/`
+6. **รายการที่ค้นหา/กรองได้** ให้ใช้ `useFilteredList` คู่กับ `SearchBox`, `FilterTabs` และ `EmptyState` จาก `shared/`
 7. **ทุกการเปลี่ยนแปลงต้องมีเทส** วางไว้ใน `tests/` ตำแหน่งเดียวกับไฟล์ใน `src/`
 8. **ก่อนเปิด PR** ให้รัน `npm test`, `npx tsc -b` และ `npm run lint`
 9. **ลิงก์ที่มาจากข้อมูลภายนอก** ต้องผ่าน `sanitizeUrl` และข้อความจากผู้ใช้ต้องไม่ถูกแสดงเป็น HTML (ดู [SECURITY.md](SECURITY.md))

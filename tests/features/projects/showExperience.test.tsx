@@ -62,9 +62,25 @@ describe('ShowExperience Component (Frontend Test Suite)', () => {
     vi.useRealTimers();
   });
 
-  it('opens and closes project quick view modal', () => {
+  it('shows the newest project as the Featured card, the rest as grid cards', () => {
+    const { container } = render(<ShowExperience />);
+    const featured = container.querySelectorAll('.project-card--featured');
+    expect(featured).toHaveLength(1);
+    expect(featured[0].textContent).toMatch(/CM CRAFT MAP/);
+    expect(container.querySelectorAll('.project-card--vertical').length).toBeGreaterThan(0);
+  });
+
+  it('lists the CM Craft Map project with its UX/UI role and live link', () => {
     render(<ShowExperience />);
-    const quickViewButtons = screen.getAllByRole('button', { name: /QUICK VIEW/i });
+    expect(screen.getByText(/CM CRAFT MAP/)).toBeInTheDocument();
+    expect(screen.getAllByText('UX/UI Designer').length).toBeGreaterThan(0);
+    const live = screen.getAllByRole('link', { name: /LIVE/ }).find((a) => a.getAttribute('href') === 'https://cmcraftmap.camt.cmu.ac.th/');
+    expect(live).toBeDefined();
+  });
+
+  it('opens and closes project quick view modal (SEE MORE button)', () => {
+    render(<ShowExperience />);
+    const quickViewButtons = screen.getAllByRole('button', { name: /^SEE MORE$/ });
     expect(quickViewButtons.length).toBeGreaterThan(0);
 
     fireEvent.click(quickViewButtons[0]);
@@ -73,5 +89,30 @@ describe('ShowExperience Component (Frontend Test Suite)', () => {
     const closeBtn = screen.getByLabelText(/Close modal/i);
     fireEvent.click(closeBtn);
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+  });
+
+  it('card buttons read SEE MORE and LIVE with no arrow icons', () => {
+    render(<ShowExperience />);
+    const seeMore = screen.getAllByRole('button', { name: 'SEE MORE' });
+    expect(seeMore.length).toBeGreaterThan(0);
+    for (const b of seeMore) expect(b.textContent).toBe('SEE MORE');
+    for (const a of screen.getAllByRole('link', { name: 'LIVE' })) expect(a.textContent).toBe('LIVE');
+    expect(screen.queryByRole('button', { name: /CASE STUDY/i })).toBeNull();
+  });
+
+  it('YOUNG DEV HACKATHON card shows the provided team photo', () => {
+    render(<ShowExperience />);
+    const img = screen.getAllByRole('img', { name: 'YOUNG DEV HACKATHON' })[0];
+    expect(img).toHaveAttribute('src', '/projects/young-dev-hackathon.webp');
+  });
+
+  it('SEE MORE modal shows the project screenshots with captions', () => {
+    render(<ShowExperience />);
+    const card = screen.getByText('YOUNG DEV HACKATHON').closest('article')!;
+    fireEvent.click(card.querySelector('button')!);
+    const dialog = screen.getByRole('dialog');
+    const shot = dialog.querySelector('.modal-gallery img');
+    expect(shot).toHaveAttribute('src', '/projects/young-dev-hackathon.webp');
+    expect(dialog.querySelector('figcaption')?.textContent).toMatch(/team photo/i);
   });
 });

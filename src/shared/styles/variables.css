@@ -3,11 +3,27 @@
 /* ======================================================== */
 
 :root {
-  /* Obsidian Black & Dark Charcoal Backgrounds */
-  --trionn-bg: #0a0a0c;          /* Deep pitch obsidian black */
-  --trionn-bg-alt: #121318;      /* Dark charcoal header/footer/section background */
-  --trionn-card: #1a1b22;        /* High-end dark slate card background */
-  --trionn-card-hover: #262732;  /* Interactive slate elevation state */
+  /* ── v2 Glass theme (Figma "My Portfolio" → Components — v2 Glass) ── */
+  --backdrop-base: #0a0a0d;
+  --glow-purple: #9966cc;
+  --glow-teal: #5ec7e8;
+  --glow-lavender: #e5d7ff;
+  --accent-purple-soft: #c4a5f0;  /* focus ring, labels, hover */
+  --state-success: #4ade80;       /* verified chips */
+  --text-on-accent: #0a0a0c;
+
+  /* Glass surface: 55% dark tint + diagonal shine, blur 28px (Figma: Glass/Card) */
+  --glass-tint: rgba(20, 20, 26, 0.55);
+  --glass-shine: linear-gradient(157deg, rgba(255, 255, 255, 0.12) 14%, rgba(255, 255, 255, 0.02) 86%);
+  --glass-surface: var(--glass-shine), var(--glass-tint);
+  --glass-blur: blur(28px) saturate(140%);
+  --glass-shadow: 0 24px 48px -12px rgba(0, 0, 0, 0.35), inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+
+  /* Legacy names now point at the glass theme so existing components follow it */
+  --trionn-bg: var(--backdrop-base);
+  --trionn-bg-alt: rgba(20, 20, 26, 0.4);   /* translucent so the backdrop shows through */
+  --trionn-card: var(--glass-surface);
+  --trionn-card-hover: rgba(38, 38, 48, 0.7);
 
   /* High-Contrast Crisp Monochrome Accents */
   --neon-lime: #ffffff;          /* Pure crisp white primary accent */
@@ -24,16 +40,16 @@
   --neon-gradient: linear-gradient(90deg, #ffffff, #d4d4d8, #a1a1aa, #ffffff);
 
   /* Background Tokens */
-  --bg-main: var(--trionn-bg);
+  --bg-main: transparent;        /* sections are see-through; the sky backdrop paints the page */
   --bg-secondary: var(--trionn-bg-alt);
   --bg-card: var(--trionn-card);
   --bg-card-hover: var(--trionn-card-hover);
 
-  /* Typography */
-  --font-display: 'Syne', 'Outfit', sans-serif;
-  --font-heading: 'Outfit', 'Space Grotesk', sans-serif;
-  --font-body: 'Outfit', sans-serif;
-  --font-mono: 'Space Grotesk', monospace;
+  /* Typography (Figma v2: Righteous for display/headings, Inconsolata for everything else) */
+  --font-display: 'Righteous', 'Inconsolata', sans-serif;
+  --font-heading: 'Righteous', 'Inconsolata', sans-serif;
+  --font-body: 'Inconsolata', ui-monospace, monospace;
+  --font-mono: 'Inconsolata', ui-monospace, monospace;
 
   /* Text Colors (High Contrast Monochrome) */
   --text-primary: #ffffff;       /* Crisp white */
@@ -46,11 +62,11 @@
   --border-medium: rgba(255, 255, 255, 0.16);
   --border-glow: rgba(255, 255, 255, 0.35);
 
-  --glass-bg: rgba(18, 19, 24, 0.85);
-  --glass-border: rgba(255, 255, 255, 0.12);
+  --glass-bg: var(--glass-tint);
+  --glass-border: rgba(255, 255, 255, 0.16);
 
   /* Shadows */
-  --shadow-lg: 0 20px 40px -10px rgba(0, 0, 0, 0.7);
+  --shadow-lg: var(--glass-shadow);
   --shadow-glow: 0 0 20px rgba(255, 255, 255, 0.15);
 
   /* Spacing, Radius & Transitions */
@@ -73,6 +89,8 @@
 }
 
 html {
+  /* Righteous ships a single weight: never fake-bold it */
+  font-synthesis: none;
   scroll-behavior: smooth;
   color-scheme: dark;
   max-width: 100vw;
@@ -115,16 +133,16 @@ body {
   color: #0a0a0c;
 }
 
-/* Focus Outline */
+/* Focus Outline (Figma: purple focus ring) */
 :focus-visible {
-  outline: 2px solid #ffffff;
+  outline: 2px solid var(--accent-purple-soft);
   outline-offset: 4px;
 }
 
 /* Typography Defaults & Safe Overflow */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-display);
-  font-weight: 700;
+  font-weight: 400 !important; /* Righteous has one weight; overrides inline fontWeight on headings */
   letter-spacing: -0.02em;
   overflow-wrap: break-word;
   word-wrap: break-word;

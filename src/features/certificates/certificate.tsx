@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { profileDatabase } from '../profile/profileData';
 import { useFilteredList } from '../../shared/hooks/useFilteredList';
-import { EmptyState, FilterTabs, ResultCounter, SearchBox } from '../../shared/components/ListControls';
+import { useAutoScroll } from '../../shared/hooks/useAutoScroll';
+import { playClickSound } from '../../shared/lib/SoundEffects';
+import { EmptyState, FilterTabs, SearchBox } from '../../shared/components/ListControls';
 import { CERT_CATEGORIES, certFilePath, certMatchesCategory, certMatchesSearch } from './certificatesData';
-import { CertificateCard } from './CertificateCard';
+import { CertificateRow } from './CertificateRow';
 import { CertificateLightbox } from './CertificateLightbox';
 import './certificate.css';
 
@@ -14,18 +16,17 @@ const Certificate = () => {
     matchesSearch: certMatchesSearch,
   });
   const [selectedCert, setSelectedCert] = useState<{ title: string; file: string } | null>(null);
+  const tickerRef = useAutoScroll<HTMLDivElement>({ speed: 25 });
 
-  // Duplicate list for continuous infinite marquee looping
-  const marqueeList = [...list.filtered, ...list.filtered];
+  const scrollTicker = (direction: 1 | -1) => {
+    playClickSound();
+    tickerRef.current?.scrollBy?.({ left: direction * 440, behavior: 'smooth' });
+  };
 
   return (
     <section id="certificates" className="certificate-section" style={{ padding: '80px 0', overflow: 'hidden', width: '100%' }}>
       <div className="cert-container" style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px', width: '100%' }}>
         <div style={{ textAlign: 'center', marginBottom: '36px', width: '100%' }}>
-          <div className="availability-pill">
-            <span className="status-dot"></span>
-            <span>CONTINUOUS TICKER • VERIFIED ACCOMPLISHMENTS</span>
-          </div>
           <h2
             style={{
               fontSize: 'clamp(1.75rem, 5vw, 3.8rem)',
@@ -52,16 +53,12 @@ const Certificate = () => {
             onClear={list.clearQuery}
           />
 
-          <ResultCounter busy={list.isUpdating} busyLabel="SEARCHING CERTIFICATIONS . . .">
-            {`SHOWING ${list.filtered.length} OF ${list.total} CERTIFICATES`}
-          </ResultCounter>
 
           <FilterTabs
             options={CERT_CATEGORIES}
             active={list.activeFilter}
             onSelect={list.selectFilter}
             style={{ marginBottom: '24px' }}
-            buttonStyle={{ fontSize: '0.82rem', padding: '7px 16px' }}
           />
         </div>
       </div>
@@ -74,12 +71,38 @@ const Certificate = () => {
           onReset={list.reset}
         />
       ) : (
-        /* Continuous infinite marquee track */
-        <div className="cert-marquee-container" style={{ position: 'relative', zIndex: 1, width: '100%' }}>
-          <div className="cert-marquee-track">
-            {marqueeList.map((title, index) => (
-              <CertificateCard key={index} title={title} file={certFilePath(title)} onOpen={setSelectedCert} />
-            ))}
+        /* Slow auto-scrolling ticker of glass rows; wheel / trackpad / touch / drag / ← → to scroll by hand */
+        <div className="cert-ticker">
+          <div
+            ref={tickerRef}
+            className="cert-ticker__viewport"
+            tabIndex={0}
+            role="region"
+            aria-label="Certificates (scroll horizontally)"
+          >
+            <ul className="cert-ticker__track">
+              {/* list rendered twice for a seamless loop; the copy is hidden from screen readers */}
+              {[...list.filtered, ...list.filtered].map((title, index) => (
+                <li key={`${title}-${index}`} aria-hidden={index >= list.filtered.length || undefined}>
+                  <CertificateRow
+                    title={title}
+                    file={certFilePath(title)}
+                    onOpen={setSelectedCert}
+                    tabIndex={index >= list.filtered.length ? -1 : undefined}
+                  />
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="cert-ticker__controls">
+            <button type="button" className="btn btn--glass btn--sm" onClick={() => scrollTicker(-1)} aria-label="Scroll certificates left">
+              ←
+            </button>
+            <span className="cert-ticker__hint">Drag or scroll to browse</span>
+            <button type="button" className="btn btn--glass btn--sm" onClick={() => scrollTicker(1)} aria-label="Scroll certificates right">
+              →
+            </button>
           </div>
         </div>
       )}

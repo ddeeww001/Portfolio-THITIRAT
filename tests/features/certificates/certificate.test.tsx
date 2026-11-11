@@ -51,9 +51,26 @@ describe('Certificate Component (Frontend Test Suite)', () => {
     vi.useRealTimers();
   });
 
+  it('renders the certificates as a manually scrollable ticker with ← → controls', () => {
+    render(<Certificate />);
+    const region = screen.getByRole('region', { name: /Certificates/i });
+    expect(region).toHaveAttribute('tabindex', '0'); // keyboard-scrollable
+    expect(screen.getByRole('button', { name: /Scroll certificates left/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Scroll certificates right/i })).toBeInTheDocument();
+  });
+
+  it('duplicates rows for the loop but hides the copy from screen readers and keyboard', () => {
+    render(<Certificate />);
+    // accessible rows = one per certificate (copies are aria-hidden)
+    const rows = screen.getAllByRole('button', { name: /Open certificate:/ });
+    const allRows = screen.getAllByRole('button', { name: /Open certificate:/, hidden: true });
+    expect(allRows.length).toBe(rows.length * 2);
+    expect(allRows.filter((b) => b.getAttribute('tabindex') === '-1')).toHaveLength(rows.length);
+  });
+
   it('opens and closes certificate preview lightbox modal', () => {
     render(<Certificate />);
-    const previewButtons = screen.getAllByRole('button', { name: /PREVIEW DOCUMENT/i });
+    const previewButtons = screen.getAllByRole('button', { name: /Open certificate:/i });
     expect(previewButtons.length).toBeGreaterThan(0);
 
     fireEvent.click(previewButtons[0]);

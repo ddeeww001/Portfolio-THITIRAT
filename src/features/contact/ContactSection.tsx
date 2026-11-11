@@ -31,10 +31,6 @@ export const ContactSection: React.FC = () => {
     <section id="contact" className="section contact-section" style={{ position: 'relative', width: '100%' }}>
       <div style={{ maxWidth: '900px', margin: '0 auto', width: '100%' }}>
         <div style={{ textAlign: 'center', marginBottom: '50px' }}>
-          <div className="availability-pill" style={{ display: 'inline-flex' }}>
-            <span className="status-dot"></span>
-            <span>DIRECT CHANNELS • NO FORMS NEEDED</span>
-          </div>
           <h2
             style={{
               fontSize: 'clamp(1.75rem, 5vw, 4rem)',
@@ -58,16 +54,12 @@ export const ContactSection: React.FC = () => {
 
         {/* Direct Personal Contact Card Container */}
         <div
-          className="contact-card-container"
+          className="card-outline contact-card-container"
           style={{
-            background: 'var(--trionn-card)',
-            border: '1px solid var(--border-medium)',
-            borderRadius: 'var(--radius-xl)',
-            padding: 'clamp(24px, 5vw, 48px) clamp(16px, 4vw, 40px)',
-            boxShadow: 'var(--shadow-lg)',
+            padding: 'clamp(24px, 5vw, 10px) clamp(16px, 4vw, 40px)',
             display: 'flex',
             flexDirection: 'column',
-            gap: '36px',
+            position: 'relative', // anchors the "copied" message without adding height
             overflow: 'hidden',
           }}
         >
@@ -117,7 +109,8 @@ export const ContactSection: React.FC = () => {
             })}
           </div>
 
-          <p role="status" aria-live="polite" style={{ textAlign: 'center', minHeight: '1.2em', margin: 0, fontSize: '0.85rem', color: 'var(--text-secondary)', fontFamily: 'var(--font-mono)' }}>
+          {/* Overlays the bottom padding, so space above and below the icons stays equal */}
+          <p role="status" aria-live="polite" style={{ position: 'absolute', left: 0, right: 0, bottom: '4px', textAlign: 'center', margin: 0, fontSize: '0.75rem', lineHeight: 1.2, color: 'var(--text-secondary)', fontFamily: 'var(--font-mono)', pointerEvents: 'none' }}>
             {copied ? '✓ COPIED TO CLIPBOARD' : ''}
           </p>
         </div>

@@ -45,3 +45,7 @@ export const certMatchesCategory = (title: string, category: string) => {
 };
 
 export const certMatchesSearch = (title: string, q: string) => title.toLowerCase().includes(q);
+
+/** First category a certificate belongs to (shown under its title), or a generic label. */
+export const certCategoryOf = (title: string) =>
+  Object.keys(categoryKeywords).find((category) => certMatchesCategory(title, category)) ?? 'Certificate';

@@ -14,13 +14,9 @@ export const ProjectThumbnail = ({ url, title, label }: ProjectThumbnailProps) =
   return (
     <div
       style={{
-        height: '165px',
-        borderRadius: 'var(--radius-md)',
+        position: 'absolute',
+        inset: 0,
         overflow: 'hidden',
-        marginBottom: '18px',
-        position: 'relative',
-        background: 'linear-gradient(135deg, #0c0d12 0%, #15161f 100%)',
-        border: '1px solid var(--border-subtle)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -35,13 +31,12 @@ export const ProjectThumbnail = ({ url, title, label }: ProjectThumbnailProps) =
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            background: 'linear-gradient(135deg, #0c0d12 0%, #15161f 100%)',
             zIndex: 1,
           }}
         >
           <div
             className="spinner-ring"
-            style={{ width: '28px', height: '28px', borderWidth: '2.5px', borderTopColor: 'var(--neon-cyan, #00f0ff)' }}
+            style={{ width: '28px', height: '28px', borderWidth: '2.5px', borderTopColor: 'var(--accent-purple-soft)' }}
           />
         </div>
       )}

@@ -51,7 +51,7 @@ export const Navbar = () => {
         <div className="navbar-backdrop" onClick={() => setMobileMenuOpen(false)} aria-hidden="true" />
       )}
       <header className="navbar-wrapper">
-        <nav className="navbar-container">
+        <nav className="navbar-container glass">
           {/* Brand Logo & Profile Pic */}
           <div className="navbar-brand">
             <button
@@ -64,23 +64,30 @@ export const Navbar = () => {
             </button>
             <span className="navbar-logo-text" onClick={() => handleNavClick('home')}>
               {firstName.toUpperCase()}
-              <span className="navbar-logo-dot">.</span>
             </span>
           </div>
 
           {/* Desktop Nav Items */}
-          <div className="navbar-desktop-menu">
+          <div className="navbar-desktop-menu navbar-links">
             {navItems.map((item) => (
               <button
                 key={item.id}
                 onClick={() => handleNavClick(item.id)}
                 className={`navbar-nav-btn ${activeSection === item.id ? 'active' : ''}`}
+                aria-current={activeSection === item.id ? 'true' : undefined}
                 onMouseEnter={playHoverSound}
               >
                 {item.label}
               </button>
             ))}
+          </div>
+
+          {/* Desktop actions: sound toggle + primary CTA (Figma: LET'S TALK →) */}
+          <div className="navbar-actions">
             <SoundToggle active={soundActive} onToggle={toggleSound} />
+            <button className="btn btn--primary navbar-cta" onClick={() => handleNavClick('contact')} onMouseEnter={playHoverSound}>
+              LET&apos;S TALK <span aria-hidden="true">→</span>
+            </button>
           </div>
 
           {/* Mobile Controls */}

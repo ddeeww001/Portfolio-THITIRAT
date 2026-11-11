@@ -7,7 +7,8 @@
   max-width: 100vw;
   overflow-x: hidden !important;
   min-height: 100vh;
-  background: var(--bg-main);
+  background: transparent;
+  isolation: isolate; /* content sits above the fixed sky backdrop */
   position: relative;
 }
 
@@ -38,21 +39,21 @@
 
 /* Hero Section */
 .hero-section {
-  background: var(--bg-main);
+  background: transparent;
   position: relative;
   overflow: hidden;
 }
 
 /* Experience Section */
 .experience-section {
-  background: var(--bg-secondary);
+  background: transparent;
   padding: 100px 20px;
   min-height: auto;
 }
 
 /* Profile Section */
 .profile-section {
-  background: var(--bg-main);
+  background: transparent;
   padding: 100px 20px;
   min-height: auto;
 }
@@ -62,7 +63,7 @@
 /* ========================================= */
 
 .footer {
-  background: var(--bg-secondary);
+  background: transparent;
   border-top: 1px solid var(--border-subtle);
   padding: var(--spacing-lg) var(--spacing-md);
   width: 100%;

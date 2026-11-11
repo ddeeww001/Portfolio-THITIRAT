@@ -28,10 +28,6 @@ export const Profile = ({ data }: { data: ProfileData }) => {
     <div className="profile-page-wrapper" style={{ maxWidth: '1200px', margin: '0 auto', width: '100%', position: 'relative', zIndex: 2 }}>
       {/* Section Header */}
       <div style={{ textAlign: 'center', marginBottom: '50px', position: 'relative', zIndex: 3 }}>
-        <div className="availability-pill" style={{ display: 'inline-flex' }}>
-          <span className="status-dot"></span>
-          <span>PROFILE & TECH STACK • {data.name.toUpperCase()}</span>
-        </div>
         <h2
           style={{
             fontSize: 'clamp(1.75rem, 5vw, 3.8rem)',
@@ -63,12 +59,9 @@ export const Profile = ({ data }: { data: ProfileData }) => {
       >
         {/* Left Column: Profile Card */}
         <aside
+          className="card-outline"
           style={{
-            background: 'var(--trionn-card)',
-            border: '1px solid var(--border-medium)',
-            borderRadius: 'var(--radius-xl)',
             padding: '40px 32px',
-            boxShadow: 'var(--shadow-lg)',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
@@ -98,7 +91,7 @@ export const Profile = ({ data }: { data: ProfileData }) => {
                 alt={data.name}
                 className={`img-fade-in ${avatarLoaded ? 'is-loaded' : ''}`}
                 onLoad={() => setAvatarLoaded(true)}
-                style={{ width: '100%', height: '100%', objectFit: 'cover', position: 'relative', zIndex: 2 }}
+                style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 5%', position: 'relative', zIndex: 2 }}
               />
             </div>
 
@@ -158,12 +151,9 @@ export const Profile = ({ data }: { data: ProfileData }) => {
         <div style={{ display: 'flex', flexDirection: 'column', gap: '30px', justifyContent: 'space-between' }}>
           {/* Design Tools & Software */}
           <div
+            className="card-outline"
             style={{
-              background: 'var(--trionn-card)',
-              border: '1px solid var(--border-medium)',
-              borderRadius: 'var(--radius-xl)',
               padding: '36px',
-              boxShadow: 'var(--shadow-lg)',
               flex: 1,
             }}
           >
@@ -204,12 +194,9 @@ export const Profile = ({ data }: { data: ProfileData }) => {
 
           {/* Core Languages & Technologies */}
           <div
+            className="card-outline"
             style={{
-              background: 'var(--trionn-card)',
-              border: '1px solid var(--border-medium)',
-              borderRadius: 'var(--radius-xl)',
               padding: '36px',
-              boxShadow: 'var(--shadow-lg)',
               flex: 1,
             }}
           >
@@ -259,4 +246,4 @@ export const Profile = ({ data }: { data: ProfileData }) => {
   );
 };
 
-
+

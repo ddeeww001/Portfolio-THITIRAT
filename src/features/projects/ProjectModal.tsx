@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import type { ProjectData } from './projectsData';
+import './projectCard.css';
 
 interface ProjectModalProps {
   project: ProjectData | null;
@@ -40,6 +41,20 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) 
 
         <h2 className="modal-title">{project.title}</h2>
         <div className="modal-date">✦ {project.date}</div>
+
+        {/* Screenshots taken only from this project's own links / Drive files */}
+        {project.gallery && project.gallery.length > 0 && (
+          <div className="modal-gallery">
+            {project.gallery.map((shot) => (
+              <figure key={shot.src} className="modal-gallery__item">
+                <a href={shot.src} target="_blank" rel="noopener noreferrer" aria-label={`Open full image: ${shot.caption}`}>
+                  <img src={shot.src} alt={shot.caption} loading="lazy" />
+                </a>
+                <figcaption>{shot.caption}</figcaption>
+              </figure>
+            ))}
+          </div>
+        )}
 
         <div className="modal-role-box">
           <strong>ROLE:</strong> {Array.isArray(project.role) ? project.role.join(', ') : project.role}

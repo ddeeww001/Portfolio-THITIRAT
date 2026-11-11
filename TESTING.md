@@ -34,7 +34,6 @@ d:\Portfolio\
 │   │   ├── profile\                  # Personal: ชื่อ, ทักษะ, ภาษา, เครื่องมือ
 │   │   └── projects\                 # showExperience (filter/search/modal), microlink URL
 │   ├── shared\
-│   │   ├── Preloader.test.tsx        # Splash progress, minimumDuration, onComplete
 │   │   ├── securityGuards.test.ts    # sanitizeInput, deepFreeze
 │   │   └── useFilteredList.test.ts   # hook ค้นหา + filter ที่ใช้ร่วมกัน
 │   └── security\
@@ -53,7 +52,6 @@ d:\Portfolio\
 | ไฟล์ทดสอบ | กรณีทดสอบที่ครอบคลุม (Test Cases Covered) |
 |---|---|
 | **`Navbar.test.tsx`** | 1. ตรวจสอบการแสดงผลโลโก้และปุ่มเมนูหลัก (Home, Services, Work, About, Certificates, Contact)<br>2. ทดสอบปุ่มเปิด/ปิดเสียง (Sound Toggle) และสถานะ `AUDIO ON` / `MUTED`<br>3. ทดสอบการเปิด/ปิด Dropdown Menu บนหน้าจอมือถือ พร้อมการเลือก Section<br>4. ทดสอบการกดปุ่ม `Escape` หรือคลิก Backdrop เพื่อปิดเมนู |
-| **`Preloader.test.tsx`** | 1. ตรวจสอบการแสดงผล Brand Title และ Tech Stack Badges (React 19, TypeScript)<br>2. ทดสอบการนับ Progress และการเรียก Callback `onComplete` หลังโหลดเสร็จ<br>3. ทดสอบการค้างสถานะ (Hold Progress ~88%) เมื่อ `isLoading === true` |
 | **`showExperience.test.tsx`** | 1. ตรวจสอบการแสดงผลหัวข้อและปุ่ม Filter Tabs ทั้งหมด<br>2. ทดสอบการคลิก Filter หมวดหมู่ (`Hackathon`, `Design`, `Frontend`) และการสลับสถานะ `.active`<br>3. ทดสอบการค้นหาแบบ Debounced Search พร้อมการอัปเดตป้ายสถานะแบบเรียลไทม์<br>4. ทดสอบ Empty State เมื่อค้นหาไม่พบข้อมูล พร้อมการกดปุ่ม `Reset Filters ⟳`<br>5. ทดสอบการเปิดและปิด Project Quick View Modal Drawer |
 | **`certificate.test.tsx`** | 1. ตรวจสอบช่องค้นหาและปุ่มเลือกหมวดหมู่ใบประกาศนียบัตร<br>2. ทดสอบการกรองใบประกาศตามคำค้นหา (เช่น `Agile`)<br>3. ทดสอบ Empty State เมื่อค้นหาไม่พบ และการกดปุ่ม `Reset Search ⟳`<br>4. ทดสอบการเปิดดูเอกสาร PDF Lightbox Viewer และการปิดหน้าต่าง |
 | **`GitHubSection.test.tsx`** | 1. ตรวจสอบการแสดงสถิติและ Repositories เมื่อเรียก API สำเร็จ (Status 200 OK)<br>2. ทดสอบปุ่ม `⟳ REFRESH` สำหรับดึงข้อมูลสดใหม่ และการแสดงป้าย `✓ UPDATED`<br>3. ทดสอบ Error Fallback State เมื่อ GitHub API ล่มหรือไม่สามารถเชื่อมต่อได้ |
@@ -130,7 +128,7 @@ npm run test:coverage
 4. **`AudioContext` & `webkitAudioContext`**: จำลอง Web Audio Oscillator และ Gain Nodes สำหรับ Sound Effects
 5. **`HTMLCanvasElement` & 2D Context**: จำลอง Canvas API (`fillRect`, `drawImage`, `toDataURL`)
 6. **`pdfjs-dist`**: Mocking API ของ PDF.js ไม่ให้เกิดการเรียก Web Worker จริงขณะรัน Unit Test
-7. **`document.fonts`**: จำลอง `document.fonts.ready` สำหรับ Asset Preloader
+7. **`document.fonts`**: จำลอง `document.fonts.ready`
 
 ---
 

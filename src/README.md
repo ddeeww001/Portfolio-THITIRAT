@@ -9,7 +9,6 @@ src/
 │   ├── App.tsx              # Puts the sections in order
 │   ├── navigation.ts        # Section ids + scrollToSection()
 │   ├── useActiveSection.ts  # Which section is on screen (for the navbar)
-│   ├── useAssetPreload.ts   # Waits for images + fonts before hiding the preloader
 │   ├── layout/              # Navbar, NavIcon, SoundToggle, Footer
 │   ├── sections/            # HeroSection
 │   └── styles/              # navbar.css, home.css
@@ -23,9 +22,9 @@ src/
 │   │                        #   CertificateLightbox, certificatesData.ts, certificate.css
 │   ├── contact/             # ContactSection, socialIcons
 │   ├── github/              # GitHubSection (live GitHub API)
-│   └── studio/              # ServicesSection, StudioFAQ, MarqueeTicker, StudioStatementSection
+│   └── studio/              # ServicesSection, StudioFAQ, StudioStatementSection
 ├── shared/                  # Used by more than one feature
-│   ├── components/          # Preloader, CustomCursor, ContactIcons, ListControls
+│   ├── components/          # SkyBackdrop, ContactIcons, ListControls
 │   ├── hooks/               # useFilteredList (search + filter tabs)
 │   ├── lib/                 # security.ts, SoundEffects.ts
 │   ├── styles/              # variables.css, App.css, trionn-components.css
@@ -67,7 +66,7 @@ Add an entry to `projectsDatabase` in `features/projects/projectsData.ts`:
    `tests/features/certificates/certificatesData.test.ts` checks that every PDF exists.
 
 ### Add a searchable list section
-Use `useFilteredList` together with `SearchBox`, `ResultCounter`, `FilterTabs` and `EmptyState` from `shared/components/ListControls.tsx`. `features/projects/showExperience.tsx` shows how.
+Use `useFilteredList` together with `SearchBox`, `FilterTabs` and `EmptyState` from `shared/components/ListControls.tsx`. `features/projects/showExperience.tsx` shows how.
 
 ### Add a new section
 Create `features/<name>/<Name>Section.tsx` (and its CSS), add a test in `tests/features/<name>/`, then place it in `app/App.tsx`. If it needs a navbar link, add it to `navItems` in `app/navigation.ts`.

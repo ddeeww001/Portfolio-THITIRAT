@@ -4,7 +4,7 @@ import { GitHubIcon, MailIcon } from '../../shared/components/ContactIcons';
 const githubLink = profileDatabase.socials.find((s) => s.label === 'GitHub')?.link;
 
 export const Footer = () => (
-  <footer className="footer" style={{ borderTop: '1px solid var(--border-subtle)', padding: '40px 20px', background: 'var(--trionn-bg-alt)' }}>
+  <footer className="footer" style={{ borderTop: '1px solid var(--border-subtle)', padding: '40px 20px', background: 'transparent' }}>
     <div className="footer-content" style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '20px' }}>
       <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
         © {new Date().getFullYear()} {profileDatabase.name}.

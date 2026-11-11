@@ -3,7 +3,7 @@ import { projectsDatabase, type ProjectData } from './projectsData';
 import { ProjectModal } from './ProjectModal';
 import { ProjectCard } from './ProjectCard';
 import { ALL_FILTER, useFilteredList } from '../../shared/hooks/useFilteredList';
-import { EmptyState, FilterTabs, ResultCounter, SearchBox } from '../../shared/components/ListControls';
+import { EmptyState, FilterTabs, SearchBox } from '../../shared/components/ListControls';
 import './experience.css';
 
 const FILTERS = [ALL_FILTER, 'Hackathon', 'Design', 'Frontend', 'UX/UI', 'API Integration'];
@@ -24,10 +24,6 @@ function ShowExperience() {
   return (
     <div className="experience-presentation-wrapper">
       <div style={{ textAlign: 'center', marginBottom: '40px' }}>
-        <div className="availability-pill">
-          <span className="status-dot"></span>
-          <span>PORTFOLIO SHOWCASE • CRAFTED WITH PASSION</span>
-        </div>
         <h2
           style={{
             fontSize: 'clamp(1.75rem, 5vw, 3.8rem)',
@@ -54,9 +50,6 @@ function ShowExperience() {
           onClear={list.clearQuery}
         />
 
-        <ResultCounter busy={list.isUpdating} busyLabel="UPDATING RESULTS . . .">
-          {`SHOWING ${list.filtered.length} OF ${list.total} PROJECTS`}
-        </ResultCounter>
       </div>
 
       <FilterTabs options={FILTERS} active={list.activeFilter} onSelect={list.selectFilter} />
@@ -69,11 +62,17 @@ function ShowExperience() {
           onReset={list.reset}
         />
       ) : (
-        <div className="projects-grid">
-          {list.filtered.map((project) => (
-            <ProjectCard key={project.id} project={project} onQuickView={setSelectedProject} />
-          ))}
-        </div>
+        <>
+          {/* First result = Featured card (full width), the rest = vertical grid */}
+          <ProjectCard project={list.filtered[0]} onQuickView={setSelectedProject} layout="featured" />
+          {list.filtered.length > 1 && (
+            <div className="projects-grid">
+              {list.filtered.slice(1).map((project) => (
+                <ProjectCard key={project.id} project={project} onQuickView={setSelectedProject} />
+              ))}
+            </div>
+          )}
+        </>
       )}
 
       <ProjectModal project={selectedProject} onClose={() => setSelectedProject(null)} />

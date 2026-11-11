@@ -1,4 +1,4 @@
-// UI building blocks used with useFilteredList (search box, counter, filter tabs, empty state).
+// UI building blocks used with useFilteredList (search box, filter tabs, empty state).
 import type { CSSProperties, ReactNode } from 'react';
 import { playClickSound, playHoverSound } from '../lib/SoundEffects';
 
@@ -40,19 +40,6 @@ export const SearchBox = ({ value, placeholder, busy, onChange, onClear }: Searc
   </div>
 );
 
-interface ResultCounterProps {
-  busy: boolean;
-  busyLabel: string;
-  children: ReactNode;
-}
-
-export const ResultCounter = ({ busy, busyLabel, children }: ResultCounterProps) => (
-  <div className={`feedback-counter-badge ${busy ? 'is-updating' : ''}`}>
-    <span className={`feedback-dot ${busy ? 'pulse' : 'green'}`} />
-    <span>{busy ? busyLabel : children}</span>
-  </div>
-);
-
 interface FilterTabsProps {
   options: readonly string[];
   active: string;
@@ -66,7 +53,8 @@ export const FilterTabs = ({ options, active, onSelect, style, buttonStyle }: Fi
     {options.map((option) => (
       <button
         key={option}
-        className={`filter-btn ${active === option ? 'active' : ''}`}
+        className={`chip chip--filter ${active === option ? 'active' : ''}`}
+        aria-pressed={active === option}
         onClick={() => {
           playClickSound();
           onSelect(option);

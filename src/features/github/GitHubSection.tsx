@@ -78,12 +78,9 @@ export const GitHubSection: React.FC = () => {
 
   return (
     <div
+      className="card-outline"
       style={{
-        background: 'var(--trionn-card)',
-        border: '1px solid var(--border-medium)',
-        borderRadius: 'var(--radius-xl)',
         padding: '36px',
-        boxShadow: 'var(--shadow-lg)',
       }}
     >
       <div
@@ -191,7 +188,7 @@ export const GitHubSection: React.FC = () => {
           <div
             style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))',
               gap: '16px',
               marginBottom: '28px',
             }}
@@ -249,50 +246,17 @@ export const GitHubSection: React.FC = () => {
                 marginBottom: '28px',
               }}
             >
-              <div
-                style={{
-                  background: 'rgba(255, 255, 255, 0.03)',
-                  border: '1px solid var(--border-subtle)',
-                  borderRadius: 'var(--radius-md)',
-                  padding: '16px',
-                  textAlign: 'center',
-                }}
-              >
-                <div style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--neon-lime)', fontFamily: 'var(--font-mono)' }}>
-                  {user.public_repos}
+              {[
+                { value: user.public_repos, label: 'Public Repos' },
+                { value: user.followers, label: 'Followers' },
+                { value: new Date(user.created_at).getFullYear(), label: 'GitHub Member Since' },
+              ].map((stat) => (
+                /* Figma "Glass Stat" (17:39) */
+                <div key={stat.label} className="card-outline glass-stat">
+                  <div className="glass-stat__value">{stat.value}</div>
+                  <div className="glass-stat__label">{stat.label}</div>
                 </div>
-                <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: '4px' }}>Public Repos</div>
-              </div>
-
-              <div
-                style={{
-                  background: 'rgba(255, 255, 255, 0.03)',
-                  border: '1px solid var(--border-subtle)',
-                  borderRadius: 'var(--radius-md)',
-                  padding: '16px',
-                  textAlign: 'center',
-                }}
-              >
-                <div style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--neon-purple)', fontFamily: 'var(--font-mono)' }}>
-                  {user.followers}
-                </div>
-                <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: '4px' }}>Followers</div>
-              </div>
-
-              <div
-                style={{
-                  background: 'rgba(255, 255, 255, 0.03)',
-                  border: '1px solid var(--border-subtle)',
-                  borderRadius: 'var(--radius-md)',
-                  padding: '16px',
-                  textAlign: 'center',
-                }}
-              >
-                <div style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--neon-cyan)', fontFamily: 'var(--font-mono)' }}>
-                  {new Date(user.created_at).getFullYear()}
-                </div>
-                <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: '4px' }}>GitHub Member Since</div>
-              </div>
+              ))}
             </div>
           )}
 
@@ -315,9 +279,9 @@ export const GitHubSection: React.FC = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{
-                  background: 'rgba(255, 255, 255, 0.03)',
-                  border: '1px solid var(--border-medium)',
-                  borderRadius: 'var(--radius-md)',
+                  background: 'transparent',
+                  border: '1px solid rgba(255, 255, 255, 0.85)',
+                  borderRadius: '10px',
                   padding: '18px',
                   display: 'flex',
                   flexDirection: 'column',

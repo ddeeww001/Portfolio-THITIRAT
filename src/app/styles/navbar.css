@@ -8,8 +8,7 @@
   left: 50%;
   transform: translateX(-50%);
   z-index: 1000;
-  width: max-content;
-  max-width: calc(100vw - 32px);
+  width: min(1120px, calc(100vw - 32px)); /* Figma Glass Nav: 1120 wide */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -21,13 +20,10 @@
   align-items: center;
   justify-content: space-between;
   gap: 20px;
-  padding: 6px 14px 6px 8px;
+  /* Same height on desktop as on a narrowed window (~50px): 36px avatar + 6px padding top/bottom */
+  padding: 6px 10px 6px 8px;
   border-radius: var(--radius-full);
-  background: rgba(10, 10, 12, 0.88);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid var(--border-medium);
-  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.7), 0 0 20px rgba(255, 255, 255, 0.03);
+  /* surface comes from the shared .glass class */
   width: 100%;
   transition: all var(--transition-base);
 }
@@ -53,8 +49,9 @@
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  border: 2px solid #ffffff;
+  border: 1px solid var(--glass-border);
   object-fit: cover;
+  object-position: center 5%; /* portrait photo: keep the face in the circle */
   display: block;
   transition: transform var(--transition-fast), box-shadow var(--transition-fast);
 }
@@ -66,9 +63,9 @@
 
 .navbar-logo-text {
   font-family: var(--font-display);
-  font-weight: 800;
-  font-size: 1.05rem;
-  letter-spacing: -0.02em;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 1.25;
   color: var(--text-primary);
   cursor: pointer;
   display: flex;
@@ -89,34 +86,43 @@
 .navbar-desktop-menu {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 28px;
+}
+
+.navbar-links {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Compact CTA so it never makes the bar taller than the avatar */
+.navbar-cta.btn {
+  min-height: 36px;
+  padding: 8px 18px;
+  font-size: 13px;
 }
 
 .navbar-nav-btn {
   background: transparent;
   border: none;
-  color: var(--text-secondary);
-  font-family: var(--font-heading);
-  font-size: 0.82rem;
-  font-weight: 600;
-  padding: 8px 18px;
-  border-radius: var(--radius-full);
+  color: var(--text-muted);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.6;
+  padding: 4px 0;
   cursor: pointer;
-  transition: all var(--transition-fast);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
+  transition: color var(--transition-fast);
 }
 
-.navbar-nav-btn:hover {
-  color: #ffffff;
-  background: rgba(255, 255, 255, 0.08);
-}
-
+.navbar-nav-btn:hover,
 .navbar-nav-btn.active {
-  color: #0a0a0c;
-  background: #ffffff;
-  font-weight: 700;
-  box-shadow: 0 0 16px rgba(255, 255, 255, 0.25);
+  color: var(--text-primary);
 }
 
 /* Mobile Controls */
@@ -130,13 +136,13 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid var(--border-medium);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--glass-border);
   color: #ffffff;
   padding: 7px 14px;
   border-radius: var(--radius-full);
   font-size: 0.82rem;
-  font-family: var(--font-heading);
+  font-family: var(--font-mono);
   font-weight: 600;
   cursor: pointer;
   transition: all var(--transition-fast);
@@ -187,13 +193,13 @@
   right: 0;
   width: 100%;
   min-width: 220px;
-  background: rgba(14, 15, 20, 0.96);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: 1px solid var(--border-medium);
+  background: var(--glass-shine), rgba(20, 20, 26, 0.92);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
   border-radius: var(--radius-lg);
   padding: 8px;
-  box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.85), 0 0 25px rgba(255, 255, 255, 0.06);
+  box-shadow: var(--glass-shadow);
   z-index: 1001;
   animation: navbarDropdownSlide 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   transform-origin: top center;
@@ -216,8 +222,8 @@
   border: 1px solid transparent;
   border-radius: var(--radius-md);
   color: var(--text-secondary);
-  font-family: var(--font-heading);
-  font-size: 0.85rem;
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -292,6 +298,18 @@
 /* RESPONSIVE BREAKPOINTS                    */
 /* ========================================= */
 
+@media (max-width: 1100px) {
+  .navbar-links {
+    gap: 18px;
+  }
+  .navbar-desktop-menu {
+    gap: 18px;
+  }
+  .navbar-cta.btn {
+    padding: 8px 14px;
+  }
+}
+
 @media (max-width: 850px) {
   .navbar-wrapper {
     width: calc(100% - 24px);
@@ -299,7 +317,8 @@
     top: 14px;
   }
 
-  .navbar-desktop-menu {
+  .navbar-desktop-menu,
+  .navbar-actions {
     display: none;
   }
 

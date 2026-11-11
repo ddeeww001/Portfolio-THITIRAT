@@ -38,14 +38,10 @@ export const StudioFAQ: React.FC = () => {
   };
 
   return (
-    <section id="faq" className="section faq-section" style={{ background: 'var(--trionn-bg)', width: '100%' }}>
+    <section id="faq" className="section faq-section" style={{ width: '100%' }}>
       <div style={{ maxWidth: '1000px', margin: '0 auto', width: '100%' }}>
         {/* Section Header */}
         <div style={{ textAlign: 'center', marginBottom: '60px' }}>
-          <div className="availability-pill" style={{ marginBottom: '16px', display: 'inline-flex' }}>
-            <span className="status-dot"></span>
-            <span>FAQ • THE NOSY SECTION</span>
-          </div>
           <h2
             style={{
               fontSize: 'clamp(1.75rem, 5vw, 3.8rem)',
@@ -72,10 +68,9 @@ export const StudioFAQ: React.FC = () => {
             return (
               <div
                 key={idx}
+                className="card-outline"
                 style={{
-                  background: 'var(--trionn-card)',
-                  border: `1px solid ${isOpen ? '#ffffff' : 'var(--border-medium)'}`,
-                  borderRadius: 'var(--radius-lg)',
+                  border: `1px solid ${isOpen ? 'var(--accent-purple-soft)' : 'rgba(255, 255, 255, 0.85)'}`,
                   overflow: 'hidden',
                   transition: 'all 0.3s ease',
                 }}

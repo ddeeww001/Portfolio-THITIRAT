@@ -1,10 +1,6 @@
 export const StudioStatementSection = () => (
-  <section style={{ padding: '90px 20px', background: 'var(--trionn-bg-alt)', borderTop: '1px solid var(--border-subtle)', borderBottom: '1px solid var(--border-subtle)' }}>
+  <section style={{ padding: '90px 20px', background: 'rgba(10, 10, 13, 0.35)', borderTop: '1px solid var(--border-subtle)', borderBottom: '1px solid var(--border-subtle)' }}>
     <div style={{ maxWidth: '1000px', margin: '0 auto', textAlign: 'center', width: '100%' }}>
-      <div className="availability-pill" style={{ marginBottom: '20px', display: 'inline-flex' }}>
-        <span className="status-dot"></span>
-        <span>THE STUDIO PHILOSOPHY</span>
-      </div>
       <h2
         style={{
           fontSize: 'clamp(1.45rem, 4.5vw, 3.2rem)',

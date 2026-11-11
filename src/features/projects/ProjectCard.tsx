@@ -1,152 +1,81 @@
 import type { ProjectData } from './projectsData';
 import { ProjectThumbnail } from './ProjectThumbnail';
 import { playClickSound, playHoverSound } from '../../shared/lib/SoundEffects';
+import './projectCard.css';
 
 interface ProjectCardProps {
   project: ProjectData;
   onQuickView: (project: ProjectData) => void;
+  /** Figma "Project Card / Glass": Vertical = grid card, Featured = full-width hero card. */
+  layout?: 'vertical' | 'featured';
 }
 
-export const ProjectCard = ({ project, onQuickView }: ProjectCardProps) => {
+/**
+ * Outline project card (white border, 10px corners). Content order follows the Figma note:
+ * category/date → title → role → details → tags → buttons.
+ */
+export const ProjectCard = ({ project, onQuickView, layout = 'vertical' }: ProjectCardProps) => {
   const mainLink = project.link?.[0];
+  const role = Array.isArray(project.role) ? project.role.join(' • ') : project.role;
 
   return (
-    <div className="interactive-hover project-trionn-card">
-      <div>
-        {/* Category / Date Header */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-          <span
-            style={{
-              background: 'rgba(255, 255, 255, 0.06)',
-              color: '#ffffff',
-              border: '1px solid var(--border-medium)',
-              padding: '4px 12px',
-              borderRadius: 'var(--radius-full)',
-              fontSize: '0.75rem',
-              fontFamily: 'var(--font-heading)',
-              fontWeight: 700,
-            }}
-          >
-            {project.tags ? project.tags[0] : 'Project'}
-          </span>
-          <span style={{ color: 'var(--text-muted)', fontSize: '0.8rem', fontFamily: 'var(--font-mono)' }}>
-            {project.date}
-          </span>
-        </div>
-
-        {mainLink && <ProjectThumbnail url={mainLink.url} title={project.title} label={mainLink.label} />}
-
-        <h3
-          style={{
-            fontSize: 'clamp(1.15rem, 3.5vw, 1.45rem)',
-            color: 'var(--text-primary)',
-            marginBottom: '12px',
-            fontFamily: 'var(--font-display)',
-            lineHeight: 1.3,
-            wordBreak: 'break-word',
-            overflowWrap: 'break-word',
-          }}
-        >
-          {project.title}
-        </h3>
-
-        <p style={{ color: '#ffffff', fontSize: '0.9rem', fontWeight: 600, marginBottom: '16px' }}>
-          Role: {Array.isArray(project.role) ? project.role.join(' • ') : project.role}
-        </p>
-
-        {project.details?.length > 0 && (
-          <p
-            style={{
-              color: 'var(--text-secondary)',
-              fontSize: '0.92rem',
-              lineHeight: 1.5,
-              marginBottom: '20px',
-              display: '-webkit-box',
-              WebkitLineClamp: 3,
-              WebkitBoxOrient: 'vertical',
-              overflow: 'hidden',
-            }}
-          >
-            {project.details[0]}
-          </p>
+    <article className={`project-card project-card--${layout} card-outline`}>
+      <div className="project-card__thumb">
+        {project.image ? (
+          <img className="project-card__image" src={project.image} alt={project.title} loading="lazy" />
+        ) : (
+          mainLink && <ProjectThumbnail url={mainLink.url} title={project.title} label={mainLink.label} />
         )}
       </div>
 
-      <div>
-        {/* Tags */}
-        {project.tags && project.tags.length > 0 && (
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '20px' }}>
-            {project.tags.map((tag) => (
-              <span
-                key={tag}
-                style={{
-                  background: 'rgba(255, 255, 255, 0.04)',
-                  border: '1px solid var(--border-subtle)',
-                  color: 'var(--text-muted)',
-                  fontSize: '0.75rem',
-                  padding: '3px 10px',
-                  borderRadius: 'var(--radius-sm)',
-                }}
-              >
-                #{tag}
-              </span>
-            ))}
+      <div className="project-card__body">
+        <div className="project-card__top">
+          <div className="project-card__meta">
+            <span className="glass-label">{project.tags?.[0] ?? 'Project'}</span>
+            <span className="project-card__date">{project.date}</span>
           </div>
-        )}
 
-        {/* Actions */}
-        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+          <h3 className="project-card__title">{project.title}</h3>
+          <p className="project-card__role">{role}</p>
+          {project.details?.length > 0 && <p className="project-card__desc">{project.details[0]}</p>}
+
+          {project.tags && project.tags.length > 0 && (
+            <ul className="project-card__tags" aria-label="Tags">
+              {project.tags.map((tag) => (
+                <li key={tag} className="chip chip--tag">
+                  {tag}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+
+        <div className="project-card__actions">
           <button
+            className="btn btn--primary"
             onClick={() => {
               playClickSound();
               onQuickView(project);
             }}
             onMouseEnter={playHoverSound}
-            style={{
-              flex: '1 1 120px',
-              background: 'var(--primary-gradient)',
-              color: '#0b0f19',
-              border: 'none',
-              padding: '10px 14px',
-              borderRadius: 'var(--radius-full)',
-              fontWeight: 700,
-              fontSize: '0.82rem',
-              cursor: 'pointer',
-              transition: 'all 0.3s ease',
-              textAlign: 'center',
-              whiteSpace: 'nowrap',
-            }}
           >
-            QUICK VIEW ↗
+            SEE MORE
           </button>
 
           {mainLink && (
             <a
+              className="btn btn--glass"
               href={mainLink.url}
               target="_blank"
               rel="noopener noreferrer"
               onClick={playClickSound}
               onMouseEnter={playHoverSound}
-              style={{
-                flex: '0 0 auto',
-                background: 'rgba(255, 255, 255, 0.05)',
-                border: '1px solid var(--border-medium)',
-                color: 'var(--text-primary)',
-                padding: '10px 16px',
-                borderRadius: 'var(--radius-full)',
-                fontWeight: 600,
-                fontSize: '0.82rem',
-                display: 'inline-flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                whiteSpace: 'nowrap',
-              }}
             >
-              LINK
+              LIVE
             </a>
           )}
         </div>
       </div>
-    </div>
+    </article>
   );
 };

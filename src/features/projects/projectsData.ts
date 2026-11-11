@@ -15,6 +15,15 @@ export interface ProjectData {
   details: string[];
   link: LinkItem[];
   tags?: string[]; // Optional: for filtering/categorization
+  /** Static card image in /public (replaces the live website screenshot on the card). */
+  image?: string;
+  /** Screenshots shown in the SEE MORE modal — taken only from this project's own links / Drive files. */
+  gallery?: GalleryImage[];
+}
+
+export interface GalleryImage {
+  src: string;
+  caption: string;
 }
 
 export const projectsDatabase: ProjectData[] = deepFreeze([
@@ -33,7 +42,36 @@ export const projectsDatabase: ProjectData[] = deepFreeze([
     tags: ["Design", "Frontend", "UX/UI"]
   },*/
   {
+    id: 9,
+    image: "/projects/cm-craft-map-hero.webp",
+    gallery: [
+      { src: "/projects/cm-craft-map-hero.webp", caption: "Competition website — hero (cmcraftmap.camt.cmu.ac.th)" },
+      { src: "/projects/cm-craft-map-about.webp", caption: "About the competition section" },
+      { src: "/projects/cm-craft-map-milestones.webp", caption: "Key milestones timeline" },
+    ],
+    title: "CM CRAFT MAP : Chiang Mai's Digital Map Design Competition",
+    date: "2026",
+    role: "UX/UI Designer",
+    details: [
+      "Worked as UX/UI Designer on the official website of \"Chiang Mai's Digital Map Design Competition by Free Fire Craftland\", organised by NREL and CAMT, Chiang Mai University.",
+      "Contributed design ideas and worked with teammates to solve design problems throughout the project.",
+      "The site guides teams through the competition: regulations, tutorial, timeline (with add-to-calendar), registration and a TH/EN language switch."
+    ],
+    link: [
+      {
+        label: "Website",
+        url: "https://cmcraftmap.camt.cmu.ac.th/"
+      }
+    ],
+    tags: ["UX/UI", "Design"]
+  },
+  {
     id: 7,
+    image: "/projects/ethchiangmai-presentation.webp",
+    gallery: [
+      { src: "/projects/ethchiangmai-devfolio.webp", caption: "Relief Mesh on Devfolio (ETHChiangmai Hackathon 2026)" },
+      { src: "/projects/ethchiangmai-presentation.webp", caption: "Relief Mesh presentation (Canva)" },
+    ],
     title: "HACKATHON : ETHChaingmai",
     date: "28 / 01 /2026 - 3 / 02 / 2026",
     role: "Frontend",
@@ -51,6 +89,10 @@ export const projectsDatabase: ProjectData[] = deepFreeze([
   },
   {
     id: 6,
+    image: "/projects/young-dev-hackathon.webp",
+    gallery: [
+      { src: "/projects/young-dev-hackathon.webp", caption: "YOUNG DEV HACKATHON — team photo, CAMT, Chiang Mai University" },
+    ],
     title: "YOUNG DEV HACKATHON",
     date: "11 / 01 / 2026",
     role: "STAFF",
@@ -64,6 +106,14 @@ export const projectsDatabase: ProjectData[] = deepFreeze([
   },
   {
     id: 5,
+    image: "/projects/camt-web3-club-booth.webp",
+    gallery: [
+      { src: "/projects/camt-web3-club-booth.webp", caption: "Web3 Club booth at the CAMT event (photo: Chiang Mai University news)" },
+      { src: "/projects/camt-web3-exhibits.webp", caption: "Web3 exhibits — Digital Token & Learning Playground (photo: Chiang Mai University news)" },
+      { src: "/projects/camt-web3-mou-group.webp", caption: "CAMT CMU × Demo Corp. Blockchain & Web3 MOU (photo: Chiang Mai University news)" },
+      { src: "/projects/camt-web3-news-cover.webp", caption: "CMU news: CAMT CMU partners with Demo Corp. on Blockchain & Web3" },
+      { src: "/projects/web3-club-website.webp", caption: "CAMT Web3 Club website" },
+    ],
     title: "CAMT open house : WEB3 Club, Design, Blockchain, Chiang Mai",
     date: "27 / 8 / 2025",
     role: "Designer",
@@ -72,12 +122,17 @@ export const projectsDatabase: ProjectData[] = deepFreeze([
     ],
     link: [
       { label: "Booklet", url: "https://heyzine.com/flip-book/6c7e35871a.html?ref=web3.camt.cmu.ac.th" },
-      { label: "Website Web3", url: "https://web3.camt.cmu.ac.th/" }
+      { label: "Website Web3", url: "https://web3.camt.cmu.ac.th/" },
+      { label: "CMU news", url: "https://www.cmu.ac.th/th/article/9302055a-80e1-4f38-bf57-243298acb6d3" }
     ],
     tags: ["Design", "Branding", "Web3"]
   },
   {
     id: 4,
+    gallery: [
+      { src: "/projects/design-templates-light.webp", caption: "Presentation template — Light team (Canva)" },
+      { src: "/projects/design-templates-dark.webp", caption: "Presentation template — Dark team (Canva)" },
+    ],
     title: "Design templates",
     date: "4 / 11 / 2025 - 8 / 11 / 2025",
     role: "Designer",
@@ -98,6 +153,9 @@ export const projectsDatabase: ProjectData[] = deepFreeze([
   },
   {
     id: 3,
+    gallery: [
+      { src: "/projects/smart-accounting-pitch-deck.webp", caption: "Smart Accounting and Management — pitch deck (Canva)" },
+    ],
     title: "GROUP PROJECT : SMART ACCOUNTING AND MANAGEMENT",
     date: "27 / 8 / 2025",
     role: "Frontend developer, UX/UI Designer",
@@ -114,6 +172,11 @@ export const projectsDatabase: ProjectData[] = deepFreeze([
   },
   {
     id: 2,
+    gallery: [
+      { src: "/projects/central-tham-mascot.webp", caption: "Mascot design (from the project Google Drive)" },
+      { src: "/projects/central-tham-mascot-sheet.webp", caption: "Mascot contest sheet (from the project Google Drive)" },
+      { src: "/projects/central-tham-news.webp", caption: "Central Tham Mascot Contest announcement" },
+    ],
     title: "HACKATHON : Design mascot CENTRAL THAM",
     date: "30 / 10 /2025 - 31 / 10 /2025",
     role: "Design mascot",
@@ -134,6 +197,10 @@ export const projectsDatabase: ProjectData[] = deepFreeze([
   },
   {
     id: 1,
+    gallery: [
+      { src: "/projects/grand-suwan-brochure.webp", caption: "Brochure (from the project Google Drive)" },
+      { src: "/projects/grand-suwan-flowchart.webp", caption: "Quotation workflow flowchart (from the project Google Drive)" },
+    ],
     title: "GRAND SUWAN",
     date: "5 / 11 / 2024",
     role: "Fullstack Developer",
