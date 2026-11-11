@@ -45,3 +45,6 @@ certs/
 # 🧪 Test Coverage & Test Output
 coverage/
 .nyc_output/
+ 
+
+ *SECURITY.md
