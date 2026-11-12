@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
-import { existsSync } from 'node:fs';
+import { existsSync, statSync } from 'node:fs';
 import { resolve } from 'node:path';
-import { CERT_CATEGORIES, certFilePath, certMatchesCategory } from '../../../src/features/certificates/certificatesData';
+import { CERT_CATEGORIES, certFilePath, certMatchesCategory, certThumbPath } from '../../../src/features/certificates/certificatesData';
 import { profileDatabase } from '../../../src/features/profile/profileData';
 
 describe('certificatesData', () => {
@@ -10,6 +10,21 @@ describe('certificatesData', () => {
       (title) => !existsSync(resolve(__dirname, '../../../public', `.${certFilePath(title)}`)),
     );
     expect(missing).toEqual([]);
+  });
+
+  it('every certificate has a small pre-rendered thumbnail (the list never downloads PDFs)', () => {
+    const missing = profileDatabase.certifications.filter(
+      (title) => !existsSync(resolve(__dirname, '../../../public', `.${certThumbPath(title)}`)),
+    );
+    expect(missing).toEqual([]);
+  });
+
+  it('thumbnails are small WebP files (< 40 KB each)', () => {
+    for (const title of profileDatabase.certifications) {
+      const file = resolve(__dirname, '../../../public', `.${certThumbPath(title)}`);
+      expect(certThumbPath(title)).toMatch(/\/thumbs\/.+\.webp$/);
+      expect(statSync(file).size, title).toBeLessThan(40 * 1024);
+    }
   });
 
   it('starts with ALL and lists the category tabs', () => {

@@ -28,6 +28,11 @@ describe('project images (card image + SEE MORE gallery)', () => {
     expect(withImage('CAMT open house')).toBe('/projects/camt-web3-club-booth.webp');
   });
 
+  it('every project has a local cover, so no card calls the slow external screenshot API', () => {
+    const noCover = projectsDatabase.filter((p) => !(p.image ?? p.gallery?.[0]?.src)).map((p) => p.title);
+    expect(noCover).toEqual([]);
+  });
+
   it('every gallery image has a caption', () => {
     const noCaption = projectsDatabase.flatMap((p) => (p.gallery ?? []).filter((g) => !g.caption.trim()));
     expect(noCaption).toEqual([]);

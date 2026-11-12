@@ -13,7 +13,7 @@ function profileNameInHtml(mode: string): Plugin {
   };
 }
 
-// Same headers as public/_headers (production), so dev and `vite preview` behave like the live site.
+// Same security headers as vercel.json (production), so dev and `vite preview` behave like the live site.
 const SECURITY_HEADERS = {
   'X-Frame-Options': 'DENY',
   'X-Content-Type-Options': 'nosniff',

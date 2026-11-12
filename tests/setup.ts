@@ -110,18 +110,3 @@ HTMLCanvasElement.prototype.getContext = vi.fn().mockReturnValue({
 
 HTMLCanvasElement.prototype.toDataURL = vi.fn().mockReturnValue('data:image/png;base64,mockImage');
 
-// 7. Mock pdfjs-dist
-vi.mock('pdfjs-dist', () => ({
-  GlobalWorkerOptions: {
-    workerSrc: '',
-  },
-  getDocument: vi.fn().mockReturnValue({
-    promise: Promise.resolve({
-      getPage: vi.fn().mockResolvedValue({
-        getViewport: vi.fn().mockReturnValue({ width: 200, height: 150 }),
-        render: vi.fn().mockReturnValue({ promise: Promise.resolve() }),
-      }),
-    }),
-  }),
-}));
-

@@ -169,6 +169,23 @@
   }
 }
 
+/* Phones / tablets (and users who ask for less transparency): backdrop blur is one of the most
+   expensive things to paint while scrolling on mobile GPUs. Swap it for an opaque-enough tint
+   that keeps the same look and text contrast. */
+@media (max-width: 768px), (prefers-reduced-transparency: reduce) {
+  *,
+  *::before,
+  *::after {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+
+  .glass,
+  .btn--glass {
+    background: var(--glass-shine), rgba(20, 20, 26, 0.88);
+  }
+}
+
 /* ── Outline card: no glass, just a white border (project, service and contact cards) ── */
 .card-outline {
   background: transparent;

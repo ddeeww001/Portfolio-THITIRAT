@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { profileDatabase } from '../profile/profileData';
 import { useFilteredList } from '../../shared/hooks/useFilteredList';
 import { useAutoScroll } from '../../shared/hooks/useAutoScroll';
 import { playClickSound } from '../../shared/lib/SoundEffects';
 import { EmptyState, FilterTabs, SearchBox } from '../../shared/components/ListControls';
-import { CERT_CATEGORIES, certFilePath, certMatchesCategory, certMatchesSearch } from './certificatesData';
+import { CERT_CATEGORIES, certMatchesCategory, certMatchesSearch, toCertificateItem, type CertificateItem } from './certificatesData';
 import { CertificateRow } from './CertificateRow';
 import { CertificateLightbox } from './CertificateLightbox';
 import './certificate.css';
@@ -15,7 +15,8 @@ const Certificate = () => {
     matchesFilter: certMatchesCategory,
     matchesSearch: certMatchesSearch,
   });
-  const [selectedCert, setSelectedCert] = useState<{ title: string; file: string } | null>(null);
+  const [selectedCert, setSelectedCert] = useState<CertificateItem | null>(null);
+  const closeViewer = useCallback(() => setSelectedCert(null), []);
   const tickerRef = useAutoScroll<HTMLDivElement>({ speed: 25 });
 
   const scrollTicker = (direction: 1 | -1) => {
@@ -85,8 +86,7 @@ const Certificate = () => {
               {[...list.filtered, ...list.filtered].map((title, index) => (
                 <li key={`${title}-${index}`} aria-hidden={index >= list.filtered.length || undefined}>
                   <CertificateRow
-                    title={title}
-                    file={certFilePath(title)}
+                    cert={toCertificateItem(title)}
                     onOpen={setSelectedCert}
                     tabIndex={index >= list.filtered.length ? -1 : undefined}
                   />
@@ -107,7 +107,7 @@ const Certificate = () => {
         </div>
       )}
 
-      <CertificateLightbox cert={selectedCert} onClose={() => setSelectedCert(null)} />
+      <CertificateLightbox cert={selectedCert} onClose={closeViewer} />
     </section>
   );
 };

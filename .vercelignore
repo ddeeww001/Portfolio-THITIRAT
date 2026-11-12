@@ -1,0 +1,7 @@
+# Not needed to build or serve the site — skipped when Vercel uploads/builds the project.
+assets-archive/
+scripts/
+tests/
+coverage/
+*.md
+!README.md
