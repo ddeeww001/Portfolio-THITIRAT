@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { playClickSound, playHoverSound } from '../../shared/lib/SoundEffects';
 import { ENV_CONFIG } from '../../config/env';
 import { DevConfigNotice } from '../../shared/components/DevConfigNotice';
+import { cachedJson } from '../../shared/lib/cachedFetch';
 
 const githubUsername = ENV_CONFIG.githubUsername;
 const githubProfileUrl = ENV_CONFIG.githubUrl || `https://github.com/${encodeURIComponent(githubUsername)}`;
@@ -48,20 +49,18 @@ const GitHubPanel: React.FC = () => {
   const [justRefreshed, setJustRefreshed] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchGitHubData = async () => {
+  /** force = true (REFRESH button) skips the 10-minute cache; normal loads reuse it. */
+  const fetchGitHubData = async (force = false) => {
     try {
       setLoading(true);
       setError(null);
-      // Fetch User Info
-      const userRes = await fetch(`https://api.github.com/users/${githubUsername}`);
-      if (!userRes.ok) throw new Error('Failed to fetch GitHub profile');
-      const userData = await userRes.json();
+      // Profile + repositories in parallel; cached in sessionStorage to stay under GitHub's
+      // 60 requests/hour limit for anonymous visitors.
+      const [userData, reposData] = await Promise.all([
+        cachedJson<GitHubUser>(`https://api.github.com/users/${githubUsername}`, { force }),
+        cachedJson<GitHubRepo[]>(`https://api.github.com/users/${githubUsername}/repos?sort=updated&per_page=6`, { force }),
+      ]);
       setUser(userData);
-
-      // Fetch Repositories
-      const reposRes = await fetch(`https://api.github.com/users/${githubUsername}/repos?sort=updated&per_page=6`);
-      if (!reposRes.ok) throw new Error('Failed to fetch GitHub repositories');
-      const reposData = await reposRes.json();
       setRepos(reposData);
 
       setJustRefreshed(true);
@@ -85,7 +84,7 @@ const GitHubPanel: React.FC = () => {
   const handleManualRefresh = () => {
     playClickSound();
     setIsRefreshing(true);
-    fetchGitHubData();
+    fetchGitHubData(true); // explicit refresh → bypass the cache
   };
 
   return (

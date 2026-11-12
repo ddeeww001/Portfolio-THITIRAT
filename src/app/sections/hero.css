@@ -1,0 +1,168 @@
+/* Hero: name + role badge on the left, portrait on the right; stacks on narrow screens */
+
+.hero-layout {
+  width: 100%;
+  max-width: 1200px;
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr);
+  align-items: center;
+  gap: clamp(24px, 4vw, 64px);
+  z-index: 1;
+}
+
+.hero-layout__text {
+  min-width: 0;
+  text-align: left;
+}
+
+/* Name block: inline-block so the badge sits on the corner of the name, not the page */
+.hero-name-block {
+  position: relative;
+  display: inline-block;
+  margin: 0 0 28px;
+  padding-top: 1.9em; /* room for the badge (em of the badge-size text below) */
+  font-size: 1rem;
+  color: #ffffff;
+}
+
+.hero-name-block__name {
+  display: block;
+  font-family: var(--font-display);
+  font-size: clamp(2.6rem, 7.2vw, 6.2rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  overflow-wrap: anywhere;
+}
+
+.hero-name-block__badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: clamp(0.72rem, 1.4vw, 0.95rem);
+  letter-spacing: 0.16em;
+  color: #ffffff;
+  padding: 5px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.hero-layout__lead {
+  font-size: clamp(0.95rem, 1.6vw, 1.2rem);
+  color: var(--text-secondary);
+  max-width: 560px;
+  margin: 0 0 36px;
+  line-height: 1.6;
+}
+
+.hero-layout__actions {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+/* Portrait: soft glow behind the cut-out so it reads on the night sky */
+.hero-layout__photo {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.hero-layout__photo::before {
+  content: '';
+  position: absolute;
+  inset: 12% 6% 0;
+  border-radius: 50% 50% 12px 12px;
+  background: radial-gradient(ellipse at 50% 60%, rgba(153, 102, 204, 0.35), rgba(94, 199, 232, 0.12) 55%, transparent 75%);
+  filter: blur(8px);
+  pointer-events: none;
+}
+
+/* ── Engraved scan-line cloud banks rolling in from the sides ──
+   The image is dense on its LEFT edge and tapers to the right, so the right-hand bank is mirrored.
+   The clouds stay perfectly still until the page scrolls; then:
+     translate → scroll-out driven by --hero-scroll (0 → 1, set by useScrollProgressVar)
+     scale     → mirroring of the right-hand bank */
+.hero-cloud {
+  position: absolute;
+  z-index: 2; /* IN FRONT of the portrait (.hero-layout is z-index 1): the bank hides the photo's cut-off edge */
+  bottom: 0;
+  height: auto;
+  pointer-events: none;
+  user-select: none;
+  opacity: calc(0.7 * (1 - var(--hero-scroll, 0)));
+  will-change: translate, opacity;
+}
+
+.hero-cloud--right {
+  right: 0;
+  width: min(58vw, 980px);
+  scale: -1 1;
+  translate: calc(var(--hero-scroll, 0) * 50vw) 0;
+}
+
+.hero-cloud--left {
+  display: none; /* desktop: right side only */
+  left: 0;
+  width: 90vw;
+  translate: calc(var(--hero-scroll, 0) * -50vw) 0;
+}
+
+.hero-layout {
+  position: relative; /* so its z-index lifts the text + portrait above the clouds */
+}
+
+.hero-layout__photo img {
+  position: relative;
+  z-index: 1;
+  /* fade the portrait out from the bottom up, so it rises out of the cloud bank */
+  -webkit-mask-image: linear-gradient(to top, transparent 0%, rgba(0, 0, 0, 0.35) 22%, #000 55%);
+  mask-image: linear-gradient(to top, transparent 0%, rgba(0, 0, 0, 0.35) 22%, #000 55%);
+  display: block;
+  width: auto;
+  height: clamp(340px, 62vh, 620px);
+  max-width: 100%;
+  object-fit: contain;
+  object-position: bottom center;
+}
+
+@media (max-width: 860px) {
+  .hero-layout {
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
+
+  .hero-layout__text {
+    text-align: center;
+  }
+
+  .hero-layout__lead {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hero-layout__actions {
+    justify-content: center;
+  }
+
+  .hero-layout__photo img {
+    height: clamp(280px, 48vh, 420px);
+  }
+
+  /* narrow screens: a bank on each side, rolling in towards the portrait */
+  .hero-cloud--left {
+    display: block;
+    left: -38vw;
+    width: 92vw;
+    bottom: 8%;
+  }
+
+  .hero-cloud--right {
+    right: -38vw;
+    width: 92vw;
+    bottom: 0;
+  }
+}

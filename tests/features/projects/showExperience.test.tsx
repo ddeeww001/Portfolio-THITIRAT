@@ -1,4 +1,4 @@
-import { render, screen, fireEvent, act } from '@testing-library/react';
+import { render, screen, fireEvent, act, within } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import ShowExperience from '../../../src/features/projects/showExperience';
 
@@ -75,7 +75,7 @@ describe('ShowExperience Component (Frontend Test Suite)', () => {
     render(<ShowExperience />);
     expect(screen.getByText(/CM CRAFT MAP/)).toBeInTheDocument();
     expect(screen.getAllByText('UX/UI Designer').length).toBeGreaterThan(0);
-    const live = screen.getAllByRole('link', { name: /LIVE/ }).find((a) => a.getAttribute('href') === 'https://cmcraftmap.camt.cmu.ac.th/');
+    const live = screen.getAllByRole('link').find((a) => a.getAttribute('href') === 'https://cmcraftmap.camt.cmu.ac.th/');
     expect(live).toBeDefined();
   });
 
@@ -92,13 +92,33 @@ describe('ShowExperience Component (Frontend Test Suite)', () => {
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   });
 
-  it('card buttons read SEE MORE and LIVE with no arrow icons', () => {
-    render(<ShowExperience />);
+  it('card picture is the link to the project (no LIVE button); SEE MORE has no arrow', () => {
+    const { container } = render(<ShowExperience />);
     const seeMore = screen.getAllByRole('button', { name: 'SEE MORE' });
     expect(seeMore.length).toBeGreaterThan(0);
     for (const b of seeMore) expect(b.textContent).toBe('SEE MORE');
-    for (const a of screen.getAllByRole('link', { name: 'LIVE' })) expect(a.textContent).toBe('LIVE');
+    expect(screen.queryByRole('link', { name: 'LIVE' })).toBeNull();
     expect(screen.queryByRole('button', { name: /CASE STUDY/i })).toBeNull();
+
+    const thumbLinks = container.querySelectorAll<HTMLAnchorElement>('a.project-card__thumb--link');
+    expect(thumbLinks.length).toBeGreaterThan(0);
+    for (const a of thumbLinks) {
+      expect(a).toHaveAttribute('target', '_blank');
+      expect(a.getAttribute('rel')).toContain('noopener');
+      expect(a.querySelector('img, iframe, .project-card__thumb-hint')).not.toBeNull();
+    }
+  });
+
+  it('SEE MORE modal: pictures open the project link and there are no link buttons', () => {
+    render(<ShowExperience />);
+    const card = screen.getByText(/CM CRAFT MAP/).closest('article')!;
+    fireEvent.click(within(card).getByRole('button', { name: 'SEE MORE' }));
+    const dialog = screen.getByRole('dialog');
+    const pictureLinks = dialog.querySelectorAll('.modal-gallery a');
+    expect(pictureLinks.length).toBeGreaterThan(0);
+    for (const a of pictureLinks) expect(a.getAttribute('href')).toBe('https://cmcraftmap.camt.cmu.ac.th/');
+    expect(dialog.querySelector('.modal-link-btn')).toBeNull();
+    expect(within(dialog).getAllByRole('button')).toHaveLength(1); // close only
   });
 
   it('YOUNG DEV HACKATHON card shows the provided team photo', () => {
@@ -122,7 +142,7 @@ describe('ShowExperience Component (Frontend Test Suite)', () => {
     expect(screen.getByText(/CAMT Digital Contest 2026 : AI Agent Workshop/)).toBeInTheDocument();
     expect(screen.getByText('Teaching Assistant (TA)')).toBeInTheDocument();
     expect(screen.getByText(/End Game Design/)).toBeInTheDocument();
-    const hrefs = screen.getAllByRole('link', { name: 'LIVE' }).map((a) => a.getAttribute('href'));
+    const hrefs = screen.getAllByRole('link').map((a) => a.getAttribute('href'));
     expect(hrefs).toContain('https://www.youtube.com/live/skfuqIVAbzE');
     expect(hrefs.some((h) => h?.startsWith('https://camt.cmu.ac.th/'))).toBe(true);
   });

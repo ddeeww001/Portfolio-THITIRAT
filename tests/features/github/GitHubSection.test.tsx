@@ -28,6 +28,23 @@ describe('GitHubSection Component (Frontend Test Suite)', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
+    sessionStorage.clear(); // GitHub responses are cached for 10 minutes; start each test fresh
+  });
+
+  it('a second visit within 10 minutes reuses the cached data (no extra API calls)', async () => {
+    const fetchMock = vi.fn().mockImplementation((url: string) =>
+      Promise.resolve({ ok: true, json: () => Promise.resolve(url.includes('/repos') ? mockRepos : mockUser) }),
+    );
+    globalThis.fetch = fetchMock;
+
+    const first = render(<GitHubSection />);
+    await waitFor(() => expect(screen.getByText('portfolio')).toBeInTheDocument());
+    expect(fetchMock).toHaveBeenCalledTimes(2); // profile + repos
+    first.unmount();
+
+    render(<GitHubSection />);
+    await waitFor(() => expect(screen.getByText('portfolio')).toBeInTheDocument());
+    expect(fetchMock).toHaveBeenCalledTimes(2); // nothing new
   });
 
   it('renders stats and repositories upon successful API fetch', async () => {
@@ -75,8 +92,9 @@ describe('GitHubSection Component (Frontend Test Suite)', () => {
     const refreshBtn = screen.getByRole('button', { name: /REFRESH/i });
     fireEvent.click(refreshBtn);
 
+    // REFRESH bypasses the cache: 2 calls on load + 2 more on refresh
     await waitFor(() => {
-      expect(globalThis.fetch).toHaveBeenCalled();
+      expect(globalThis.fetch).toHaveBeenCalledTimes(4);
     });
   });
 

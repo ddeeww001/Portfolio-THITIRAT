@@ -26,6 +26,10 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) 
 
   if (!project) return null;
 
+  const [mainLink, ...rest] = project.link ?? [];
+  // Without a gallery the main link has no picture to sit on, so list it as a text link too.
+  const otherLinks = project.gallery?.length ? rest : project.link ?? [];
+
   return (
     <div className="modal-backdrop" onClick={onClose} role="dialog" aria-modal="true">
       <div className="modal-card" onClick={(e) => e.stopPropagation()}>
@@ -42,13 +46,19 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) 
         <h2 className="modal-title">{project.title}</h2>
         <div className="modal-date">✦ {project.date}</div>
 
-        {/* Screenshots taken only from this project's own links / Drive files */}
+        {/* Screenshots from this project's own links / Drive files. Clicking a picture opens the
+            project's main link (or the full image when the project has no link) — no extra buttons. */}
         {project.gallery && project.gallery.length > 0 && (
           <div className="modal-gallery">
             {project.gallery.map((shot) => (
               <figure key={shot.src} className="modal-gallery__item">
-                <a href={shot.src} target="_blank" rel="noopener noreferrer" aria-label={`Open full image: ${shot.caption}`}>
-                  <img src={shot.src} alt={shot.caption} loading="lazy" />
+                <a
+                  href={mainLink?.url ?? shot.src}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={mainLink ? `Open ${mainLink.label}: ${shot.caption}` : `Open full image: ${shot.caption}`}
+                >
+                  <img src={shot.src} alt={shot.caption} loading="lazy" decoding="async" />
                 </a>
                 <figcaption>{shot.caption}</figcaption>
               </figure>
@@ -71,21 +81,19 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) 
           </ul>
         </div>
 
-        {project.link && project.link.length > 0 && (
-          <div className="modal-links">
-            {project.link.map((item, index) => (
-              <a
-                key={index}
-                href={item.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="modal-link-btn"
-              >
-                <span>{item.label}</span>
-                <span style={{ fontSize: '1.1rem' }}>↗</span>
-              </a>
+        {/* Extra links (the main one is already on the pictures) as plain text links, not buttons */}
+        {otherLinks.length > 0 && (
+          <p className="modal-text-links">
+            More:{' '}
+            {otherLinks.map((item, index) => (
+              <span key={item.url}>
+                {index > 0 && ' · '}
+                <a href={item.url} target="_blank" rel="noopener noreferrer">
+                  {item.label} ↗
+                </a>
+              </span>
             ))}
-          </div>
+          </p>
         )}
       </div>
     </div>

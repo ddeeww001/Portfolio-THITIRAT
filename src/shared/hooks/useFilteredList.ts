@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useDeferredValue, useEffect, useMemo, useRef, useState } from 'react';
 import { sanitizeInput } from '../lib/security';
 
 export const ALL_FILTER = 'ALL';
@@ -46,14 +46,18 @@ export function useFilteredList<T>({ items, matchesFilter, matchesSearch, feedba
     setQueryState('');
   };
 
+  // The input updates instantly; re-filtering/re-rendering the list runs at lower priority, so typing
+  // never stutters. (Data is local — there is nothing to "lazy load" or fetch while searching.)
+  const deferredQuery = useDeferredValue(query);
+
   const filtered = useMemo(() => {
-    const q = query.trim().toLowerCase();
+    const q = deferredQuery.trim().toLowerCase();
     return items.filter(
       (item) =>
         (activeFilter === ALL_FILTER || matchesFilter(item, activeFilter)) &&
         (q === '' || matchesSearch(item, q)),
     );
-  }, [items, query, activeFilter, matchesFilter, matchesSearch]);
+  }, [items, deferredQuery, activeFilter, matchesFilter, matchesSearch]);
 
   return {
     query,

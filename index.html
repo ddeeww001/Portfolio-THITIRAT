@@ -9,15 +9,15 @@
     <meta name="description" content="Portfolio of __PROFILE_NAME__ - UX/UI Designer & Frontend Developer inspired by cutting-edge digital experiences, interactive web applications, and cyber design aesthetics." />
     
     <!-- Security Meta Headers -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'wasm-unsafe-eval' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https: blob:; connect-src 'self' https://api.github.com https://api.microlink.io https: blob:; frame-src 'self' data: blob: https:; object-src 'none'; base-uri 'self'; form-action 'self';" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https: blob:; connect-src 'self' https://api.github.com https://api.microlink.io; frame-src 'self' https:; object-src 'none'; base-uri 'self'; form-action 'self';" />
     <!-- X-Frame-Options / X-Content-Type-Options / HSTS only work as real HTTP headers
-         (browsers ignore them in <meta>), so they are set in public/_headers instead. -->
+         (browsers ignore them in <meta>), so they are set in vercel.json instead. -->
     <meta name="referrer" content="strict-origin-when-cross-origin" />
-    
-    <!-- Google Fonts: Syne, Outfit, Space Grotesk -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;600;700&family=Righteous&display=swap" rel="stylesheet">
+
+    <!-- Fonts are self-hosted (public/fonts, @font-face in src/shared/styles/fonts.css).
+         Preload the two latin files every page uses so text renders in the right font sooner. -->
+    <link rel="preload" href="/fonts/righteous-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/inconsolata-latin.woff2" as="font" type="font/woff2" crossorigin />
   </head>
   <body>
     <div id="root"></div>

@@ -1,32 +1,58 @@
+import { useEffect } from 'react';
+import type { CertificateItem } from './certificatesData';
+import { useImageLoader } from '../../shared/hooks/useImageLoader';
+
 interface CertificateLightboxProps {
-  cert: { title: string; file: string } | null;
+  cert: CertificateItem | null;
   onClose: () => void;
 }
 
-/** Full-size PDF viewer shown when a certificate card is opened. */
+/**
+ * Certificate viewer: shows a pre-rendered image (loaded with async/await, skeleton while it loads).
+ * Clicking the image opens the full PDF in a new tab — no extra button.
+ */
 export const CertificateLightbox = ({ cert, onClose }: CertificateLightboxProps) => {
+  const status = useImageLoader(cert?.preview);
+
+  useEffect(() => {
+    if (!cert) return;
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose();
+    window.addEventListener('keydown', onKey);
+    document.body.style.overflow = 'hidden';
+    return () => {
+      window.removeEventListener('keydown', onKey);
+      document.body.style.overflow = 'unset';
+    };
+  }, [cert, onClose]);
+
   if (!cert) return null;
 
   return (
-    <div className="modal-backdrop" onClick={onClose}>
-      <div className="modal-card" style={{ maxWidth: '850px', height: '85vh' }} onClick={(e) => e.stopPropagation()}>
-        <button className="modal-close-btn" onClick={onClose}>
+    <div className="modal-backdrop" onClick={onClose} role="dialog" aria-modal="true" aria-label={cert.title}>
+      <div className="modal-card cert-viewer" onClick={(e) => e.stopPropagation()}>
+        <button className="modal-close-btn" onClick={onClose} aria-label="Close certificate">
           ✕
         </button>
 
-        <h3 style={{ fontSize: '1.3rem', color: 'var(--text-primary)', marginBottom: '16px', paddingRight: '40px' }}>
-          {cert.title}
-        </h3>
+        <h3 className="cert-viewer__title">{cert.title}</h3>
 
-        <div style={{ width: '100%', height: 'calc(100% - 100px)', borderRadius: 'var(--radius-md)', overflow: 'hidden', background: '#0a0a0c' }}>
-          <iframe src={cert.file} title={cert.title} style={{ width: '100%', height: '100%', border: 'none' }} />
-        </div>
+        <a
+          className={`cert-viewer__frame is-${status}`}
+          href={cert.file}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`Open full PDF: ${cert.title}`}
+          aria-busy={status === 'loading'}
+        >
+          {status === 'loading' && <span className="cert-viewer__skeleton skeleton-box" aria-hidden="true" />}
+          {status === 'error' ? (
+            <span className="cert-viewer__fallback">Preview unavailable — click to open the PDF</span>
+          ) : (
+            <img src={cert.preview} alt={`Certificate: ${cert.title}`} decoding="async" />
+          )}
+        </a>
 
-        <div style={{ marginTop: '16px', display: 'flex', justifyContent: 'flex-end', gap: '12px' }}>
-          <a href={cert.file} target="_blank" rel="noopener noreferrer" className="modal-link-btn">
-            OPEN FULL PDF ↗
-          </a>
-        </div>
+        <p className="cert-viewer__hint">Click the certificate to open the full PDF</p>
       </div>
     </div>
   );

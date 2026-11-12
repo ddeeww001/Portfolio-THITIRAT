@@ -1,4 +1,4 @@
-import { render, screen, fireEvent, act } from '@testing-library/react';
+import { render, screen, fireEvent, act, within } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import Certificate from '../../../src/features/certificates/certificate';
 
@@ -74,9 +74,31 @@ describe('Certificate Component (Frontend Test Suite)', () => {
     expect(previewButtons.length).toBeGreaterThan(0);
 
     fireEvent.click(previewButtons[0]);
-    expect(screen.getByRole('button', { name: '✕' })).toBeInTheDocument();
+    const close = screen.getByRole('button', { name: 'Close certificate' });
+    expect(close).toBeInTheDocument();
 
-    fireEvent.click(screen.getByRole('button', { name: '✕' }));
-    expect(screen.queryByRole('button', { name: '✕' })).not.toBeInTheDocument();
+    fireEvent.click(close);
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+  });
+
+  it('viewer shows an image (no PDF iframe) and the image itself links to the full PDF — no extra button', async () => {
+    render(<Certificate />);
+    fireEvent.click(screen.getAllByRole('button', { name: /Open certificate:/i })[0]);
+    const dialog = screen.getByRole('dialog');
+
+    expect(dialog.querySelector('iframe')).toBeNull(); // framing PDFs is blocked by X-Frame-Options
+    const link = within(dialog).getByRole('link', { name: /Open full PDF:/ });
+    expect(link.getAttribute('href')).toMatch(/\/certify_LifeLongLearning\/.+\.pdf$/);
+    expect(link).toHaveAttribute('target', '_blank');
+    expect(within(dialog).queryByText(/OPEN FULL PDF ↗/)).toBeNull();
+    // only the close button remains
+    expect(within(dialog).getAllByRole('button')).toHaveLength(1);
+  });
+
+  it('closes the viewer with Escape', () => {
+    render(<Certificate />);
+    fireEvent.click(screen.getAllByRole('button', { name: /Open certificate:/i })[0]);
+    fireEvent.keyDown(window, { key: 'Escape' });
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   });
 });

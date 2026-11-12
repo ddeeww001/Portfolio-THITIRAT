@@ -272,6 +272,16 @@
   height: 68px;
   border-radius: 10px;
   overflow: hidden;
+  background: rgba(255, 255, 255, 0.9); /* placeholder until the lazy image arrives */
+}
+
+.cert-row__thumb-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 .cert-row__text {
@@ -300,17 +310,83 @@
   color: var(--text-muted);
 }
 
-.cert-row__cta {
-  flex-shrink: 0;
-}
-
 @media (max-width: 480px) {
   .cert-row__thumb {
     width: 72px;
     height: 52px;
   }
+}
 
-  .cert-row__cta {
-    display: none;
-  }
+/* ── Certificate viewer: the image itself is the link to the full PDF ── */
+.cert-viewer {
+  max-width: 900px;
+  width: 100%;
+}
+
+.cert-viewer__title {
+  font-family: var(--font-display);
+  font-size: clamp(1.1rem, 2.4vw, 1.4rem);
+  color: var(--text-primary);
+  margin: 0 0 16px;
+  padding-right: 48px;
+}
+
+.cert-viewer__frame {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 1.414 / 1; /* A4 landscape — space is reserved, so nothing jumps when the image arrives */
+  border-radius: 10px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  cursor: zoom-in;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.cert-viewer__frame:hover,
+.cert-viewer__frame:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+}
+
+.cert-viewer__frame img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.cert-viewer__frame.is-loaded img {
+  opacity: 1;
+}
+
+.cert-viewer__skeleton {
+  position: absolute;
+  inset: 0;
+  opacity: 0.35;
+}
+
+.cert-viewer__fallback {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  text-align: center;
+  font-family: var(--font-mono);
+  color: #111;
+}
+
+.cert-viewer__hint {
+  margin: 12px 0 0;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
 }

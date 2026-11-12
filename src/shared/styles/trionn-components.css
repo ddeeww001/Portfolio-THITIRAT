@@ -124,14 +124,19 @@
   animation: scaleUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
+/* Sticky: stays in the card's top-right corner while the modal content scrolls,
+   so it can be clicked without scrolling back up. Negative margins pull it into the
+   corner padding and stop it from pushing the content down. */
 .modal-close-btn {
-  position: absolute;
-  top: 24px;
-  right: 24px;
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  margin: -16px -16px -24px auto;
+  flex-shrink: 0;
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(20, 20, 26, 0.85); /* solid enough to stay visible over photos */
   border: 1px solid var(--border-medium);
   color: var(--text-primary);
   font-size: 1.2rem;
