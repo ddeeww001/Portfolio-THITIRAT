@@ -137,6 +137,42 @@ describe('ShowExperience Component (Frontend Test Suite)', () => {
     expect(dialog.querySelector('figcaption')?.textContent).toMatch(/team photo/i);
   });
 
+  it('Smart Accounting card leads with the Mae Hoi Ngoen School summary; SEE MORE shows Problem → Result', () => {
+    render(<ShowExperience />);
+    const card = screen.getByRole('heading', { name: /SMART ACCOUNTING AND MANAGEMENT/ }).closest('article')!;
+    expect(card.textContent).toMatch(/student-run shop at Mae Hoi Ngoen School/);
+    fireEvent.click(within(card).getByRole('button', { name: 'SEE MORE' }));
+    const dialog = screen.getByRole('dialog');
+    for (const label of ['Problem:', 'Research:', 'Design:', 'Result:']) {
+      expect(dialog.textContent).toContain(label);
+    }
+  });
+
+  it('CM CRAFT MAP is ONE card (the Free Fire map-building website was merged into it)', () => {
+    const { container } = render(<ShowExperience />);
+    expect(screen.queryByRole('heading', { name: /Free Fire Map-Building Competition Website/ })).toBeNull();
+    const toSite = [...container.querySelectorAll('a.project-card__thumb--link')].filter(
+      (a) => a.getAttribute('href') === 'https://cmcraftmap.camt.cmu.ac.th/',
+    );
+    expect(toSite).toHaveLength(1);
+
+    const card = screen.getByRole('heading', { name: /CM CRAFT MAP/ }).closest('article')!;
+    expect(card.textContent).toMatch(/One website with all the news and rules for the Free Fire map-building competition/);
+    fireEvent.click(within(card).getByRole('button', { name: 'SEE MORE' }));
+    const labels = [...screen.getByRole('dialog').querySelectorAll('.modal-details-list strong')].map((s) => s.textContent);
+    expect(labels).toEqual(['Problem:', 'Solution:', 'Feedback:']);
+  });
+
+  it('every project card leads with a short summary and SEE MORE uses labelled sections', () => {
+    render(<ShowExperience />);
+    const card = screen.getByRole('heading', { name: /ETHChaingmai/ }).closest('article')!;
+    expect(card.textContent).toMatch(/Relief Mesh: a communication tool for disasters/);
+    expect(card.textContent).toContain('Frontend Developer • Idea & Design');
+    fireEvent.click(within(card).getByRole('button', { name: 'SEE MORE' }));
+    const labels = [...screen.getByRole('dialog').querySelectorAll('.modal-details-list strong')].map((s) => s.textContent);
+    expect(labels).toEqual(['Problem:', 'Idea:', 'My role:']);
+  });
+
   it('lists the AI Agent TA role and the Esports end game design with their links', () => {
     render(<ShowExperience />);
     expect(screen.getByText(/CAMT Digital Contest 2026 : AI Agent Workshop/)).toBeInTheDocument();

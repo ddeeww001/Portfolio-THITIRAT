@@ -73,8 +73,11 @@ export const projectsDatabase: ProjectData[] = deepFreeze([
       { src: "/projects/camt-digital-contest-ai-workshops.webp", caption: "AI Revolution Workshops at CAMT Digital Contest 2026 (photo: CAMT CMU news)" },
     ],
     details: [
-      "Served as a TA (mentor) in the AI Agent activity, part of CAMT Digital Contest 2026 at the College of Arts, Media and Technology, Chiang Mai University.",
-      "Taught participants how to install and set up the programs needed to use AI Agents."
+      // details[0] = short summary on the card; all lines are listed in SEE MORE.
+      "Helped participants install, use and build on AI Agents as a TA in the AI Agent workshop at CAMT Digital Contest 2026, Chiang Mai University.",
+      "Setup: I taught participants how to install and set up the programs needed to use AI Agents on their own devices.",
+      "Everyday use: I gave tips on how to let AI help with everyday tasks.",
+      "Going further: I explained more features on the device, so participants could go deeper and use AI Agents in their own projects."
     ],
     link: [
       { label: "CAMT news", url: "https://camt.cmu.ac.th/camt-%E0%B9%80%E0%B8%94%E0%B8%B4%E0%B8%99%E0%B8%AB%E0%B8%99%E0%B9%89%E0%B8%B2%E0%B8%AA%E0%B8%A3%E0%B9%89%E0%B8%B2%E0%B8%87%E0%B9%81%E0%B8%A3%E0%B8%87%E0%B8%9A%E0%B8%B1%E0%B8%99%E0%B8%94%E0%B8%B2/" }
@@ -82,6 +85,7 @@ export const projectsDatabase: ProjectData[] = deepFreeze([
     tags: ["Teaching", "Workshop", "AI"]
   },
   {
+    // Also known as the CMU Esports "Free Fire Map-Building Competition Website" (merged card)
     id: 9,
     image: "/projects/cm-craft-map-hero.webp",
     gallery: [
@@ -93,9 +97,11 @@ export const projectsDatabase: ProjectData[] = deepFreeze([
     date: "2026",
     role: "UX/UI Designer",
     details: [
-      "Worked as UX/UI Designer on the official website of \"Chiang Mai's Digital Map Design Competition by Free Fire Craftland\", organised by NREL and CAMT, Chiang Mai University.",
-      "Contributed design ideas and worked with teammates to solve design problems throughout the project.",
-      "The site guides teams through the competition: regulations, tutorial, timeline (with add-to-calendar), registration and a TH/EN language switch."
+      // details[0] = short summary on the card; all lines are listed in SEE MORE.
+      "One website with all the news and rules for the Free Fire map-building competition of the Chiang Mai University esports club.",
+      "Problem: Players had to look for news on Facebook and several other websites, and organizers had to post the same information in many places.",
+      "Solution: We put all the information (schedule, rules and announcements) on one website, so players always know where to look.",
+      "Feedback: I listened to the organizers and changed the design based on their feedback, so the website could reach more players."
     ],
     link: [
       {
@@ -103,7 +109,7 @@ export const projectsDatabase: ProjectData[] = deepFreeze([
         url: "https://cmcraftmap.camt.cmu.ac.th/"
       }
     ],
-    tags: ["UX/UI", "Design"]
+    tags: ["UX/UI", "Esports", "Design"]
   },
   {
     id: 7,
@@ -114,9 +120,13 @@ export const projectsDatabase: ProjectData[] = deepFreeze([
     ],
     title: "HACKATHON : ETHChaingmai",
     date: "28 / 01 /2026 - 3 / 02 / 2026",
-    role: "Frontend",
+    role: ["Frontend Developer", "Idea & Design"],
     details: [
-      "My role involved customizing specific parts of the homepage design. Additionally, I implemented the map feature by connecting to an API to fetch and render location"
+      // details[0] = short summary on the card; all lines are listed in SEE MORE.
+      "Relief Mesh: a communication tool for disasters, when phone networks fail and it is hard to call for help.",
+      "Problem: During a disaster, central phone and internet networks can go down, so people cannot contact rescuers or ask for help.",
+      "Idea: Instead of depending on one central signal source, devices share the connection with each other (a decentralised mesh). People can also donate to cover relief costs.",
+      "My role: I shared ideas during brainstorming, helped design the experience, customised parts of the homepage, and built the map feature that fetches and shows locations from an API."
     ],
     link: [
       { label: "Project", url: "https://devfolio.co/projects/relief-mesh-7406" },
@@ -135,9 +145,13 @@ export const projectsDatabase: ProjectData[] = deepFreeze([
     ],
     title: "YOUNG DEV HACKATHON",
     date: "11 / 01 / 2026",
-    role: "STAFF",
+    role: "Staff & Design Mentor",
     details: [
-      "Instructed participants on the web design process, specifically covering user flows, wireframes, and essential design basics."
+      // details[0] = short summary on the card; all lines are listed in SEE MORE.
+      "Taught young participants how to design websites and how to think about the people who will use them.",
+      "What I taught: the web design process, including user flows, wireframes and basic design principles.",
+      "Focus on users: I encouraged participants to think about who will use their website and what those people need.",
+      "Impact: The competition helped participants discover what they enjoy and what they are good at."
     ],
     link: [
       { label: "Facebook", url: "https://www.facebook.com/share/p/1BgvpSZCgo/" }
@@ -158,7 +172,11 @@ export const projectsDatabase: ProjectData[] = deepFreeze([
     date: "27 / 8 / 2025",
     role: "Designer",
     details: [
-      "I was responsible for the end-to-end booklet design, logo creation, and design poster customization"
+      // details[0] = short summary on the card; all lines are listed in SEE MORE.
+      "A booklet and visual materials that help visitors understand Web3 and blockchain at the CAMT Open House.",
+      "Goal: Web3 is a new and complex topic, so visitors needed simple materials to understand how it works.",
+      "My role: I was part of the team that made the booklet explaining how Web3 works, and I designed its pages so visitors could understand the content as easily as possible.",
+      "Also: I created the logo and customised the event posters."
     ],
     link: [
       { label: "Booklet", url: "https://heyzine.com/flip-book/6c7e35871a.html?ref=web3.camt.cmu.ac.th" },
@@ -177,7 +195,11 @@ export const projectsDatabase: ProjectData[] = deepFreeze([
     date: "4 / 11 / 2025 - 8 / 11 / 2025",
     role: "Designer",
     details: [
-      "Design templates light team and dark team for COLLEGE OF ARTS, MEDIA AND TECHNOLOGY"
+      // details[0] = short summary on the card; all lines are listed in SEE MORE.
+      "Reusable presentation templates (light and dark versions) for the College of Arts, Media and Technology.",
+      "Problem: The department and faculty often had to design new slides again and again for different events.",
+      "Solution: I designed light and dark templates that staff can reuse for many presentations.",
+      "Result: Less repeated design work, and presentations that look consistent across events."
     ],
     link: [
       { 
@@ -200,8 +222,12 @@ export const projectsDatabase: ProjectData[] = deepFreeze([
     date: "27 / 8 / 2025",
     role: "Frontend developer, UX/UI Designer",
     details: [
-      "Created the design for students of Mae Hoi Ngoen School (โรงเรียนแม่ฮ้อยเงิน), the end users of this accounting and management system.",
-      "Designed the user interface for product selection and customized dashboards to track sales and restock activities."
+      // details[0] = short summary on the card; all lines are listed in SEE MORE.
+      "A sales and stock system for the student-run shop at Mae Hoi Ngoen School (โรงเรียนแม่ฮ้อยเงิน), so teachers no longer record every sale by hand.",
+      "Problem: Teachers had to write down every sale and stock change in the school shop by hand, which took a lot of their time.",
+      "Research: I visited the school to listen to teachers and students, and practised asking questions to understand what they really needed.",
+      "Design: I designed the product-selection screen and dashboards that show sales and tell the team when items need restocking.",
+      "Result: Teachers spend less time on bookkeeping, and students practise selling with a real tool, like in a real job."
     ],
     link: [
       { 
@@ -246,10 +272,11 @@ export const projectsDatabase: ProjectData[] = deepFreeze([
     date: "5 / 11 / 2024",
     role: "Fullstack Developer",
     details: [
-      "Created website, Quotation, and LINE api for Family Business",
-      "Platform: Built and designed on Wix.",
-      "Seamlessly linked Quotation Forms with LINE Messaging API/Notify.",
-      "Efficiency: Automated the data flow to ensure consistent and timely responses to customer leads."
+      // details[0] = short summary on the card; all lines are listed in SEE MORE.
+      "A website, quotation form and LINE integration for a family house-building business, which saves admin time.",
+      "Problem: The admin had to contact each customer and fill in many details by hand, and customers asked a lot of questions about building and decorating a house.",
+      "Solution: I built and designed the website on Wix, with a quotation form that collects the customer's details and sends them to LINE (Messaging API / Notify).",
+      "Result: Less manual work for the admin, faster and more consistent replies, and customers can find answers on the website instead of asking every question."
     ],
     link: [
       { 
