@@ -157,10 +157,10 @@ describe('ShowExperience Component (Frontend Test Suite)', () => {
     expect(toSite).toHaveLength(1);
 
     const card = screen.getByRole('heading', { name: /CM CRAFT MAP/ }).closest('article')!;
-    expect(card.textContent).toMatch(/One website with all the news and rules for the Free Fire map-building competition/);
+    expect(card.textContent).toMatch(/One official website with everything teams need/);
     fireEvent.click(within(card).getByRole('button', { name: 'SEE MORE' }));
     const labels = [...screen.getByRole('dialog').querySelectorAll('.modal-details-list strong')].map((s) => s.textContent);
-    expect(labels).toEqual(['Problem:', 'Solution:', 'Feedback:']);
+    expect(labels).toEqual(['Problem:', 'Solution:', 'My role:', 'Helped:']);
   });
 
   it('every project card leads with a short summary and SEE MORE uses labelled sections', () => {
@@ -171,6 +171,14 @@ describe('ShowExperience Component (Frontend Test Suite)', () => {
     fireEvent.click(within(card).getByRole('button', { name: 'SEE MORE' }));
     const labels = [...screen.getByRole('dialog').querySelectorAll('.modal-details-list strong')].map((s) => s.textContent);
     expect(labels).toEqual(['Problem:', 'Idea:', 'My role:']);
+  });
+
+  it('AI Agent Workshop SEE MORE shows Setup and Impact', () => {
+    render(<ShowExperience />);
+    const card = screen.getByRole('heading', { name: /AI Agent Workshop/ }).closest('article')!;
+    fireEvent.click(within(card).getByRole('button', { name: 'SEE MORE' }));
+    const labels = [...screen.getByRole('dialog').querySelectorAll('.modal-details-list strong')].map((s) => s.textContent);
+    expect(labels).toEqual(['Setup:', 'Impact:']);
   });
 
   it('lists the AI Agent TA role and the Esports end game design with their links', () => {

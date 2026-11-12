@@ -76,8 +76,7 @@ export const projectsDatabase: ProjectData[] = deepFreeze([
       // details[0] = short summary on the card; all lines are listed in SEE MORE.
       "Helped participants install, use and build on AI Agents as a TA in the AI Agent workshop at CAMT Digital Contest 2026, Chiang Mai University.",
       "Setup: I taught participants how to install and set up the programs needed to use AI Agents on their own devices.",
-      "Everyday use: I gave tips on how to let AI help with everyday tasks.",
-      "Going further: I explained more features on the device, so participants could go deeper and use AI Agents in their own projects."
+      "Impact: I shared new ways of using AI, giving participants a starting point they can build on their own work."
     ],
     link: [
       { label: "CAMT news", url: "https://camt.cmu.ac.th/camt-%E0%B9%80%E0%B8%94%E0%B8%B4%E0%B8%99%E0%B8%AB%E0%B8%99%E0%B9%89%E0%B8%B2%E0%B8%AA%E0%B8%A3%E0%B9%89%E0%B8%B2%E0%B8%87%E0%B9%81%E0%B8%A3%E0%B8%87%E0%B8%9A%E0%B8%B1%E0%B8%99%E0%B8%94%E0%B8%B2/" }
@@ -98,10 +97,11 @@ export const projectsDatabase: ProjectData[] = deepFreeze([
     role: "UX/UI Designer",
     details: [
       // details[0] = short summary on the card; all lines are listed in SEE MORE.
-      "One website with all the news and rules for the Free Fire map-building competition of the Chiang Mai University esports club.",
-      "Problem: Players had to look for news on Facebook and several other websites, and organizers had to post the same information in many places.",
-      "Solution: We put all the information (schedule, rules and announcements) on one website, so players always know where to look.",
-      "Feedback: I listened to the organizers and changed the design based on their feedback, so the website could reach more players."
+      "One official website with everything teams need for \"Chiang Mai's Digital Map Design Competition by Free Fire Craftland\", organised by NREL and CAMT, Chiang Mai University.",
+      "Problem: Competition news was spread across Facebook and other websites, so teams had to search in many places and organisers had to post the same information again and again.",
+      "Solution: We put everything in one place — regulations, tutorial, timeline (with add-to-calendar), registration and a TH/EN language switch.",
+      "My role: As UX/UI Designer, I contributed design ideas and worked with teammates to solve design problems throughout the project.",
+      "Helped: I designed the UI for people joining the competition can understand the website and find what they need as quickly as possible."
     ],
     link: [
       {
