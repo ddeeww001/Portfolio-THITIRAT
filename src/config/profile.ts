@@ -16,7 +16,7 @@ export const PUBLIC_PROFILE = Object.freeze({
   instagramUsername: 'ddeeww_o_o',
   instagramUrl: 'https://instagram.com/ddeeww_o_o',
   facebookName: 'Dew Chobkinkaitod',
-  facebookUrl: 'https://facebook.com/dew.chobkinkaitod',
+  facebookUrl: 'https://www.facebook.com/DDEEWWToT/',
 });
 
 export type PublicProfile = typeof PUBLIC_PROFILE;
