@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { hasContactChannels, profileDatabase } from '../profile/profileData';
-import { DevConfigNotice } from '../../shared/components/DevConfigNotice';
-import { CheckIcon, CopyIcon, MailIcon, PhoneIcon } from '../../shared/components/ContactIcons';
+import { MailIcon, PhoneIcon } from '../../shared/components/ContactIcons';
 import { socialIcons } from './socialIcons';
 
 const iconButtonStyle: React.CSSProperties = {
@@ -19,18 +18,10 @@ const iconButtonStyle: React.CSSProperties = {
 };
 
 export const ContactSection: React.FC = () => {
-  const [copied, setCopied] = useState(false);
   const { email, phone } = profileDatabase;
 
-  const handleCopyEmail = () => {
-    navigator.clipboard.writeText(email);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2500);
-  };
-
-  // Nothing to contact through: hide the whole section on the live site (no empty card);
-  // in development keep it and say which .env keys are missing.
-  if (!hasContactChannels && !import.meta.env.DEV) return null;
+  // Nothing to contact through: hide the whole section (no empty card).
+  if (!hasContactChannels) return null;
 
   return (
     <section id="contact" className="section contact-section" style={{ position: 'relative', width: '100%' }}>
@@ -64,31 +55,15 @@ export const ContactSection: React.FC = () => {
             padding: 'clamp(24px, 5vw, 10px) clamp(16px, 4vw, 40px)',
             display: 'flex',
             flexDirection: 'column',
-            position: 'relative', // anchors the "copied" message without adding height
             overflow: 'hidden',
           }}
         >
-          {!hasContactChannels && (
-            <DevConfigNotice keys={['VITE_USER_EMAIL', 'VITE_USER_PHONE', 'VITE_GITHUB_USERNAME', 'VITE_LINE_ID', 'VITE_INSTAGRAM_URL', 'VITE_FACEBOOK_URL']} />
-          )}
-          {/* Contact channels — icons only; values from .env are never printed on the page */}
+          {/* Contact channels — icons only; email / phone / handles are never printed as text */}
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', justifyContent: 'center' }}>
             {email && (
               <a href={`mailto:${email}`} aria-label="Send email" title="Send email" style={iconButtonStyle} className="interactive-hover">
                 <MailIcon />
               </a>
-            )}
-            {email && (
-              <button
-                type="button"
-                onClick={handleCopyEmail}
-                aria-label={copied ? 'Email copied' : 'Copy email'}
-                title={copied ? 'Copied' : 'Copy email'}
-                style={{ ...iconButtonStyle, cursor: 'pointer' }}
-                className="interactive-hover"
-              >
-                {copied ? <CheckIcon /> : <CopyIcon />}
-              </button>
             )}
             {phone && (
               <a href={`tel:${phone.replace(/[^\d+]/g, '')}`} aria-label="Call" title="Call" style={iconButtonStyle} className="interactive-hover">
@@ -116,11 +91,6 @@ export const ContactSection: React.FC = () => {
               );
             })}
           </div>
-
-          {/* Overlays the bottom padding, so space above and below the icons stays equal */}
-          <p role="status" aria-live="polite" style={{ position: 'absolute', left: 0, right: 0, bottom: '4px', textAlign: 'center', margin: 0, fontSize: '0.75rem', lineHeight: 1.2, color: 'var(--text-secondary)', fontFamily: 'var(--font-mono)', pointerEvents: 'none' }}>
-            {copied ? '✓ COPIED TO CLIPBOARD' : ''}
-          </p>
         </div>
       </div>
     </section>

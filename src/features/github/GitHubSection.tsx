@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { playClickSound, playHoverSound } from '../../shared/lib/SoundEffects';
-import { ENV_CONFIG } from '../../config/env';
-import { DevConfigNotice } from '../../shared/components/DevConfigNotice';
+import { PUBLIC_PROFILE } from '../../config/profile';
 import { cachedJson } from '../../shared/lib/cachedFetch';
 
-const githubUsername = ENV_CONFIG.githubUsername;
-const githubProfileUrl = ENV_CONFIG.githubUrl || `https://github.com/${encodeURIComponent(githubUsername)}`;
+const githubUsername = PUBLIC_PROFILE.githubUsername;
+const githubProfileUrl = PUBLIC_PROFILE.githubUrl || `https://github.com/${encodeURIComponent(githubUsername)}`;
 
 interface GitHubUser {
   login: string;
@@ -28,18 +27,8 @@ interface GitHubRepo {
   fork: boolean;
 }
 
-/**
- * Without VITE_GITHUB_USERNAME there is nothing to load: the live site hides the panel,
- * development shows which .env key is missing.
- */
-export const GitHubSection: React.FC = () => {
-  if (githubUsername) return <GitHubPanel />;
-  return import.meta.env.DEV ? (
-    <div className="card-outline" style={{ padding: '24px' }}>
-      <DevConfigNotice keys={['VITE_GITHUB_USERNAME']} />
-    </div>
-  ) : null;
-};
+/** The username comes from src/config/profile.ts; if it is ever emptied, the panel is simply hidden. */
+export const GitHubSection: React.FC = () => (githubUsername ? <GitHubPanel /> : null);
 
 const GitHubPanel: React.FC = () => {
   const [user, setUser] = useState<GitHubUser | null>(null);

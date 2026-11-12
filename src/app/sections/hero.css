@@ -81,15 +81,16 @@
   pointer-events: none;
 }
 
-/* ── Engraved scan-line cloud banks rolling in from the sides ──
-   The image is dense on its LEFT edge and tapers to the right, so the right-hand bank is mirrored.
-   The clouds stay perfectly still until the page scrolls; then:
+/* ── Engraved scan-line clouds beside the portrait ──
+   The image is a complete cloud (closed on every side, bulky on its left, tapering right); the
+   right-hand one is mirrored. Sizes keep each cloud fully on screen with a gap to the edge, so it is
+   never cut off. They stay perfectly still until the page scrolls; then:
      translate → scroll-out driven by --hero-scroll (0 → 1, set by useScrollProgressVar)
-     scale     → mirroring of the right-hand bank */
+     scale     → mirroring of the right-hand cloud */
 .hero-cloud {
   position: absolute;
-  z-index: 2; /* IN FRONT of the portrait (.hero-layout is z-index 1): the bank hides the photo's cut-off edge */
-  bottom: 0;
+  z-index: 2; /* IN FRONT of the portrait (.hero-layout is z-index 1) */
+  bottom: 3%;
   height: auto;
   pointer-events: none;
   user-select: none;
@@ -98,16 +99,16 @@
 }
 
 .hero-cloud--right {
-  right: 0;
-  width: min(58vw, 980px);
+  right: 2vw;
+  width: min(44vw, 760px);
   scale: -1 1;
   translate: calc(var(--hero-scroll, 0) * 50vw) 0;
 }
 
 .hero-cloud--left {
   display: none; /* desktop: right side only */
-  left: 0;
-  width: 90vw;
+  left: 2vw;
+  width: 44vw;
   translate: calc(var(--hero-scroll, 0) * -50vw) 0;
 }
 
@@ -153,6 +154,8 @@
   }
 
   /* narrow screens: a bank on each side, rolling in towards the portrait */
+  /* narrow screens: a large cloud on each side of the portrait (same size as before), rolling in
+     from the screen edges */
   .hero-cloud--left {
     display: block;
     left: -38vw;

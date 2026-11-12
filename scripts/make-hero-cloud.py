@@ -45,6 +45,14 @@ def billows():
     for _ in range(3):
         r = rnd.uniform(110, 160)
         out.append((rnd.uniform(40, 420), rnd.uniform(90, 230), r))
+    # Keep every puff fully inside the canvas: the cloud is a complete, closed shape on all sides,
+    # so the page can show it whole (nothing is cut off at the image or screen edge).
+    # (scale + shift the whole group instead of clamping single puffs, which would flatten the edge)
+    m = 14
+    x0 = min(cx - r for cx, cy, r in out); x1 = max(cx + r for cx, cy, r in out)
+    y0 = min(cy - r / 1.08 for cx, cy, r in out); y1 = max(cy + r / 1.08 for cx, cy, r in out)
+    k = min((W - 2 * m) / (x1 - x0), (H - 2 * m) / (y1 - y0))
+    out = [(m + (cx - x0) * k, m + (cy - y0) * k, r * k) for cx, cy, r in out]
     out.sort(key=lambda b: b[1] - b[2] * 0.2)       # draw back-to-front
     return out
 
@@ -87,8 +95,11 @@ def main():
     img = Image.new("L", (w, h), 0)
     draw = ImageDraw.Draw(img)
 
-    # 1) scan lines: thickness follows the shading; dark areas break into dashes
+    # 1) scan lines: one CONTINUOUS line across every run of cloud (no dashes / gaps, which read as
+    #    "broken"); only the thickness and brightness follow the shading — thick on lit crowns,
+    #    thin (never missing) in the shadows.
     pitch = PITCH * SS
+    step = 4 * SS                                  # thickness is re-evaluated every 4px along the line
     for y0 in range(0, h, pitch):
         row_mask = mask[y0]
         row_shade = shade[y0]
@@ -100,33 +111,28 @@ def main():
             start = x
             while x < w and row_mask[x]:
                 x += 1
-            seg_shade = row_shade[start:x]
-            # walk the run, emitting dashes whose thickness tracks the local shade
-            sx = start
-            while sx < x:
-                s = float(seg_shade[sx - start])
-                thick = 0.8 + 4.2 * s ** 1.2         # px (final)
-                length = int(rnd.uniform(30, 160) * SS * (0.3 + s))
-                ex = min(x, sx + max(length, 6 * SS))
-                if s > 0.3 or (s > 0.08 and rnd.random() < s * 2):  # shadows: sparse, broken
-                    half = thick * SS / 2
-                    draw.rectangle([sx, y0 - half, ex, y0 + half], fill=int(150 + 105 * s))
-                gap = int(rnd.uniform(2, 14) * SS * (1.3 - s)) if s < 0.6 else int(rnd.uniform(0, 3) * SS)
-                sx = ex + gap
+            for sx in range(start, x, step):
+                ex = min(x, sx + step)
+                s = float(row_shade[sx:ex].mean())
+                thick = 1.1 + 3.9 * s ** 1.2         # px (final): 1.1 in shadow → 5 on crowns
+                half = thick * SS / 2
+                draw.rectangle([sx, y0 - half, ex, y0 + half], fill=int(165 + 90 * s))
 
     # 2) engraved contours (already occluded back-to-front)
     img = Image.fromarray(np.maximum(np.asarray(img), contour))
 
-    # keep everything inside the silhouette, fade the far right and bottom out
+    # keep everything inside the silhouette; the tapered right side gets slightly lighter
     alpha = np.asarray(img, np.float32) * mask
-    fade_x = np.clip(1.15 - xx / w, 0, 1) ** 0.6
-    fade_y = np.clip((h - yy) / (h * 0.18), 0, 1)
-    alpha = alpha * fade_x * fade_y
+    fade_x = 0.55 + 0.45 * np.clip(1.1 - xx / w, 0, 1)
+    alpha = alpha * fade_x
 
     rgba = np.zeros((h, w, 4), np.uint8)
     rgba[..., :3] = 255
     rgba[..., 3] = np.clip(alpha, 0, 255).astype(np.uint8)
     out = Image.fromarray(rgba).resize((W, H), Image.LANCZOS)
+    # trim the empty margin around the cloud (+ a few px of breathing room)
+    l, t, r, b = out.getchannel("A").getbbox()
+    out = out.crop((max(0, l - 6), max(0, t - 6), min(W, r + 6), min(H, b + 6)))
     OUT.parent.mkdir(parents=True, exist_ok=True)
     out.save(OUT, "WEBP", quality=88, method=6)
     print(f"wrote {OUT} ({OUT.stat().st_size / 1024:.0f} KB)")

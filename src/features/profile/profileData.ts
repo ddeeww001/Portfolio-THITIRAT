@@ -17,7 +17,6 @@ export interface ProfileData {
   id: number;
   name: string;
   role: string[];
-  birthday: string;
   email: string;
   phone: string;
   socials: SocialLink[];
@@ -29,39 +28,39 @@ export interface ProfileData {
   profileImage?: string;
 }
 
-// Environment config now lives in src/config/env.ts; re-exported here for existing imports.
+// Public data is in src/config/profile.ts; only the phone number comes from .env (src/config/env.ts).
 import { ENV_CONFIG } from '../../config/env';
+import { PUBLIC_PROFILE } from '../../config/profile';
 export { ENV_CONFIG };
 
 // Main profile database
 export const profileDatabase: ProfileData = deepFreeze({
   id: 1,
-  name: ENV_CONFIG.name,
+  name: PUBLIC_PROFILE.name,
   role: ["UX/UI Designer", "Frontend Developer"],
-  birthday: ENV_CONFIG.birthday,
-  email: ENV_CONFIG.email,
-  phone: ENV_CONFIG.phone,
-  // Entries whose value is missing from .env are dropped, so the UI never shows an empty icon.
+  email: PUBLIC_PROFILE.email,
+  phone: ENV_CONFIG.phone, // from .env only — empty → the "Call" icon is hidden
+  // Entries with an empty value are dropped, so the UI never shows an empty icon.
   socials: [
     {
       label: "GitHub",
-      value: ENV_CONFIG.githubUsername,
-      link: ENV_CONFIG.githubUrl
+      value: PUBLIC_PROFILE.githubUsername,
+      link: PUBLIC_PROFILE.githubUrl
     },
     {
       label: "Line",
-      value: ENV_CONFIG.lineId,
-      link: ENV_CONFIG.lineId ? `https://line.me/ti/p/~${encodeURIComponent(ENV_CONFIG.lineId)}` : ''
+      value: PUBLIC_PROFILE.lineId,
+      link: PUBLIC_PROFILE.lineId ? `https://line.me/ti/p/~${encodeURIComponent(PUBLIC_PROFILE.lineId)}` : ''
     },
     {
       label: "Instagram",
-      value: ENV_CONFIG.instagramUsername,
-      link: ENV_CONFIG.instagramUrl
+      value: PUBLIC_PROFILE.instagramUsername,
+      link: PUBLIC_PROFILE.instagramUrl
     },
     {
       label: "Facebook",
-      value: ENV_CONFIG.facebookName,
-      link: ENV_CONFIG.facebookUrl
+      value: PUBLIC_PROFILE.facebookName,
+      link: PUBLIC_PROFILE.facebookUrl
     }
   ].filter((s) => s.value && s.link),
   introduce: "I am a passionate UX/UI Designer and Frontend Developer dedicated to creating intuitive, user-centric digital experiences with modern design.",
@@ -121,8 +120,7 @@ export const getProfileData = (): ProfileData => {
 export const getContactInfo = () => {
   return {
     email: profileDatabase.email,
-    phone: profileDatabase.phone,
-    birthday: profileDatabase.birthday
+    phone: profileDatabase.phone
   };
 };
 

@@ -5,7 +5,7 @@ import { useScrollProgressVar } from '../../shared/hooks/useScrollProgressVar';
 import { contactAvailable, scrollToSection } from '../navigation';
 import './hero.css';
 
-// Name comes from .env / profileDefaults.ts (never hardcoded here)
+// Name comes from src/config/profile.ts (public profile data)
 const [firstName = '', ...rest] = profileDatabase.name.toUpperCase().split(/\s+/);
 const lastName = rest.join(' ');
 
@@ -18,8 +18,8 @@ export const HeroSection = () => {
     {/* Engraved scan-line cloud banks (public/picture/hero-cloud.webp, made by scripts/make-hero-cloud.py).
         Desktop: right side only. Narrow screens: both sides. They drift out sideways as you scroll
         (hero.css → --hero-scroll). Decorative, so hidden from screen readers. */}
-    <img className="hero-cloud hero-cloud--left" src={HERO_CLOUD_IMAGE} alt="" aria-hidden="true" decoding="async" width={1600} height={760} />
-    <img className="hero-cloud hero-cloud--right" src={HERO_CLOUD_IMAGE} alt="" aria-hidden="true" decoding="async" width={1600} height={760} />
+    <img className="hero-cloud hero-cloud--left" src={HERO_CLOUD_IMAGE} alt="" aria-hidden="true" decoding="async" width={1588} height={708} />
+    <img className="hero-cloud hero-cloud--right" src={HERO_CLOUD_IMAGE} alt="" aria-hidden="true" decoding="async" width={1588} height={708} />
 
     <div className="hero-layout">
       <div className="hero-layout__text">

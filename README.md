@@ -53,25 +53,34 @@ npm run build            # type-check (tsc -b) + vite build → dist/
 npm run preview          # ดูผล build บนเครื่อง
 ```
 
-> ⚠️ ต้องตั้งค่า `.env` (หรือ environment variables บน hosting) **ก่อน build** เพราะ Vite ฝังค่า `VITE_*` ลงไปตอน build
+> ⚠️ ค่าใน `.env` ถูกฝังลงไฟล์ตอน build — บน Vercel ให้ตั้งใน Environment Variables แล้ว redeploy
 
 ---
 
-## 🔐 การตั้งค่า .env
+## 👤 ข้อมูลโปรไฟล์ (สาธารณะ) — `src/config/profile.ts`
 
-**ข้อมูลส่วนตัวทั้งหมดอยู่ใน `.env` เท่านั้น** ไม่มีค่าใดเขียนตายตัวในโค้ด ถ้าไม่ได้ตั้งค่าไหน ส่วนที่ใช้ค่านั้นจะถูกซ่อน
-ไฟล์ `.env` อยู่ใน `.gitignore` แล้ว **ห้าม commit**
+ข้อมูลที่ตั้งใจให้คนเห็นอยู่แล้ว เขียนไว้ในโค้ดตรง ๆ แก้ที่ไฟล์ [`src/config/profile.ts`](src/config/profile.ts) ไฟล์เดียว (ไม่ต้องตั้งค่าบน hosting)
+
+| ฟิลด์ | ใช้ทำอะไร | แสดงบนหน้าเว็บ |
+|---|---|---|
+| `name` | ชื่อใน Navbar, Hero, About, `<title>` | ✅ เป็นข้อความ |
+| `githubUsername`, `githubUrl` | สถิติ GitHub และลิงก์ | ✅ เป็นข้อความ |
+| `email` | ปุ่มส่งอีเมล | 🔘 ไอคอนเท่านั้น |
+| `lineId` | ลิงก์เพิ่มเพื่อน Line | 🔘 ไอคอนเท่านั้น |
+| `instagramUsername`, `instagramUrl` | ลิงก์ Instagram | 🔘 ไอคอนเท่านั้น |
+| `facebookName`, `facebookUrl` | ลิงก์ Facebook | 🔘 ไอคอนเท่านั้น |
+
+> ไฟล์นี้ถูก commit ขึ้น git — **ห้ามใส่รหัสผ่าน, token หรือข้อมูลลับ**
+
+---
+
+## 🔐 การตั้งค่า .env (ข้อมูลส่วนตัว + การตั้งค่า)
+
+ไฟล์ `.env` อยู่ใน `.gitignore` แล้ว **ห้าม commit** ถ้าไม่ได้ตั้งค่าไหน ส่วนที่ใช้ค่านั้นจะถูกซ่อน
 
 | ตัวแปร | ใช้ทำอะไร | แสดงบนหน้าเว็บ |
 |---|---|---|
-| `VITE_USER_NAME` | ชื่อใน Navbar, Hero, About, `<title>` | ✅ เป็นข้อความ |
-| `VITE_GITHUB_USERNAME`, `VITE_GITHUB_URL` | สถิติ GitHub และลิงก์ | ✅ เป็นข้อความ |
-| `VITE_USER_EMAIL` | ปุ่มส่งอีเมล / คัดลอกอีเมล | 🔘 ไอคอนเท่านั้น |
-| `VITE_USER_PHONE` | ปุ่มโทร | 🔘 ไอคอนเท่านั้น |
-| `VITE_LINE_ID` | ลิงก์เพิ่มเพื่อน Line | 🔘 ไอคอนเท่านั้น |
-| `VITE_INSTAGRAM_USERNAME`, `VITE_INSTAGRAM_URL` | ลิงก์ Instagram | 🔘 ไอคอนเท่านั้น |
-| `VITE_FACEBOOK_NAME`, `VITE_FACEBOOK_URL` | ลิงก์ Facebook | 🔘 ไอคอนเท่านั้น |
-| `VITE_USER_BIRTHDAY` | สำรองไว้ (ยังไม่แสดง) | — |
+| `VITE_USER_PHONE` | ปุ่มโทร (ไม่ตั้ง = ไม่มีปุ่มโทร) | 🔘 ไอคอนเท่านั้น |
 | `VITE_ENABLE_SELF_XSS_WARNING` | `true`/`false` แสดงคำเตือน Self-XSS ใน console | — |
 | `VITE_SECURITY_MODE` | `strict`/`standard` (ค่าอื่นจะใช้ `strict`) *ยังไม่มีโค้ดใช้* | — |
 | `VITE_ENABLE_SECURITY_LOGS`, `VITE_TEST_CSP_ENFORCE` | สำรองไว้สำหรับฟีเจอร์ในอนาคต | — |
