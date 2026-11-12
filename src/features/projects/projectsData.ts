@@ -113,9 +113,9 @@ export const projectsDatabase: ProjectData[] = deepFreeze([
   },
   {
     id: 7,
-    image: "/projects/ethchiangmai-presentation.webp",
+    image: "/projects/ethchiangmai-reliefmesh-cover.webp",
     gallery: [
-      { src: "/projects/ethchiangmai-devfolio.webp", caption: "Relief Mesh on Devfolio (ETHChiangmai Hackathon 2026)" },
+      { src: "/projects/ethchiangmai-reliefmesh-cover.webp", caption: "Relief Mesh (ETHChiangmai Hackathon 2026)" },
       { src: "/projects/ethchiangmai-presentation.webp", caption: "Relief Mesh presentation (Canva)" },
     ],
     title: "HACKATHON : ETHChaingmai",
