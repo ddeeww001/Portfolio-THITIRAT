@@ -23,7 +23,7 @@ describe('project images (card image + SEE MORE gallery)', () => {
   it('CM Craft Map, ETHChiangmai and YOUNG DEV HACKATHON have a static card image', () => {
     const withImage = (needle: string) => projectsDatabase.find((p) => p.title.includes(needle))?.image;
     expect(withImage('CM CRAFT MAP')).toBe('/projects/cm-craft-map-hero.webp');
-    expect(withImage('ETHChaingmai')).toBe('/projects/ethchiangmai-presentation.webp');
+    expect(withImage('ETHChaingmai')).toBe('/projects/ethchiangmai-reliefmesh-cover.webp');
     expect(withImage('YOUNG DEV HACKATHON')).toBe('/projects/young-dev-hackathon.webp');
     expect(withImage('CAMT open house')).toBe('/projects/camt-web3-club-booth.webp');
   });
