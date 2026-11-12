@@ -75,9 +75,22 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) 
             Project Highlights & Key Contributions
           </h4>
           <ul className="modal-details-list">
-            {project.details.map((detail, index) => (
-              <li key={index}>{detail}</li>
-            ))}
+            {project.details.map((detail, index) => {
+              // "Problem: …", "Research: …" → bold label + text. details[0] is the summary
+              // sentence (it may contain a colon, e.g. "Relief Mesh: …"), so it is never split.
+              const m = index > 0 ? detail.match(/^([A-Z][A-Za-z ]{1,20}):\s+(.*)$/) : null;
+              return (
+                <li key={index}>
+                  {m ? (
+                    <>
+                      <strong>{m[1]}:</strong> {m[2]}
+                    </>
+                  ) : (
+                    detail
+                  )}
+                </li>
+              );
+            })}
           </ul>
         </div>
 

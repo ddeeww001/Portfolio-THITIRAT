@@ -10,7 +10,7 @@ export const contactAvailable = hasContactChannels || import.meta.env.DEV;
 const allNavItems: { id: SectionId; label: string }[] = [
   { id: 'home', label: 'Home' },
   { id: 'services', label: 'Services' },
-  { id: 'experience', label: 'Work' },
+  { id: 'experience', label: 'Project' },
   { id: 'profile', label: 'About' },
   { id: 'certificates', label: 'Certificates' },
   { id: 'faq', label: 'FAQ' },

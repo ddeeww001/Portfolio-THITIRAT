@@ -13,7 +13,8 @@ describe('Navbar Component (Frontend Test Suite)', () => {
     expect(screen.getByText(/^TEST/)).toBeInTheDocument();
     expect(screen.getAllByRole('button', { name: /Home/i }).length).toBeGreaterThan(0);
     expect(screen.getByRole('button', { name: 'Services' })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Work' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Project' })).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Work' })).toBeNull(); // renamed Work → Project
     expect(screen.getByRole('button', { name: 'About' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Certificates' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Contact' })).toBeInTheDocument();
@@ -43,8 +44,8 @@ describe('Navbar Component (Frontend Test Suite)', () => {
     fireEvent.click(dropdownTrigger);
     expect(dropdownTrigger).toHaveAttribute('aria-expanded', 'true');
 
-    // Click an item in dropdown (the second instance of Work)
-    const workItems = screen.getAllByText('Work');
+    // Click an item in dropdown (the second instance of Project)
+    const workItems = screen.getAllByText('Project');
     fireEvent.click(workItems[workItems.length - 1]);
 
     // Should close dropdown
