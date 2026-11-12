@@ -1,7 +1,8 @@
-import { render, screen, fireEvent, act } from '@testing-library/react';
-import { describe, it, expect, vi } from 'vitest';
+import { render, screen } from '@testing-library/react';
+import { describe, it, expect } from 'vitest';
 import { ContactSection } from '../../../src/features/contact/ContactSection';
 import { profileDatabase } from '../../../src/features/profile/profileData';
+import { PUBLIC_PROFILE } from '../../../src/config/profile';
 
 describe('ContactSection Component (Frontend Test Suite)', () => {
   it('shows contact channels as icons only, without printing private values', () => {
@@ -17,7 +18,10 @@ describe('ContactSection Component (Frontend Test Suite)', () => {
     expect(screen.getByRole('link', { name: 'Call' })).toHaveAttribute('href', 'tel:0000000000');
     expect(screen.getByRole('link', { name: 'Open Instagram' })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Open Facebook' })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: 'Open Line' })).toHaveAttribute('href', 'https://line.me/ti/p/~test.line');
+    expect(screen.getByRole('link', { name: 'Open Line' })).toHaveAttribute(
+      'href',
+      `https://line.me/ti/p/~${encodeURIComponent(PUBLIC_PROFILE.lineId)}`,
+    );
   });
 
   it('shows the GitHub username as text (allowed public info)', () => {
@@ -26,22 +30,9 @@ describe('ContactSection Component (Frontend Test Suite)', () => {
     expect(screen.getByText(gh.value)).toBeInTheDocument();
   });
 
-  it('copies email to clipboard via the icon button and shows feedback', () => {
-    vi.useFakeTimers();
-    const writeTextMock = vi.fn().mockResolvedValue(undefined);
-    Object.assign(navigator, { clipboard: { writeText: writeTextMock } });
-
+  it('has no copy-email button (removed — the email icon is enough)', () => {
     render(<ContactSection />);
-    fireEvent.click(screen.getByRole('button', { name: 'Copy email' }));
-
-    expect(writeTextMock).toHaveBeenCalledWith(profileDatabase.email);
-    expect(screen.getByText(/COPIED TO CLIPBOARD/i)).toBeInTheDocument();
-
-    act(() => {
-      vi.advanceTimersByTime(3000);
-    });
-
-    expect(screen.getByRole('button', { name: 'Copy email' })).toBeInTheDocument();
-    vi.useRealTimers();
+    expect(screen.queryByRole('button', { name: /Copy email/i })).toBeNull();
+    expect(screen.queryByText(/COPIED TO CLIPBOARD/i)).toBeNull();
   });
 });

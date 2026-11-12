@@ -3,6 +3,7 @@ import { readFileSync, readdirSync, existsSync, statSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { createElement } from 'react';
 import { render, screen } from '@testing-library/react';
+import { PUBLIC_PROFILE } from '../../src/config/profile';
 
 const ROOT = resolve(__dirname, '../..');
 
@@ -14,26 +15,28 @@ const listFrontendFiles = (dir: string): string[] =>
     return /\.(ts|tsx|js|jsx)$/.test(name) ? [full] : [];
   });
 
-/** Tests about *missing* data must also switch off the fallback values in profileDefaults.ts. */
-const withoutDefaults = () => vi.doMock('../../src/config/profileDefaults', () => ({ PROFILE_DEFAULTS: {} }));
+/** Replace the public profile with one whose fields are emptied (to test "missing data" UI). */
+const withProfile = (overrides: Partial<Record<keyof typeof PUBLIC_PROFILE, string>>) =>
+  vi.doMock('../../src/config/profile', () => ({ PUBLIC_PROFILE: { ...PUBLIC_PROFILE, ...overrides } }));
+
+const EMPTY_PROFILE = Object.fromEntries(Object.keys(PUBLIC_PROFILE).map((k) => [k, ''])) as Record<
+  keyof typeof PUBLIC_PROFILE,
+  string
+>;
 
 afterEach(() => {
-  vi.doUnmock('../../src/config/profileDefaults');
+  vi.doUnmock('../../src/config/profile');
   vi.unstubAllEnvs();
+  vi.unstubAllGlobals();
   vi.resetModules();
   vi.restoreAllMocks();
+  sessionStorage.clear();
 });
 
 // ─────────────────────────────────────────────────────────────
-// 1. No personal data hardcoded in source code
+// 1. Public vs private data
 // ─────────────────────────────────────────────────────────────
-describe('Privacy guard: personal values live only in .env and src/config/profileDefaults.ts', () => {
-  const PERSONAL_KEYS = [
-    'VITE_USER_NAME', 'VITE_USER_EMAIL', 'VITE_USER_PHONE', 'VITE_USER_BIRTHDAY',
-    'VITE_GITHUB_USERNAME', 'VITE_LINE_ID', 'VITE_INSTAGRAM_USERNAME',
-    'VITE_FACEBOOK_NAME', 'VITE_FACEBOOK_URL', 'VITE_INSTAGRAM_URL',
-  ];
-
+describe('Profile data: public in src/config/profile.ts, private only in .env', () => {
   const listSourceFiles = (dir: string): string[] =>
     readdirSync(dir).flatMap((name) => {
       const full = join(dir, name);
@@ -51,39 +54,50 @@ describe('Privacy guard: personal values live only in .env and src/config/profil
         .map((m) => [m[1], m[2]]),
     );
 
-  const hasRealEnv = existsSync(join(ROOT, '.env'));
+  it('public profile has the name, email, GitHub and social links', () => {
+    expect(PUBLIC_PROFILE.name).not.toBe('');
+    expect(PUBLIC_PROFILE.email).toMatch(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
+    expect(PUBLIC_PROFILE.githubUrl).toBe(`https://github.com/${PUBLIC_PROFILE.githubUsername}`);
+    for (const url of [PUBLIC_PROFILE.instagramUrl, PUBLIC_PROFILE.facebookUrl]) expect(url).toMatch(/^https:\/\//);
+    expect(Object.isFrozen(PUBLIC_PROFILE)).toBe(true);
+  });
+
+  it('the public profile file holds no phone number or other private data', () => {
+    const text = readFileSync(join(ROOT, 'src/config/profile.ts'), 'utf8');
+    expect(text).not.toMatch(/\b0\d{1,2}[- ]?\d{3}[- ]?\d{4}\b/); // Thai phone number pattern
+    expect(Object.keys(PUBLIC_PROFILE)).not.toContain('phone');
+    expect(Object.keys(PUBLIC_PROFILE)).not.toContain('birthday');
+    expect(text).not.toMatch(/^\s*(phone|birthday|password|secret|token)\s*:/im);
+  });
 
   // Skipped in CI (no .env there); runs on the developer machine where the real values exist.
-  // The fallback file is the ONE allowed place in the source; nothing else may copy those values.
-  const DEFAULTS_FILE = join(ROOT, 'src', 'config', 'profileDefaults.ts');
+  it.skipIf(!existsSync(join(ROOT, '.env')))('the real phone number from .env appears in no source file', () => {
+    const phone = readDotEnv(join(ROOT, '.env')).VITE_USER_PHONE?.trim();
+    if (!phone || phone.length < 4) return;
+    const digits = phone.replace(/\D/g, '');
+    const leaks = [...listSourceFiles(join(ROOT, 'src')), join(ROOT, 'index.html')].filter((file) => {
+      const text = readFileSync(file, 'utf8');
+      return text.includes(phone) || text.replace(/\D/g, '').includes(digits);
+    });
+    // Report only file names, never the value itself.
+    expect(leaks.map((f) => f.replace(ROOT, ''))).toEqual([]);
+  });
 
-  it.skipIf(!hasRealEnv)('no source file except profileDefaults.ts contains the real .env values', () => {
-    const env = readDotEnv(join(ROOT, '.env'));
-    const secrets = PERSONAL_KEYS
-      .map((key) => [key, env[key]?.trim()] as const)
-      .filter((e): e is readonly [string, string] => !!e[1] && e[1].length >= 4);
-    const files = [...listSourceFiles(join(ROOT, 'src')), join(ROOT, 'index.html')].filter((f) => f !== DEFAULTS_FILE);
-
-    // Report only file + key name, never the value itself.
-    const leaks: string[] = [];
-    for (const file of files) {
-      const text = readFileSync(file, 'utf8').toLowerCase();
-      for (const [key, value] of secrets) {
-        if (text.includes(value.toLowerCase())) leaks.push(`${file.replace(ROOT, '')} contains the value of ${key}`);
-      }
+  it('.env.example lists only private keys (no public profile keys left in env)', () => {
+    const example = readFileSync(join(ROOT, '.env.example'), 'utf8');
+    expect(example).toMatch(/^VITE_USER_PHONE=/m);
+    for (const key of ['VITE_USER_NAME', 'VITE_USER_EMAIL', 'VITE_GITHUB_USERNAME', 'VITE_FACEBOOK_URL', 'VITE_USER_BIRTHDAY']) {
+      expect(example).not.toMatch(new RegExp(`^${key}=`, 'm'));
     }
-    expect(leaks).toEqual([]);
   });
 });
 
 // ─────────────────────────────────────────────────────────────
-// 2. Missing env values → hidden, not broken
+// 2. Missing values → hidden, not broken
 // ─────────────────────────────────────────────────────────────
-describe('Missing .env values are hidden in the UI', () => {
-  it('profileDatabase.socials drops entries whose value is missing', async () => {
-    withoutDefaults();
-    vi.stubEnv('VITE_INSTAGRAM_USERNAME', '');
-    vi.stubEnv('VITE_LINE_ID', '');
+describe('Missing values are hidden in the UI', () => {
+  it('profileDatabase.socials drops entries whose value is empty', async () => {
+    withProfile({ instagramUsername: '', lineId: '' });
     const { profileDatabase } = await import('../../src/features/profile/profileData');
     const labels = profileDatabase.socials.map((s) => s.label);
     expect(labels).not.toContain('Instagram');
@@ -91,15 +105,12 @@ describe('Missing .env values are hidden in the UI', () => {
     expect(labels).toContain('GitHub');
   });
 
-  it('ContactSection renders no email/phone icons when they are not set', async () => {
-    withoutDefaults();
-    vi.stubEnv('VITE_USER_EMAIL', '');
+  it('no phone in .env → no "Call" icon (email icon still shown)', async () => {
     vi.stubEnv('VITE_USER_PHONE', '');
     const { ContactSection } = await import('../../src/features/contact/ContactSection');
     render(createElement(ContactSection));
-    expect(screen.queryByRole('link', { name: 'Send email' })).toBeNull();
-    expect(screen.queryByRole('button', { name: 'Copy email' })).toBeNull();
     expect(screen.queryByRole('link', { name: 'Call' })).toBeNull();
+    expect(screen.getByRole('link', { name: 'Send email' })).toBeTruthy();
   });
 
   it('every social label has a matching icon', async () => {
@@ -108,6 +119,17 @@ describe('Missing .env values are hidden in the UI', () => {
     for (const s of profileDatabase.socials) {
       expect(socialIcons[s.label], `missing icon for ${s.label}`).toBeTypeOf('function');
     }
+  });
+
+  it('with no contact data at all, the Contact section and its nav link disappear', async () => {
+    withProfile(EMPTY_PROFILE);
+    vi.stubEnv('VITE_USER_PHONE', '');
+    const { ContactSection } = await import('../../src/features/contact/ContactSection');
+    const { navItems, contactAvailable } = await import('../../src/app/navigation');
+    const { container } = render(createElement(ContactSection));
+    expect(container).toBeEmptyDOMElement();
+    expect(contactAvailable).toBe(false);
+    expect(navItems.map((i) => i.id)).not.toContain('contact');
   });
 });
 
@@ -163,90 +185,25 @@ describe('initSecurityGuards respects the Self-XSS flag', () => {
 });
 
 // ─────────────────────────────────────────────────────────────
-// 4. GitHubSection uses the username from .env (no hardcoded fallback)
+// 4. GitHubSection uses the username from the public profile
 // ─────────────────────────────────────────────────────────────
-describe('GitHubSection reads the username from env', () => {
-  it('calls the GitHub API with VITE_GITHUB_USERNAME', async () => {
-    const fetchMock = vi.fn().mockResolvedValue({ ok: false, json: async () => ({}) });
+describe('GitHubSection reads the username from src/config/profile.ts', () => {
+  it('calls the GitHub API with the public GitHub username', async () => {
+    const fetchMock = vi.fn().mockResolvedValue({ ok: false, status: 500, json: async () => ({}) });
     vi.stubGlobal('fetch', fetchMock);
     const { GitHubSection } = await import('../../src/features/github/GitHubSection');
     render(createElement(GitHubSection));
     await vi.waitFor(() => expect(fetchMock).toHaveBeenCalled());
-    expect(fetchMock.mock.calls[0][0]).toBe('https://api.github.com/users/test-user');
-    vi.unstubAllGlobals();
+    expect(fetchMock.mock.calls[0][0]).toBe(`https://api.github.com/users/${PUBLIC_PROFILE.githubUsername}`);
   });
 
-  it('does not call the API at all when the username is missing', async () => {
-    withoutDefaults();
-    vi.stubEnv('VITE_GITHUB_USERNAME', '');
-    const fetchMock = vi.fn();
-    vi.stubGlobal('fetch', fetchMock);
-    const { GitHubSection } = await import('../../src/features/github/GitHubSection');
-    render(createElement(GitHubSection));
-    // dev build: shows which key is missing (production renders nothing — see test below)
-    await screen.findByText(/Missing in \.env: VITE_GITHUB_USERNAME/);
-    expect(fetchMock).not.toHaveBeenCalled();
-    vi.unstubAllGlobals();
-  });
-});
-
-// ─────────────────────────────────────────────────────────────
-// 5. Production build with missing .env values (e.g. host env vars not set)
-//    → hide empty sections, never show configuration hints to visitors
-// ─────────────────────────────────────────────────────────────
-describe('Production build without .env values (and without fallback defaults)', () => {
-  it('a deploy with NO env vars still shows the profile from profileDefaults.ts', async () => {
-    vi.stubEnv('DEV', false);
-    for (const k of CONTACT_KEYS) vi.stubEnv(k, '');
-    vi.stubEnv('VITE_USER_NAME', '');
-    const { ENV_CONFIG } = await import('../../src/config/env');
-    const { PROFILE_DEFAULTS } = await import('../../src/config/profileDefaults');
-    const { navItems } = await import('../../src/app/navigation');
-    expect(ENV_CONFIG.name).toBe(PROFILE_DEFAULTS.VITE_USER_NAME?.trim());
-    expect(ENV_CONFIG.githubUsername).toBe(PROFILE_DEFAULTS.VITE_GITHUB_USERNAME?.trim());
-    expect(navItems.map((i) => i.id)).toContain('contact');
-  });
-
-  const CONTACT_KEYS = [
-    'VITE_USER_EMAIL', 'VITE_USER_PHONE', 'VITE_GITHUB_USERNAME', 'VITE_GITHUB_URL', 'VITE_LINE_ID',
-    'VITE_INSTAGRAM_USERNAME', 'VITE_INSTAGRAM_URL', 'VITE_FACEBOOK_NAME', 'VITE_FACEBOOK_URL',
-  ];
-  const stubProductionWithoutContacts = () => {
-    withoutDefaults();
-    vi.stubEnv('DEV', false);
-    vi.stubEnv('PROD', true);
-    for (const k of CONTACT_KEYS) vi.stubEnv(k, '');
-  };
-
-  it('GitHubSection renders nothing and calls no API', async () => {
-    stubProductionWithoutContacts();
+  it('renders nothing and calls no API when the username is emptied', async () => {
+    withProfile({ githubUsername: '', githubUrl: '' });
     const fetchMock = vi.fn();
     vi.stubGlobal('fetch', fetchMock);
     const { GitHubSection } = await import('../../src/features/github/GitHubSection');
     const { container } = render(createElement(GitHubSection));
     expect(container).toBeEmptyDOMElement();
     expect(fetchMock).not.toHaveBeenCalled();
-    vi.unstubAllGlobals();
-  });
-
-  it('ContactSection is hidden instead of showing an empty card', async () => {
-    stubProductionWithoutContacts();
-    const { ContactSection } = await import('../../src/features/contact/ContactSection');
-    const { container } = render(createElement(ContactSection));
-    expect(container).toBeEmptyDOMElement();
-  });
-
-  it('navbar drops the Contact link when there is no Contact section', async () => {
-    stubProductionWithoutContacts();
-    const { navItems, contactAvailable } = await import('../../src/app/navigation');
-    expect(contactAvailable).toBe(false);
-    expect(navItems.map((i) => i.id)).not.toContain('contact');
-  });
-
-  it('keeps Contact when at least one channel is configured', async () => {
-    stubProductionWithoutContacts();
-    vi.stubEnv('VITE_USER_EMAIL', 'someone@example.com');
-    const { navItems } = await import('../../src/app/navigation');
-    expect(navItems.map((i) => i.id)).toContain('contact');
   });
 });

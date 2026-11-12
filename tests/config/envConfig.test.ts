@@ -1,38 +1,20 @@
 import { describe, it, expect } from 'vitest';
 import { parseEnvConfig, ENV_CONFIG } from '../../src/config/env';
-import { PROFILE_DEFAULTS } from '../../src/config/profileDefaults';
+import { PUBLIC_PROFILE } from '../../src/config/profile';
 import { profileDatabase } from '../../src/features/profile/profileData';
 
 // parseEnvConfig is pure, so every case passes its own env and never depends on the real .env.
 describe('Environment Configuration (parseEnvConfig)', () => {
-  it('falls back to PROFILE_DEFAULTS when env has no profile values', () => {
-    const cfg = parseEnvConfig({});
-    expect(cfg.name).toBe(PROFILE_DEFAULTS.VITE_USER_NAME?.trim() ?? '');
-    expect(cfg.githubUsername).toBe(PROFILE_DEFAULTS.VITE_GITHUB_USERNAME?.trim() ?? '');
-    expect(cfg.name).not.toBe('');
+  it('only private values come from env: the phone number (empty when missing)', () => {
+    expect(parseEnvConfig({}).phone).toBe('');
+    expect(parseEnvConfig({ VITE_USER_PHONE: '  012-345-6789 ' }).phone).toBe('012-345-6789');
   });
 
-  it('env wins over defaults; an empty env value still falls back', () => {
-    const defaults = { VITE_USER_NAME: 'Default Name', VITE_USER_EMAIL: 'default@example.com' };
-    const cfg = parseEnvConfig({ VITE_USER_NAME: 'From Env', VITE_USER_EMAIL: '  ' }, defaults);
-    expect(cfg.name).toBe('From Env');
-    expect(cfg.email).toBe('default@example.com');
-  });
-
-  it('returns empty strings when both env and defaults are empty', () => {
-    const cfg = parseEnvConfig({}, {});
-    for (const key of [
-      'name', 'email', 'phone', 'birthday', 'githubUsername', 'githubUrl',
-      'lineId', 'instagramUsername', 'instagramUrl', 'facebookName', 'facebookUrl',
-    ] as const) {
-      expect(cfg[key]).toBe('');
+  it('public profile data is NOT read from env any more', () => {
+    const cfg = parseEnvConfig({}) as Record<string, unknown>;
+    for (const key of ['name', 'email', 'birthday', 'githubUsername', 'lineId', 'facebookUrl']) {
+      expect(cfg).not.toHaveProperty(key);
     }
-  });
-
-  it('uses and trims values provided by env', () => {
-    const cfg = parseEnvConfig({ VITE_USER_NAME: '  Jane Doe ', VITE_GITHUB_USERNAME: 'jane' });
-    expect(cfg.name).toBe('Jane Doe');
-    expect(cfg.githubUsername).toBe('jane');
   });
 
   it.each([
@@ -68,10 +50,12 @@ describe('Environment Configuration (parseEnvConfig)', () => {
   });
 });
 
-describe('profileDatabase integrity (test env from vitest.config.ts)', () => {
-  it('builds profile from env values', () => {
+describe('profileDatabase integrity', () => {
+  it('builds the profile from the public profile + the phone from env', () => {
     expect(profileDatabase.id).toBe(1);
-    expect(profileDatabase.name).toBe(ENV_CONFIG.name);
+    expect(profileDatabase.name).toBe(PUBLIC_PROFILE.name);
+    expect(profileDatabase.email).toBe(PUBLIC_PROFILE.email);
+    expect(profileDatabase.phone).toBe(ENV_CONFIG.phone); // fake '000-000-0000' from vitest.config.ts
     expect(profileDatabase.role.length).toBeGreaterThan(0);
     expect(Array.isArray(profileDatabase.technicalSkills)).toBe(true);
     expect(Array.isArray(profileDatabase.tools)).toBe(true);

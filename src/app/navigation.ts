@@ -4,8 +4,8 @@ import { hasContactChannels } from '../features/profile/profileData';
 
 export type SectionId = 'home' | 'services' | 'experience' | 'profile' | 'certificates' | 'faq' | 'contact';
 
-/** The Contact section is hidden in production when .env has no contact data, so its links go too. */
-export const contactAvailable = hasContactChannels || import.meta.env.DEV;
+/** The Contact section hides itself when there is no way to contact (see profileData), so its links go too. */
+export const contactAvailable = hasContactChannels;
 
 const allNavItems: { id: SectionId; label: string }[] = [
   { id: 'home', label: 'Home' },

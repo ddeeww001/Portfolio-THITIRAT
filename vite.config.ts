@@ -1,11 +1,10 @@
-import { defineConfig, loadEnv, type Plugin } from 'vite';
+import { defineConfig, type Plugin } from 'vite';
 import react from '@vitejs/plugin-react';
-import { PROFILE_DEFAULTS } from './src/config/profileDefaults';
+import { PUBLIC_PROFILE } from './src/config/profile';
 
-/** Fills __PROFILE_NAME__ in index.html: .env / host env first, then the fallback in profileDefaults.ts. */
-function profileNameInHtml(mode: string): Plugin {
-  const env = loadEnv(mode, process.cwd(), 'VITE_');
-  const name = env.VITE_USER_NAME?.trim() || PROFILE_DEFAULTS.VITE_USER_NAME?.trim() || 'Portfolio';
+/** Fills __PROFILE_NAME__ in index.html with the public name from src/config/profile.ts. */
+function profileNameInHtml(): Plugin {
+  const name = PUBLIC_PROFILE.name.trim() || 'Portfolio';
   const escaped = name.replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
   return {
     name: 'profile-name-in-html',
@@ -23,7 +22,7 @@ const SECURITY_HEADERS = {
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => ({
-  plugins: [react(), profileNameInHtml(mode)],
+  plugins: [react(), profileNameInHtml()],
   server: { headers: SECURITY_HEADERS },
   preview: { headers: SECURITY_HEADERS },
   esbuild: {
